@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.kotlin.compose.compiler)
     kotlin("kapt")
     alias(libs.plugins.daggerHilt)
@@ -55,6 +56,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    //Serialization
+    implementation(libs.jetbrains.kotlin.serialization)
 
     //Compose
     implementation(platform(libs.androidx.compose.bom))
