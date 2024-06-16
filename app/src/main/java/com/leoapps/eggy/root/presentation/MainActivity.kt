@@ -31,7 +31,10 @@ class MainActivity : ComponentActivity() {
                     composable<WelcomeScreenDestination> {
                         WelcomeScreen(
                             onContinueClicked = {
-                                navController.navigate(BoilSetupScreenDestination)
+                                navController.navigate(BoilSetupScreenDestination) {
+                                    popUpTo<WelcomeScreenDestination> { inclusive = true }
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }
@@ -54,3 +57,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+//TODO:
+//1. Extract MainActivity composable code to a separate composable function
+//2. When launch decide where to navigate:
+// if first launch - open Welcome
+// elif no egg is in progress - open Settings
+// else open Progress
+//3. Settings UI
+//4. Progress UI
+//5. Progress Complete Animation (Confetti library?)
