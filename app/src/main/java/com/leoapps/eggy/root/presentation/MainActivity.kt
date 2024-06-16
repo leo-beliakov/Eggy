@@ -12,8 +12,8 @@ import com.leoapps.eggy.progress.presentation.BoilProgressScreen
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
 import com.leoapps.eggy.splash.presentation.BoilSetupScreen
 import com.leoapps.eggy.splash.presentation.BoilSetupScreenDestination
-import com.leoapps.eggy.splash.presentation.SplashScreen
-import com.leoapps.eggy.splash.presentation.SplashScreenDestination
+import com.leoapps.eggy.splash.presentation.WelcomeScreen
+import com.leoapps.eggy.splash.presentation.WelcomeScreenDestination
 
 class MainActivity : ComponentActivity() {
 
@@ -26,10 +26,10 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = SplashScreenDestination
+                    startDestination = WelcomeScreenDestination
                 ) {
-                    composable<SplashScreenDestination> {
-                        SplashScreen(
+                    composable<WelcomeScreenDestination> {
+                        WelcomeScreen(
                             onContinueClicked = {
                                 navController.navigate(BoilSetupScreenDestination)
                             }

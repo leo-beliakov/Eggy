@@ -2,9 +2,12 @@ package com.leoapps.eggy.base.presentation
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.leoapps.eggy.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -31,4 +34,30 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val MonsterratFontFamily = FontFamily(
+    fonts = listOf(
+        Font(
+            resId = R.font.monsterrat_extrabold,
+            weight = FontWeight.W900,
+            style = FontStyle.Normal
+        ),
+        Font(
+            resId = R.font.monsterrat_bold,
+            weight = FontWeight.W700,
+            style = FontStyle.Normal
+        ),
+        Font(
+            resId = R.font.monsterrat_regular,
+            weight = FontWeight.W500,
+            style = FontStyle.Normal
+        )
+    )
+)
+
+val TitanOneFamily = FontFamily(
+    fonts = listOf(
+        Font(resId = R.font.titan_one)
+    )
 )

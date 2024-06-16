@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Eggy</string>
+    <string name="welcome_button_continue">Let\'s cook!</string>
+    <string name="welcome_title_3">as you like!</string>
+    <string name="welcome_title_2">Cook\neggs</string>
+    <string name="welcome_title_1">EGGY</string>
 </resources>
