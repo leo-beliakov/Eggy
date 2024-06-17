@@ -21,5 +21,8 @@
     <string name="settings_type_medium_title">Medium</string>
     <string name="settings_type_hard_title">Hard</string>
     <string name="settings_type_subtitle">boiled</string>
+    <string name="setup_header_title">Set boiling details</string>
+    <string name="setup_header_subtitle">Prepare eggs as you like!</string>
+    <string name="common_continue">Continue</string>
 
 </resources>

@@ -55,7 +55,7 @@ fun SelectionButton(
                 indication = rememberRipple(color = PrimaryLight),
                 interactionSource = remember { MutableInteractionSource() },
             )
-            .padding(12.dp)
+            .padding(16.dp)
     ) {
         Text(
             text = stringResource(id = titleResId),
