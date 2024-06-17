@@ -1,7 +1,25 @@
 <resources>
     <string name="app_name">Eggy</string>
+
     <string name="welcome_button_continue">Let\'s cook!</string>
     <string name="welcome_title_3">as you like!</string>
     <string name="welcome_title_2">Cook\neggs</string>
     <string name="welcome_title_1">EGGY</string>
+
+    <string name="settings_temp_title">Egg <b>temperature</b></string>
+    <string name="settings_temp_room_title">Room</string>
+    <string name="settings_temp_fridge_title">Fridge</string>
+    <string name="settings_temp_subtitle">temperature</string>
+
+    <string name="settings_size_title">Egg <b>size</b></string>
+    <string name="settings_size_s">S</string>
+    <string name="settings_size_m">M</string>
+    <string name="settings_size_l">L</string>
+
+    <string name="settings_type_title">Egg <b>boiled type</b></string>
+    <string name="settings_type_soft_title">Soft</string>
+    <string name="settings_type_medium_title">Medium</string>
+    <string name="settings_type_hard_title">Hard</string>
+    <string name="settings_type_subtitle">boiled</string>
+
 </resources>
