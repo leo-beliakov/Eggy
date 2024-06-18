@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.Primary
+import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
 import com.leoapps.eggy.setup.presentation.composables.IconedSelectionButton
 import com.leoapps.eggy.setup.presentation.composables.SelectionButton
@@ -62,14 +63,14 @@ private fun HeaderSection() {
             modifier = Modifier.weight(1f, true)
         ) {
             Text(
-                text = stringResource(R.string.setup_header_title)
+                text = annotatedStringResource(R.string.setup_header_title)
             )
             Text(
                 text = stringResource(R.string.setup_header_subtitle)
             )
         }
         Image(
-            painter = painterResource(id = R.drawable.setup_egg_half),
+            painter = painterResource(R.drawable.setup_egg_half),
             contentDescription = null,
             modifier = Modifier.graphicsLayer(translationX = 24.dp.toPx())
         )
@@ -79,7 +80,7 @@ private fun HeaderSection() {
 @Composable
 private fun TemperatureSection() {
     Text(
-        text = stringResource(id = R.string.settings_temp_title)
+        text = annotatedStringResource(R.string.settings_temp_title)
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -104,7 +105,7 @@ private fun TemperatureSection() {
 @Composable
 private fun SizeSection() {
     Text(
-        text = stringResource(id = R.string.settings_size_title)
+        text = annotatedStringResource(R.string.settings_size_title)
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -127,7 +128,7 @@ private fun SizeSection() {
 @Composable
 private fun BoiledTypeSection() {
     Text(
-        text = stringResource(id = R.string.settings_type_title)
+        text = annotatedStringResource(R.string.settings_type_title)
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -180,7 +181,7 @@ private fun TimerSection() {
             modifier = Modifier.size(48.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_next),
+                painter = painterResource(R.drawable.ic_next),
                 contentDescription = stringResource(R.string.common_continue)
             )
         }

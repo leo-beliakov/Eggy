@@ -6,22 +6,22 @@
     <string name="welcome_title_2">Cook\neggs</string>
     <string name="welcome_title_1">EGGY</string>
 
-    <string name="settings_temp_title">Egg <b>temperature</b></string>
+    <string name="settings_temp_title"><![CDATA[Egg <b>temperature</b>]]></string>
     <string name="settings_temp_room_title">Room</string>
     <string name="settings_temp_fridge_title">Fridge</string>
     <string name="settings_temp_subtitle">temperature</string>
 
-    <string name="settings_size_title">Egg <b>size</b></string>
+    <string name="settings_size_title"><![CDATA[Egg <b>size</b>]]></string>
     <string name="settings_size_s">S</string>
     <string name="settings_size_m">M</string>
     <string name="settings_size_l">L</string>
 
-    <string name="settings_type_title">Egg <b>boiled type</b></string>
+    <string name="settings_type_title"><![CDATA[Egg <b>boiled type</b>]]></string>
     <string name="settings_type_soft_title">Soft</string>
     <string name="settings_type_medium_title">Medium</string>
     <string name="settings_type_hard_title">Hard</string>
     <string name="settings_type_subtitle">boiled</string>
-    <string name="setup_header_title">Set boiling details</string>
+    <string name="setup_header_title"><![CDATA[Set <b>boiling details</b>]]></string>
     <string name="setup_header_subtitle">Prepare eggs as you like!</string>
     <string name="common_continue">Continue</string>
 
