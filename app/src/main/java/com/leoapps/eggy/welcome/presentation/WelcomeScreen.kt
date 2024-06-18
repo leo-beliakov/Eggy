@@ -1,4 +1,4 @@
-package com.leoapps.eggy.splash.presentation
+package com.leoapps.eggy.welcome.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +27,6 @@ import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.MonsterratFontFamily
 import com.leoapps.eggy.base.presentation.Primary
-import com.leoapps.eggy.base.presentation.TitanOneFamily
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -53,33 +51,22 @@ fun WelcomeScreen(
 
         Text(
             text = stringResource(R.string.welcome_title_1),
-            fontSize = 22.sp,
+            style = MaterialTheme.typography.headlineSmall,
             color = Primary,
-            fontFamily = MonsterratFontFamily,
-            fontWeight = FontWeight.W600,
             modifier = Modifier.constrainAs(title1) {
                 linkTo(start = parent.start, end = parent.end)
             }
         )
         Text(
             text = stringResource(R.string.welcome_title_2),
-            textAlign = TextAlign.Center,
-            fontSize = 46.sp,
-            lineHeight = 36.sp,
-            color = Color.Black,
-            fontFamily = TitanOneFamily,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.constrainAs(title2) {
                 linkTo(start = parent.start, end = parent.end)
             }
         )
         Text(
             text = stringResource(R.string.welcome_title_3),
-            fontSize = 22.sp,
-            color = Color.Black,
-            fontFamily = MonsterratFontFamily,
-            letterSpacing = -0.5.sp,
-            fontWeight = FontWeight.W900,
+            style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.constrainAs(title3) {
                 linkTo(start = parent.start, end = parent.end)
             }

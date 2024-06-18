@@ -10,10 +10,10 @@ import androidx.navigation.compose.rememberNavController
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.progress.presentation.BoilProgressScreen
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
-import com.leoapps.eggy.splash.presentation.BoilSetupScreen
-import com.leoapps.eggy.splash.presentation.BoilSetupScreenDestination
-import com.leoapps.eggy.splash.presentation.WelcomeScreen
-import com.leoapps.eggy.splash.presentation.WelcomeScreenDestination
+import com.leoapps.eggy.welcome.presentation.BoilSetupScreen
+import com.leoapps.eggy.welcome.presentation.BoilSetupScreenDestination
+import com.leoapps.eggy.welcome.presentation.WelcomeScreen
+import com.leoapps.eggy.welcome.presentation.WelcomeScreenDestination
 
 class MainActivity : ComponentActivity() {
 

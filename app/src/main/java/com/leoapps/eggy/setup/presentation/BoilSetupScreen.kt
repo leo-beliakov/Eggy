@@ -1,4 +1,4 @@
-package com.leoapps.eggy.splash.presentation
+package com.leoapps.eggy.welcome.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
+import com.leoapps.eggy.base.presentation.GrayLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
@@ -63,10 +65,13 @@ private fun HeaderSection() {
             modifier = Modifier.weight(1f, true)
         ) {
             Text(
-                text = annotatedStringResource(R.string.setup_header_title)
+                text = annotatedStringResource(R.string.setup_header_title),
+                style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text = stringResource(R.string.setup_header_subtitle)
+                text = stringResource(R.string.setup_header_subtitle),
+                style = MaterialTheme.typography.titleSmall,
+                color = GrayLight,
             )
         }
         Image(
@@ -80,7 +85,8 @@ private fun HeaderSection() {
 @Composable
 private fun TemperatureSection() {
     Text(
-        text = annotatedStringResource(R.string.settings_temp_title)
+        text = annotatedStringResource(R.string.settings_temp_title),
+        style = MaterialTheme.typography.titleMedium,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -105,7 +111,8 @@ private fun TemperatureSection() {
 @Composable
 private fun SizeSection() {
     Text(
-        text = annotatedStringResource(R.string.settings_size_title)
+        text = annotatedStringResource(R.string.settings_size_title),
+        style = MaterialTheme.typography.titleMedium,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -128,7 +135,8 @@ private fun SizeSection() {
 @Composable
 private fun BoiledTypeSection() {
     Text(
-        text = annotatedStringResource(R.string.settings_type_title)
+        text = annotatedStringResource(R.string.settings_type_title),
+        style = MaterialTheme.typography.titleMedium,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -166,8 +174,15 @@ private fun TimerSection() {
         Column(
             modifier = Modifier.weight(1f, true)
         ) {
-            Text(text = "Prepare eggs as you like!")
-            Text(text = "04:50")
+            Text(
+                text = "Prepare eggs as you like!",
+                style = MaterialTheme.typography.titleSmall,
+                color = GrayLight,
+            )
+            Text(
+                text = "04:50",
+                style = MaterialTheme.typography.headlineLarge,
+            )
         }
         ElevatedButton(
             onClick = { },
