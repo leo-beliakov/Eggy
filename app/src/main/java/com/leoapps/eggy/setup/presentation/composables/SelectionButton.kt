@@ -45,12 +45,12 @@ fun SelectionButton(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .sizeIn(minHeight = MaterialTheme.dimens.selectableButtonHeight)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.cornerS))
             .border(
                 width = 1.dp,
                 color = selectionColor,
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerS)
             )
-            .clip(RoundedCornerShape(MaterialTheme.dimens.cornerS))
             .clickable(
                 onClick = onClick,
                 indication = rememberRipple(color = PrimaryLight),

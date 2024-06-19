@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
@@ -40,9 +43,11 @@ object BoilSetupScreenDestination
 @Composable
 fun BoilSetupScreen(onContinueClicked: () -> Unit) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceXL),
         modifier = Modifier
             .fillMaxSize()
             .safeDrawingPadding()
+            .verticalScroll(rememberScrollState())
             .padding(
                 vertical = MaterialTheme.dimens.screenPaddingXL,
                 horizontal = MaterialTheme.dimens.screenPaddingL,
@@ -52,9 +57,7 @@ fun BoilSetupScreen(onContinueClicked: () -> Unit) {
         TemperatureSection()
         SizeSection()
         BoiledTypeSection()
-        Spacer(
-            modifier = Modifier.weight(1f, true)
-        )
+        Spacer(modifier = Modifier.weight(1f, true))
         TimerSection()
     }
 }
@@ -67,7 +70,7 @@ private fun HeaderSection(
         modifier = modifier
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceXS),
             modifier = Modifier
                 .weight(1f, true)
                 .padding(top = MaterialTheme.dimens.spaceM)
@@ -87,94 +90,103 @@ private fun HeaderSection(
             contentDescription = null,
             modifier = Modifier
                 .graphicsLayer(translationX = MaterialTheme.dimens.screenPaddingL.toPx())
-                .fillMaxHeight(0.2f)
+                .height(120.dp)
         )
     }
 }
 
 @Composable
 private fun TemperatureSection() {
-    Text(
-        text = annotatedStringResource(R.string.settings_temp_title),
-        style = MaterialTheme.typography.titleLarge,
-    )
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
-    ) {
-        SelectionButton(
-            titleResId = R.string.settings_temp_room_title,
-            subtitleResId = R.string.settings_temp_subtitle,
-            selected = false,
-            onClick = { },
-            modifier = Modifier.weight(1f)
+    Column {
+        Text(
+            text = annotatedStringResource(R.string.settings_temp_title),
+            style = MaterialTheme.typography.titleLarge,
         )
-        SelectionButton(
-            titleResId = R.string.settings_temp_fridge_title,
-            subtitleResId = R.string.settings_temp_subtitle,
-            selected = true,
-            onClick = { },
-            modifier = Modifier.weight(1f)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spaceS)
+        ) {
+            SelectionButton(
+                titleResId = R.string.settings_temp_room_title,
+                subtitleResId = R.string.settings_temp_subtitle,
+                selected = false,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+            SelectionButton(
+                titleResId = R.string.settings_temp_fridge_title,
+                subtitleResId = R.string.settings_temp_subtitle,
+                selected = true,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
 @Composable
 private fun SizeSection() {
-    Text(
-        text = annotatedStringResource(R.string.settings_size_title),
-        style = MaterialTheme.typography.titleLarge,
-    )
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
-    ) {
-        SelectionButton(
-            titleResId = R.string.settings_size_s,
-            selected = false,
-            onClick = { },
-            modifier = Modifier.weight(1f)
+    Column {
+        Text(
+            text = annotatedStringResource(R.string.settings_size_title),
+            style = MaterialTheme.typography.titleLarge,
         )
-        SelectionButton(
-            titleResId = R.string.settings_size_s,
-            selected = true,
-            onClick = { },
-            modifier = Modifier.weight(1f)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spaceS)
+        ) {
+            SelectionButton(
+                titleResId = R.string.settings_size_s,
+                selected = false,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+            SelectionButton(
+                titleResId = R.string.settings_size_s,
+                selected = true,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
 @Composable
 private fun BoiledTypeSection() {
-    Text(
-        text = annotatedStringResource(R.string.settings_type_title),
-        style = MaterialTheme.typography.titleLarge,
-    )
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
-    ) {
-        IconedSelectionButton(
-            iconResId = R.drawable.egg_soft,
-            titleResId = R.string.settings_type_soft_title,
-            subtitleResId = R.string.settings_type_subtitle,
-            selected = false,
-            onClick = { },
-            modifier = Modifier.weight(1f)
+    Column {
+        Text(
+            text = annotatedStringResource(R.string.settings_type_title),
+            style = MaterialTheme.typography.titleLarge,
         )
-        IconedSelectionButton(
-            iconResId = R.drawable.egg_medium,
-            titleResId = R.string.settings_type_medium_title,
-            subtitleResId = R.string.settings_type_subtitle,
-            selected = false,
-            onClick = { },
-            modifier = Modifier.weight(1f)
-        )
-        IconedSelectionButton(
-            iconResId = R.drawable.egg_hard,
-            titleResId = R.string.settings_type_hard_title,
-            subtitleResId = R.string.settings_type_subtitle,
-            selected = true,
-            onClick = { },
-            modifier = Modifier.weight(1f)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spaceXS)
+        ) {
+            IconedSelectionButton(
+                iconResId = R.drawable.egg_soft,
+                titleResId = R.string.settings_type_soft_title,
+                subtitleResId = R.string.settings_type_subtitle,
+                selected = false,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+            IconedSelectionButton(
+                iconResId = R.drawable.egg_medium,
+                titleResId = R.string.settings_type_medium_title,
+                subtitleResId = R.string.settings_type_subtitle,
+                selected = false,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+            IconedSelectionButton(
+                iconResId = R.drawable.egg_hard,
+                titleResId = R.string.settings_type_hard_title,
+                subtitleResId = R.string.settings_type_subtitle,
+                selected = true,
+                onClick = { },
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 

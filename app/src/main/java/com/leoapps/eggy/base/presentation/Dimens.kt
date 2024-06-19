@@ -15,14 +15,16 @@ class Dimensions(
     val screenPaddingXL: Dp = 32.dp,
 
     // Spaces between Elements
-    val spaceS: Dp = 6.dp,
+    val spaceXS: Dp = 6.dp,
+    val spaceS: Dp = 8.dp,
     val spaceM: Dp = 12.dp,
     val spaceL: Dp = 16.dp,
+    val spaceXL: Dp = 18.dp,
 
     // Element Sizes
     val buttonHeight: Dp = 64.dp,
-    val selectableButtonHeight: Dp = 100.dp,
-    val selectableIconedButtonHeight: Dp = 150.dp,
+    val selectableButtonHeight: Dp = 80.dp,
+    val selectableIconedButtonHeight: Dp = 120.dp,
 
     // Corner Radiuses
     val cornerS: Dp = 6.dp,
