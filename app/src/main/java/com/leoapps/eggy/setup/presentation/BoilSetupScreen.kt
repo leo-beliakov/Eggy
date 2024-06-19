@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -27,6 +28,7 @@ import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
 import com.leoapps.eggy.base.presentation.Primary
+import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
 import com.leoapps.eggy.setup.presentation.composables.IconedSelectionButton
@@ -59,10 +61,17 @@ fun BoilSetupScreen(onContinueClicked: () -> Unit) {
 }
 
 @Composable
-private fun HeaderSection() {
-    Row {
+private fun HeaderSection(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+    ) {
         Column(
-            modifier = Modifier.weight(1f, true)
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier
+                .weight(1f, true)
+                .padding(top = 12.dp)
         ) {
             Text(
                 text = annotatedStringResource(R.string.setup_header_title),
@@ -77,7 +86,9 @@ private fun HeaderSection() {
         Image(
             painter = painterResource(R.drawable.setup_egg_half),
             contentDescription = null,
-            modifier = Modifier.graphicsLayer(translationX = 24.dp.toPx())
+            modifier = Modifier
+                .graphicsLayer(translationX = 24.dp.toPx())
+                .fillMaxHeight(0.2f)
         )
     }
 }
@@ -186,7 +197,7 @@ private fun TimerSection() {
         }
         ElevatedButton(
             onClick = { },
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
                 defaultElevation = 4.dp,
                 pressedElevation = 8.dp,

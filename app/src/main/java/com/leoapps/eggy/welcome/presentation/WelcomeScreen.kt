@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -26,6 +25,7 @@ import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.White
+import com.leoapps.eggy.base.presentation.dimens
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -39,7 +39,7 @@ fun WelcomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .safeDrawingPadding()
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = MaterialTheme.dimens.screenPaddingL)
     ) {
         val (title1, title2, title3, image, button) = createRefs()
         val titleChain = createVerticalChain(title1, title2, title3, chainStyle = ChainStyle.Packed)
@@ -82,15 +82,15 @@ fun WelcomeScreen(
         )
         ElevatedButton(
             onClick = onContinueClicked,
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
-                defaultElevation = 4.dp,
-                pressedElevation = 8.dp,
+                defaultElevation = MaterialTheme.dimens.elevationM,
+                pressedElevation = MaterialTheme.dimens.elevationL,
             ),
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 64.dp)
+                .heightIn(min = MaterialTheme.dimens.buttonHeight)
                 .constrainAs(button) {
                     top.linkTo(image.bottom)
                     bottom.linkTo(parent.bottom)

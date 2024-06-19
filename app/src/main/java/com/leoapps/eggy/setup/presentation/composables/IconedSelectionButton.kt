@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +31,7 @@ import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.PrimaryLight
+import com.leoapps.eggy.base.presentation.dimens
 
 @Composable
 fun IconedSelectionButton(
@@ -53,8 +55,9 @@ fun IconedSelectionButton(
                 .border(
                     width = 1.dp,
                     color = selectionColor,
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerS)
                 )
+                .clip(RoundedCornerShape(MaterialTheme.dimens.cornerS))
                 .clickable(
                     onClick = onClick,
                     indication = rememberRipple(color = PrimaryLight),

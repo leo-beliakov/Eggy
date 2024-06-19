@@ -26,6 +26,7 @@ import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.PrimaryLight
+import com.leoapps.eggy.base.presentation.dimens
 
 @Composable
 fun SelectionButton(
@@ -47,9 +48,9 @@ fun SelectionButton(
             .border(
                 width = 1.dp,
                 color = selectionColor,
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerS)
             )
-            .clip(RoundedCornerShape(6.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.cornerS))
             .clickable(
                 onClick = onClick,
                 indication = rememberRipple(color = PrimaryLight),
