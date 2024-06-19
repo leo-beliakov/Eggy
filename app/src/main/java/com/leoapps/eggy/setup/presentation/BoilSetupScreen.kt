@@ -57,8 +57,12 @@ fun BoilSetupScreen(onContinueClicked: () -> Unit) {
         TemperatureSection()
         SizeSection()
         BoiledTypeSection()
-        Spacer(modifier = Modifier.weight(1f, true))
-        TimerSection()
+        Spacer(
+            modifier = Modifier.weight(1f, true)
+        )
+        TimerSection(
+            onContinueClicked = onContinueClicked
+        )
     }
 }
 
@@ -191,7 +195,9 @@ private fun BoiledTypeSection() {
 }
 
 @Composable
-private fun TimerSection() {
+private fun TimerSection(
+    onContinueClicked: () -> Unit
+) {
     Row {
         Column(
             modifier = Modifier.weight(1f, true)
@@ -207,7 +213,7 @@ private fun TimerSection() {
             )
         }
         ElevatedButton(
-            onClick = { },
+            onClick = onContinueClicked,
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
                 defaultElevation = MaterialTheme.dimens.elevationM,

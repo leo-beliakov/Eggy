@@ -24,5 +24,6 @@
     <string name="setup_header_title"><![CDATA[Set <b>boiling details</b>]]></string>
     <string name="setup_header_subtitle">Prepare eggs as you like!</string>
     <string name="common_continue">Continue</string>
+    <string name="progress_button_start">\"Start!\"</string>
 
 </resources>
