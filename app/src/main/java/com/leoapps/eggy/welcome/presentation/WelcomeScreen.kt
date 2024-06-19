@@ -19,14 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
-import com.leoapps.eggy.base.presentation.MonsterratFontFamily
 import com.leoapps.eggy.base.presentation.Primary
+import com.leoapps.eggy.base.presentation.White
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -51,7 +50,7 @@ fun WelcomeScreen(
 
         Text(
             text = stringResource(R.string.welcome_title_1),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             color = Primary,
             modifier = Modifier.constrainAs(title1) {
                 linkTo(start = parent.start, end = parent.end)
@@ -66,7 +65,7 @@ fun WelcomeScreen(
         )
         Text(
             text = stringResource(R.string.welcome_title_3),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(title3) {
                 linkTo(start = parent.start, end = parent.end)
             }
@@ -101,8 +100,8 @@ fun WelcomeScreen(
         ) {
             Text(
                 text = stringResource(R.string.welcome_button_continue),
-                fontSize = 16.sp,
-                fontFamily = MonsterratFontFamily,
+                style = MaterialTheme.typography.titleMedium,
+                color = White,
                 fontWeight = FontWeight.W700,
             )
         }

@@ -66,7 +66,7 @@ private fun HeaderSection() {
         ) {
             Text(
                 text = annotatedStringResource(R.string.setup_header_title),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.headlineSmall
             )
             Text(
                 text = stringResource(R.string.setup_header_subtitle),
@@ -86,7 +86,7 @@ private fun HeaderSection() {
 private fun TemperatureSection() {
     Text(
         text = annotatedStringResource(R.string.settings_temp_title),
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleLarge,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -112,7 +112,7 @@ private fun TemperatureSection() {
 private fun SizeSection() {
     Text(
         text = annotatedStringResource(R.string.settings_size_title),
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleLarge,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -136,7 +136,7 @@ private fun SizeSection() {
 private fun BoiledTypeSection() {
     Text(
         text = annotatedStringResource(R.string.settings_type_title),
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleLarge,
     )
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)

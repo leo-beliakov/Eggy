@@ -53,7 +53,7 @@ val Typography = Typography(
         lineHeight = 40.sp,
         color = Black
     ),
-    headlineSmall = TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = MonsterratFontFamily,
         fontWeight = FontWeight.W900,
         fontSize = 22.sp,
@@ -61,7 +61,7 @@ val Typography = Typography(
         letterSpacing = -0.5.sp,
         color = Black
     ),
-    titleLarge = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = MonsterratFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
@@ -69,12 +69,20 @@ val Typography = Typography(
         letterSpacing = 0.3.sp,
         color = Black
     ),
-    titleMedium = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = MonsterratFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.2.sp,
+        color = Black
+    ),
+    titleMedium = TextStyle(
+        fontFamily = MonsterratFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
+        letterSpacing = 0.1.sp,
         color = Black
     ),
     titleSmall = TextStyle(
