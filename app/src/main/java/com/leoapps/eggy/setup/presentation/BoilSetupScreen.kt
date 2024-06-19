@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
@@ -45,8 +44,8 @@ fun BoilSetupScreen(onContinueClicked: () -> Unit) {
             .fillMaxSize()
             .safeDrawingPadding()
             .padding(
-                vertical = 24.dp,
-                horizontal = 24.dp,
+                vertical = MaterialTheme.dimens.screenPaddingXL,
+                horizontal = MaterialTheme.dimens.screenPaddingL,
             )
     ) {
         HeaderSection()
@@ -68,10 +67,10 @@ private fun HeaderSection(
         modifier = modifier
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
             modifier = Modifier
                 .weight(1f, true)
-                .padding(top = 12.dp)
+                .padding(top = MaterialTheme.dimens.spaceM)
         ) {
             Text(
                 text = annotatedStringResource(R.string.setup_header_title),
@@ -87,7 +86,7 @@ private fun HeaderSection(
             painter = painterResource(R.drawable.setup_egg_half),
             contentDescription = null,
             modifier = Modifier
-                .graphicsLayer(translationX = 24.dp.toPx())
+                .graphicsLayer(translationX = MaterialTheme.dimens.screenPaddingL.toPx())
                 .fillMaxHeight(0.2f)
         )
     }
@@ -100,7 +99,7 @@ private fun TemperatureSection() {
         style = MaterialTheme.typography.titleLarge,
     )
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
     ) {
         SelectionButton(
             titleResId = R.string.settings_temp_room_title,
@@ -126,7 +125,7 @@ private fun SizeSection() {
         style = MaterialTheme.typography.titleLarge,
     )
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
     ) {
         SelectionButton(
             titleResId = R.string.settings_size_s,
@@ -150,7 +149,7 @@ private fun BoiledTypeSection() {
         style = MaterialTheme.typography.titleLarge,
     )
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM)
     ) {
         IconedSelectionButton(
             iconResId = R.drawable.egg_soft,
@@ -199,12 +198,12 @@ private fun TimerSection() {
             onClick = { },
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
-                defaultElevation = 4.dp,
-                pressedElevation = 8.dp,
+                defaultElevation = MaterialTheme.dimens.elevationM,
+                pressedElevation = MaterialTheme.dimens.elevationL,
             ),
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             contentPadding = PaddingValues(),
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.buttonHeight)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_next),

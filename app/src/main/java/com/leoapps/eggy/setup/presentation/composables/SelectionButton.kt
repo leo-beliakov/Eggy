@@ -44,7 +44,7 @@ fun SelectionButton(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .sizeIn(minHeight = 100.dp)
+            .sizeIn(minHeight = MaterialTheme.dimens.selectableButtonHeight)
             .border(
                 width = 1.dp,
                 color = selectionColor,
@@ -56,7 +56,7 @@ fun SelectionButton(
                 indication = rememberRipple(color = PrimaryLight),
                 interactionSource = remember { MutableInteractionSource() },
             )
-            .padding(16.dp)
+            .padding(MaterialTheme.dimens.paddingL)
     ) {
         Text(
             text = stringResource(id = titleResId),

@@ -12,16 +12,17 @@ class Dimensions(
     val screenPaddingS: Dp = 8.dp,
     val screenPaddingM: Dp = 16.dp,
     val screenPaddingL: Dp = 24.dp,
+    val screenPaddingXL: Dp = 32.dp,
 
-    // Element Gaps
-    val elementGapS: Dp = 4.dp,
-    val elementGapM: Dp = 8.dp,
-    val elementGapL: Dp = 16.dp,
+    // Spaces between Elements
+    val spaceS: Dp = 6.dp,
+    val spaceM: Dp = 12.dp,
+    val spaceL: Dp = 16.dp,
 
     // Element Sizes
     val buttonHeight: Dp = 64.dp,
-    val selectableButtonHeight: Dp = 24.dp,
-    val selectableIconedButtonHeight: Dp = 48.dp,
+    val selectableButtonHeight: Dp = 100.dp,
+    val selectableIconedButtonHeight: Dp = 150.dp,
 
     // Corner Radiuses
     val cornerS: Dp = 6.dp,
@@ -39,9 +40,9 @@ class Dimensions(
     val largeIconSize: Dp = 32.dp,
 
     // Paddings
-    val smallComponentPadding: Dp = 8.dp,
-    val mediumComponentPadding: Dp = 12.dp,
-    val largeComponentPadding: Dp = 16.dp
+    val paddingS: Dp = 8.dp,
+    val paddingM: Dp = 12.dp,
+    val paddingL: Dp = 16.dp
 )
 
 internal val LocalDimens = staticCompositionLocalOf { Dimensions() }

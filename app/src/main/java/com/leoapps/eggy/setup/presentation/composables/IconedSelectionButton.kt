@@ -49,9 +49,9 @@ fun IconedSelectionButton(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(top = MaterialTheme.dimens.spaceL)
                 .fillMaxWidth()
-                .sizeIn(minHeight = 150.dp)
+                .sizeIn(minHeight = MaterialTheme.dimens.selectableIconedButtonHeight)
                 .border(
                     width = 1.dp,
                     color = selectionColor,
@@ -63,7 +63,7 @@ fun IconedSelectionButton(
                     indication = rememberRipple(color = PrimaryLight),
                     interactionSource = remember { MutableInteractionSource() },
                 )
-                .padding(16.dp)
+                .padding(MaterialTheme.dimens.paddingL)
         ) {
             Text(
                 text = stringResource(id = titleResId),
