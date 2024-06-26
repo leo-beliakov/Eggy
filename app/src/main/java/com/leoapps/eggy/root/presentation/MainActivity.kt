@@ -14,7 +14,9 @@ import com.leoapps.eggy.welcome.presentation.BoilSetupScreen
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreenDestination
 import com.leoapps.eggy.welcome.presentation.WelcomeScreen
 import com.leoapps.eggy.welcome.presentation.WelcomeScreenDestination
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,12 +20,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
@@ -33,15 +36,42 @@ import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
+import com.leoapps.eggy.setup.presentation.BoilSetupViewModel
 import com.leoapps.eggy.setup.presentation.composables.IconedSelectionButton
 import com.leoapps.eggy.setup.presentation.composables.SelectionButton
+import com.leoapps.eggy.setup.presentation.model.BoilSetupUiState
+import com.leoapps.eggy.setup.presentation.model.EggBoilingTypeUi
+import com.leoapps.eggy.setup.presentation.model.EggSizeUi
+import com.leoapps.eggy.setup.presentation.model.EggTemperatureUi
 import kotlinx.serialization.Serializable
 
 @Serializable
 object BoilSetupScreenDestination
 
 @Composable
-fun BoilSetupScreen(onContinueClicked: () -> Unit) {
+fun BoilSetupScreen(
+    viewModel: BoilSetupViewModel = hiltViewModel(),
+    onContinueClicked: () -> Unit
+) {
+    val state by viewModel.stateUi.collectAsStateWithLifecycle()
+
+    BoilSetupScreen(
+        state = state,
+        onContinueClicked = onContinueClicked,
+        onSizeSelected = viewModel::onSizeSelected,
+        onTypeSelected = viewModel::onTypeSelected,
+        onTemperatureSelected = viewModel::onTemperatureSelected,
+    )
+}
+
+@Composable
+private fun BoilSetupScreen(
+    state: BoilSetupUiState,
+    onContinueClicked: () -> Unit,
+    onSizeSelected: (EggSizeUi) -> Unit,
+    onTypeSelected: (EggBoilingTypeUi) -> Unit,
+    onTemperatureSelected: (EggTemperatureUi) -> Unit,
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceXL),
         modifier = Modifier
@@ -54,13 +84,26 @@ fun BoilSetupScreen(onContinueClicked: () -> Unit) {
             )
     ) {
         HeaderSection()
-        TemperatureSection()
-        SizeSection()
-        BoiledTypeSection()
+        TemperatureSection(
+            temperatures = state.availableTemperatures,
+            selectedTemperature = state.selectedTemperature,
+            onTemperatureSelected = onTemperatureSelected,
+        )
+        SizeSection(
+            sizes = state.availableSizes,
+            selectedSize = state.selectedSize,
+            onSizeSelected = onSizeSelected,
+        )
+        BoiledTypeSection(
+            types = state.availableTypes,
+            selectedType = state.selectedType,
+            onTypeSelected = onTypeSelected,
+        )
         Spacer(
             modifier = Modifier.weight(1f, true)
         )
         TimerSection(
+            calculatedTime = state.calculatedTimeText,
             onContinueClicked = onContinueClicked
         )
     }
@@ -100,7 +143,11 @@ private fun HeaderSection(
 }
 
 @Composable
-private fun TemperatureSection() {
+private fun TemperatureSection(
+    temperatures: List<EggTemperatureUi>,
+    selectedTemperature: EggTemperatureUi?,
+    onTemperatureSelected: (EggTemperatureUi) -> Unit,
+) {
     Column {
         Text(
             text = annotatedStringResource(R.string.settings_temp_title),
@@ -110,26 +157,25 @@ private fun TemperatureSection() {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
             modifier = Modifier.padding(top = MaterialTheme.dimens.spaceS)
         ) {
-            SelectionButton(
-                titleResId = R.string.settings_temp_room_title,
-                subtitleResId = R.string.settings_temp_subtitle,
-                selected = false,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
-            SelectionButton(
-                titleResId = R.string.settings_temp_fridge_title,
-                subtitleResId = R.string.settings_temp_subtitle,
-                selected = true,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
+            temperatures.forEach { temperature ->
+                SelectionButton(
+                    titleResId = temperature.titleResId,
+                    subtitleResId = R.string.settings_temp_subtitle,
+                    selected = temperature == selectedTemperature,
+                    onClick = { onTemperatureSelected(temperature) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun SizeSection() {
+private fun SizeSection(
+    sizes: List<EggSizeUi>,
+    selectedSize: EggSizeUi?,
+    onSizeSelected: (EggSizeUi) -> Unit
+) {
     Column {
         Text(
             text = annotatedStringResource(R.string.settings_size_title),
@@ -139,24 +185,24 @@ private fun SizeSection() {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
             modifier = Modifier.padding(top = MaterialTheme.dimens.spaceS)
         ) {
-            SelectionButton(
-                titleResId = R.string.settings_size_s,
-                selected = false,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
-            SelectionButton(
-                titleResId = R.string.settings_size_s,
-                selected = true,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
+            sizes.forEach { size ->
+                SelectionButton(
+                    titleResId = size.titleResId,
+                    selected = size == selectedSize,
+                    onClick = { onSizeSelected(size) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun BoiledTypeSection() {
+private fun BoiledTypeSection(
+    types: List<EggBoilingTypeUi>,
+    selectedType: EggBoilingTypeUi?,
+    onTypeSelected: (EggBoilingTypeUi) -> Unit
+) {
     Column {
         Text(
             text = annotatedStringResource(R.string.settings_type_title),
@@ -166,36 +212,23 @@ private fun BoiledTypeSection() {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
             modifier = Modifier.padding(top = MaterialTheme.dimens.spaceXS)
         ) {
-            IconedSelectionButton(
-                iconResId = R.drawable.egg_soft,
-                titleResId = R.string.settings_type_soft_title,
-                subtitleResId = R.string.settings_type_subtitle,
-                selected = false,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
-            IconedSelectionButton(
-                iconResId = R.drawable.egg_medium,
-                titleResId = R.string.settings_type_medium_title,
-                subtitleResId = R.string.settings_type_subtitle,
-                selected = false,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
-            IconedSelectionButton(
-                iconResId = R.drawable.egg_hard,
-                titleResId = R.string.settings_type_hard_title,
-                subtitleResId = R.string.settings_type_subtitle,
-                selected = true,
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            )
+            types.forEach { type ->
+                IconedSelectionButton(
+                    iconResId = type.iconResId,
+                    titleResId = type.titleResId,
+                    subtitleResId = R.string.settings_type_subtitle,
+                    selected = type == selectedType,
+                    onClick = { onTypeSelected(type) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun TimerSection(
+    calculatedTime: String,
     onContinueClicked: () -> Unit
 ) {
     Row {
@@ -208,7 +241,7 @@ private fun TimerSection(
                 color = GrayLight,
             )
             Text(
-                text = "04:50",
+                text = calculatedTime,
                 style = MaterialTheme.typography.headlineLarge,
             )
         }
