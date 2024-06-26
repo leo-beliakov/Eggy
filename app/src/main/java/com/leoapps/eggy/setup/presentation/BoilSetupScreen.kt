@@ -37,6 +37,7 @@ import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
 import com.leoapps.eggy.setup.presentation.BoilSetupViewModel
+import com.leoapps.eggy.setup.presentation.composables.CounterComposable
 import com.leoapps.eggy.setup.presentation.composables.IconedSelectionButton
 import com.leoapps.eggy.setup.presentation.composables.SelectionButton
 import com.leoapps.eggy.setup.presentation.model.BoilSetupUiState
@@ -240,9 +241,8 @@ private fun TimerSection(
                 style = MaterialTheme.typography.titleSmall,
                 color = GrayLight,
             )
-            Text(
-                text = calculatedTime,
-                style = MaterialTheme.typography.headlineLarge,
+            CounterComposable(
+                currentTimeText = calculatedTime
             )
         }
         ElevatedButton(
