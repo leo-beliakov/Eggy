@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +26,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.White
 import com.leoapps.eggy.base.presentation.dimens
+import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.serialization.Serializable
 
 
@@ -37,7 +41,21 @@ object BoilProgressScreenDestination
 
 @Composable
 fun BoilProgressScreen(
+    viewModel: BoilProgressViewModel = hiltViewModel(),
     onBackClicked: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    BoilProgressScreen(
+        state = state,
+        onBackClicked = onBackClicked,
+    )
+}
+
+@Composable
+private fun BoilProgressScreen(
+    state: BoilProgressUiState,
+    onBackClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier

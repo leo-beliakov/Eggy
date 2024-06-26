@@ -53,7 +53,7 @@ fun BoilSetupScreen(
     viewModel: BoilSetupViewModel = hiltViewModel(),
     onContinueClicked: () -> Unit
 ) {
-    val state by viewModel.stateUi.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     BoilSetupScreen(
         state = state,

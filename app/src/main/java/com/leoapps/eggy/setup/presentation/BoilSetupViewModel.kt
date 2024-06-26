@@ -21,42 +21,41 @@ class BoilSetupViewModel @Inject constructor(
     private val calculateBoilingTime: CalculateBoilingTimeUseCase,
 ) : ViewModel() {
 
-    private val _stateUi = MutableStateFlow(BoilSetupUiState())
-    val stateUi = _stateUi.asStateFlow()
+    private val _state = MutableStateFlow(BoilSetupUiState())
+    val state = _state.asStateFlow()
 
     init {
-        stateUi
-            .distinctUntilChanged { old, new ->
-                old.selectedTemperature == new.selectedTemperature &&
-                        old.selectedSize == new.selectedSize &&
-                        old.selectedType == new.selectedType
-            }.onEach {
-                _stateUi.update {
-                    val time = calculateBoilingTime(
-                        temperature = it.selectedTemperature?.temperature,
-                        size = it.selectedSize?.size,
-                        type = it.selectedType?.type,
-                    )
+        state.distinctUntilChanged { old, new ->
+            old.selectedTemperature == new.selectedTemperature &&
+                    old.selectedSize == new.selectedSize &&
+                    old.selectedType == new.selectedType
+        }.onEach {
+            _state.update {
+                val time = calculateBoilingTime(
+                    temperature = it.selectedTemperature?.temperature,
+                    size = it.selectedSize?.size,
+                    type = it.selectedType?.type,
+                )
 
-                    it.copy(calculatedTimeText = convertMsToText(time))
-                }
-            }.launchIn(viewModelScope)
+                it.copy(calculatedTimeText = convertMsToText(time))
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onSizeSelected(eggSize: EggSizeUi) {
-        _stateUi.update {
+        _state.update {
             it.copy(selectedSize = eggSize)
         }
     }
 
     fun onTypeSelected(eggBoilingType: EggBoilingTypeUi) {
-        _stateUi.update {
+        _state.update {
             it.copy(selectedType = eggBoilingType)
         }
     }
 
     fun onTemperatureSelected(eggTemperature: EggTemperatureUi) {
-        _stateUi.update {
+        _state.update {
             it.copy(selectedTemperature = eggTemperature)
         }
     }
