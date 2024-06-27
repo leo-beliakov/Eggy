@@ -1,6 +1,7 @@
 package com.leoapps.eggy.welcome.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -38,6 +39,7 @@ fun WelcomeScreen(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .safeDrawingPadding()
             .padding(horizontal = MaterialTheme.dimens.screenPaddingL)
     ) {

@@ -1,6 +1,7 @@
 package com.leoapps.eggy.welcome.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -91,6 +92,7 @@ private fun BoilSetupScreen(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceXL),
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .safeDrawingPadding()
             .verticalScroll(rememberScrollState())
             .padding(

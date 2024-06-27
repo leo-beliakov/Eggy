@@ -88,6 +88,7 @@ private fun BoilProgressScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .safeDrawingPadding()
             .padding(
                 vertical = MaterialTheme.dimens.screenPaddingXL,
