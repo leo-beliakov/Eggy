@@ -9,6 +9,7 @@ data class BoilSetupUiState(
     val selectedType: EggBoilingTypeUi? = null,
     val availableTemperatures: List<EggTemperatureUi> = EggTemperatureUi.entries,
     val selectedTemperature: EggTemperatureUi? = null,
+    val calculatedTime: Long = 0L,
     val calculatedTimeText: String = EMPTY_CALCULATED_TIME,
     val nextButtonEnabled: Boolean = false,
 )

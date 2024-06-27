@@ -34,12 +34,15 @@ import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.base.presentation.GrayLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.dimens
+import com.leoapps.eggy.base.presentation.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.base.presentation.utils.annotatedStringResource
 import com.leoapps.eggy.base.presentation.utils.toPx
+import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
 import com.leoapps.eggy.setup.presentation.BoilSetupViewModel
 import com.leoapps.eggy.setup.presentation.composables.CounterComposable
 import com.leoapps.eggy.setup.presentation.composables.IconedSelectionButton
 import com.leoapps.eggy.setup.presentation.composables.SelectionButton
+import com.leoapps.eggy.setup.presentation.model.BoilSetupUiEvent
 import com.leoapps.eggy.setup.presentation.model.BoilSetupUiState
 import com.leoapps.eggy.setup.presentation.model.EggBoilingTypeUi
 import com.leoapps.eggy.setup.presentation.model.EggSizeUi
@@ -52,23 +55,34 @@ object BoilSetupScreenDestination
 @Composable
 fun BoilSetupScreen(
     viewModel: BoilSetupViewModel = hiltViewModel(),
-    onContinueClicked: () -> Unit
+    onContinueClicked: (BoilProgressScreenDestination) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     BoilSetupScreen(
         state = state,
-        onContinueClicked = onContinueClicked,
+        onNextClicked = viewModel::onNextClicked,
         onSizeSelected = viewModel::onSizeSelected,
         onTypeSelected = viewModel::onTypeSelected,
         onTemperatureSelected = viewModel::onTemperatureSelected,
     )
+
+    CollectEventsWithLifecycle(viewModel.events) { event ->
+        when (event) {
+            is BoilSetupUiEvent.OpenProgressScreen -> onContinueClicked(
+                BoilProgressScreenDestination(
+                    type = event.eggType.name,
+                    calculatedTime = event.calculatedTime
+                )
+            )
+        }
+    }
 }
 
 @Composable
 private fun BoilSetupScreen(
     state: BoilSetupUiState,
-    onContinueClicked: () -> Unit,
+    onNextClicked: () -> Unit,
     onSizeSelected: (EggSizeUi) -> Unit,
     onTypeSelected: (EggBoilingTypeUi) -> Unit,
     onTemperatureSelected: (EggTemperatureUi) -> Unit,
@@ -106,7 +120,7 @@ private fun BoilSetupScreen(
         TimerSection(
             calculatedTime = state.calculatedTimeText,
             nextButtonEnabled = state.nextButtonEnabled,
-            onContinueClicked = onContinueClicked,
+            onNextClicked = onNextClicked,
         )
     }
 }
@@ -232,14 +246,14 @@ private fun BoiledTypeSection(
 private fun TimerSection(
     calculatedTime: String,
     nextButtonEnabled: Boolean,
-    onContinueClicked: () -> Unit
+    onNextClicked: () -> Unit
 ) {
     Row {
         Column(
             modifier = Modifier.weight(1f, true)
         ) {
             Text(
-                text = "Prepare eggs as you like!",
+                text = stringResource(R.string.setup_timer_title),
                 style = MaterialTheme.typography.titleSmall,
                 color = GrayLight,
             )
@@ -248,7 +262,7 @@ private fun TimerSection(
             )
         }
         ElevatedButton(
-            onClick = onContinueClicked,
+            onClick = onNextClicked,
             enabled = nextButtonEnabled,
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
