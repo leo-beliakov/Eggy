@@ -1,14 +1,18 @@
 package com.leoapps.eggy.progress.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -20,7 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
+import com.leoapps.eggy.base.presentation.GrayLight
+import com.leoapps.eggy.base.presentation.GraySuperLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.White
 import com.leoapps.eggy.base.presentation.dimens
@@ -49,6 +55,8 @@ fun BoilProgressScreen(
     BoilProgressScreen(
         state = state,
         onBackClicked = onBackClicked,
+        onStartClicked = viewModel::onStartClicked,
+        onStopClicked = viewModel::onStopClicked,
     )
 }
 
@@ -56,6 +64,8 @@ fun BoilProgressScreen(
 private fun BoilProgressScreen(
     state: BoilProgressUiState,
     onBackClicked: () -> Unit,
+    onStartClicked: () -> Unit,
+    onStopClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -67,12 +77,20 @@ private fun BoilProgressScreen(
             )
     ) {
         Toolbar()
-        TimerSection()
-        ParametersSection()
-        TipsSection()
-        Spacer(modifier = Modifier.weight(1f, true))
-        ButtonStartSection()
+        TimerSection(
 
+        )
+        BoilingParametersSection(
+
+        )
+        TipsSection()
+        Spacer(
+            modifier = Modifier.weight(1f, true)
+        )
+        ButtonStartSection(
+            onStartClicked = onStartClicked,
+            onStopClicked = onStopClicked,
+        )
     }
 }
 
@@ -81,7 +99,6 @@ private fun Toolbar() {
     Box(modifier = Modifier.fillMaxWidth()) {
         IconButton(
             onClick = {
-
             },
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
@@ -97,10 +114,10 @@ private fun Toolbar() {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.Center)
+                .fillMaxWidth()
                 // reserves the size of the icon button
                 // to prevent overlapping:
-                .padding(horizontal = 48.dp)
-                .background(Color.Cyan)
+                .padding(horizontal = MaterialTheme.dimens.minimumInteractiveComponentSize)
         )
     }
 }
@@ -111,17 +128,96 @@ private fun TimerSection() {
 }
 
 @Composable
-private fun ParametersSection() {
+private fun BoilingParametersSection() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        BoilingParameterItem(
+            painter = painterResource(id = R.drawable.ic_timer),
+            title = stringResource(id = R.string.progress_boiled_time),
+            value = "02:00",
+        )
+        BoilingParameterItem(
+            painter = painterResource(id = R.drawable.ic_thermometer),
+            title = stringResource(id = R.string.progress_boiled_temperature),
+            value = "100C",
+        )
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = MaterialTheme.dimens.spaceM)
+                .height(1.dp)
+                .background(GraySuperLight)
+        )
+    }
+}
 
+@Composable
+private fun BoilingParameterItem(
+    painter: Painter,
+    title: String,
+    value: String,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            painter = painter,
+            tint = White,
+            contentDescription = null,
+            modifier = Modifier
+                .size(MaterialTheme.dimens.iconSizeXL)
+                .background(Primary, RoundedCornerShape(MaterialTheme.dimens.cornerS))
+                .padding(MaterialTheme.dimens.paddingS)
+        )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = GrayLight,
+            modifier = Modifier.weight(1f, true)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Black,
+        )
+    }
 }
 
 @Composable
 private fun TipsSection() {
-
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = MaterialTheme.dimens.spaceXL,
+                horizontal = MaterialTheme.dimens.paddingM
+            )
+    ) {
+        Text(
+            text = stringResource(id = R.string.progress_tips_title),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = stringResource(id = R.string.progress_tip_1),
+            style = MaterialTheme.typography.titleSmall,
+            color = GrayLight,
+            textAlign = TextAlign.Center,
+        )
+    }
 }
 
 @Composable
-private fun ButtonStartSection() {
+private fun ButtonStartSection(
+    onStartClicked: () -> Unit,
+    onStopClicked: () -> Unit
+) {
     ElevatedButton(
         onClick = { },
         shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),

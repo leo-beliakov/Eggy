@@ -13,5 +13,12 @@ class BoilProgressViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(BoilProgressUiState())
     val state = _state.asStateFlow()
 
+    fun onStartClicked() {
+
+    }
+
+    fun onStopClicked() {
+
+    }
 
 }

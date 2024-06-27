@@ -37,11 +37,16 @@ class Dimensions(
     val elevationL: Dp = 8.dp,
 
     // Icon Sizes
-    val smallIconSize: Dp = 16.dp,
-    val mediumIconSize: Dp = 24.dp,
-    val largeIconSize: Dp = 32.dp,
+    val iconSizeS: Dp = 16.dp,
+    val iconSizeM: Dp = 24.dp,
+    val iconSizeL: Dp = 32.dp,
+    val iconSizeXL: Dp = 42.dp,
+
+    // Interactive Components Sizes
+    val minimumInteractiveComponentSize: Dp = 48.dp,
 
     // Paddings
+    val paddingXS: Dp = 4.dp,
     val paddingS: Dp = 8.dp,
     val paddingM: Dp = 12.dp,
     val paddingL: Dp = 16.dp
