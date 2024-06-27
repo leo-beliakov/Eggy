@@ -37,7 +37,12 @@ class BoilSetupViewModel @Inject constructor(
                     type = it.selectedType?.type,
                 )
 
-                it.copy(calculatedTimeText = convertMsToText(time))
+                it.copy(
+                    calculatedTimeText = convertMsToText(time),
+                    nextButtonEnabled = it.selectedTemperature != null &&
+                            it.selectedSize != null &&
+                            it.selectedType != null
+                )
             }
         }.launchIn(viewModelScope)
     }

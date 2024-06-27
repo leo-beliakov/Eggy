@@ -105,7 +105,8 @@ private fun BoilSetupScreen(
         )
         TimerSection(
             calculatedTime = state.calculatedTimeText,
-            onContinueClicked = onContinueClicked
+            nextButtonEnabled = state.nextButtonEnabled,
+            onContinueClicked = onContinueClicked,
         )
     }
 }
@@ -230,6 +231,7 @@ private fun BoiledTypeSection(
 @Composable
 private fun TimerSection(
     calculatedTime: String,
+    nextButtonEnabled: Boolean,
     onContinueClicked: () -> Unit
 ) {
     Row {
@@ -247,6 +249,7 @@ private fun TimerSection(
         }
         ElevatedButton(
             onClick = onContinueClicked,
+            enabled = nextButtonEnabled,
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
                 defaultElevation = MaterialTheme.dimens.elevationM,
