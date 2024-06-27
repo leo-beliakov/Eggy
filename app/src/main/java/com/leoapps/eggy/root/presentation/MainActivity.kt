@@ -49,7 +49,9 @@ class MainActivity : ComponentActivity() {
                                         type = EggBoilingType.HARD.toString(),
                                         calculatedTime = 1234L,
                                     )
-                                )
+                                ) {
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }
@@ -72,6 +74,4 @@ class MainActivity : ComponentActivity() {
 // if first launch - open Welcome
 // elif no egg is in progress - open Settings
 // else open Progress
-//3. Settings UI
-//4. Progress UI
 //5. Progress Complete Animation (Confetti library?)
