@@ -2,6 +2,8 @@
     <string name="app_name">Eggy</string>
 
     <string name="common_continue">Continue</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
 
     <string name="welcome_button_continue">Let\'s cook!</string>
     <string name="welcome_title_3">as you like!</string>
@@ -29,9 +31,11 @@
 
     <string name="progress_tips_title">Boiling tips</string>
     <string name="progress_tip_1">After cooking, let the eggs rest in an ice-bath to \"shock\" them</string>
-    <string name="progress_button_start">Start!</string>
+    <string name="progress_button_start">Start</string>
+    <string name="progress_button_stop">Stop</string>
     <string name="progress_boiled_time">Boiled time</string>
     <string name="progress_boiled_temperature">Water temperature</string>
-
+    <string name="progress_cancelation_dialog_title">Cancel Boiling?</string>
+    <string name="progress_cancelation_dialog_subtitle">Are you sure you want to stop boiling the eggs?</string>
 
 </resources>

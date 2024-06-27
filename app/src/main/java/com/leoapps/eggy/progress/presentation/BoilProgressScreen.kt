@@ -38,6 +38,10 @@ import com.leoapps.eggy.base.presentation.GraySuperLight
 import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.White
 import com.leoapps.eggy.base.presentation.dimens
+import com.leoapps.eggy.base.presentation.utils.CollectEventsWithLifecycle
+import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
+import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
+import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.serialization.Serializable
 
@@ -57,18 +61,29 @@ fun BoilProgressScreen(
 
     BoilProgressScreen(
         state = state,
-        onBackClicked = onBackClicked,
-        onStartClicked = viewModel::onStartClicked,
-        onStopClicked = viewModel::onStopClicked,
+        onBackClicked = viewModel::onBackClicked,
+        onButtonClicked = viewModel::onButtonClicked,
     )
+
+    if (state.showCancelationDialog) {
+        CancelationDialog(
+            onConfirm = viewModel::onCancelationDialogConfirmed,
+            onDismiss = viewModel::onCancelationDialogDismissed
+        )
+    }
+
+    CollectEventsWithLifecycle(viewModel.events) { event ->
+        when (event) {
+            is BoilProgressUiEvent.NavigateBack -> onBackClicked()
+        }
+    }
 }
 
 @Composable
 private fun BoilProgressScreen(
     state: BoilProgressUiState,
     onBackClicked: () -> Unit,
-    onStartClicked: () -> Unit,
-    onStopClicked: () -> Unit,
+    onButtonClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,7 +94,9 @@ private fun BoilProgressScreen(
                 horizontal = MaterialTheme.dimens.screenPaddingL
             )
     ) {
-        Toolbar()
+        Toolbar(
+            onBackClicked = onBackClicked,
+        )
         TimerSection(
 
         )
@@ -91,18 +108,19 @@ private fun BoilProgressScreen(
             modifier = Modifier.weight(1f, true)
         )
         ButtonStartSection(
-            onStartClicked = onStartClicked,
-            onStopClicked = onStopClicked,
+            buttonState = state.buttonState,
+            onButtonClicked = onButtonClicked,
         )
     }
 }
 
 @Composable
-private fun Toolbar() {
+private fun Toolbar(
+    onBackClicked: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxWidth()) {
         IconButton(
-            onClick = {
-            },
+            onClick = onBackClicked,
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
             Icon(
@@ -218,11 +236,11 @@ private fun TipsSection() {
 
 @Composable
 private fun ButtonStartSection(
-    onStartClicked: () -> Unit,
-    onStopClicked: () -> Unit
+    buttonState: ActionButtonState,
+    onButtonClicked: () -> Unit,
 ) {
     ElevatedButton(
-        onClick = { },
+        onClick = onButtonClicked,
         shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = MaterialTheme.dimens.elevationM,
@@ -234,7 +252,7 @@ private fun ButtonStartSection(
             .heightIn(min = MaterialTheme.dimens.buttonHeight)
     ) {
         Text(
-            text = stringResource(R.string.progress_button_start),
+            text = stringResource(id = buttonState.textResId),
             style = MaterialTheme.typography.titleMedium,
             color = White,
             fontWeight = FontWeight.W700,
