@@ -46,11 +46,19 @@ val Typography = Typography(
         lineHeight = 36.sp,
         color = Black,
     ),
-    headlineLarge = TextStyle(
+    displaySmall = TextStyle(
         fontFamily = MonsterratFontFamily,
         fontWeight = FontWeight.W900,
         fontSize = 34.sp,
         lineHeight = 40.sp,
+        color = Black
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = MonsterratFontFamily,
+        fontWeight = FontWeight.W900,
+        fontSize = 26.sp,
+        lineHeight = 32.sp,
+        letterSpacing = -0.5.sp,
         color = Black
     ),
     headlineMedium = TextStyle(

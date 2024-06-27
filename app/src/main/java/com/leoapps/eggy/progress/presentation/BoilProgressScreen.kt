@@ -40,6 +40,7 @@ import com.leoapps.eggy.base.presentation.White
 import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.base.presentation.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
+import com.leoapps.eggy.progress.presentation.composables.CircleProgress
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
@@ -86,6 +87,7 @@ private fun BoilProgressScreen(
     onButtonClicked: () -> Unit,
 ) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
@@ -99,7 +101,7 @@ private fun BoilProgressScreen(
             onBackClicked = onBackClicked,
         )
         TimerSection(
-
+            progress = 0.5f
         )
         BoilingParametersSection(
 
@@ -145,15 +147,25 @@ private fun Toolbar(
 }
 
 @Composable
-private fun TimerSection() {
-
+private fun TimerSection(
+    progress: Float
+) {
+    CircleProgress(
+        progress = progress,
+        timerText = "00:12",
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(top = MaterialTheme.dimens.spaceL)
+    )
 }
 
 @Composable
 private fun BoilingParametersSection() {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = MaterialTheme.dimens.spaceL)
     ) {
         BoilingParameterItem(
             painter = painterResource(id = R.drawable.ic_timer),

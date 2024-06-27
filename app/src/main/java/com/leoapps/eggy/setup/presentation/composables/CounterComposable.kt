@@ -40,14 +40,14 @@ fun CounterComposable(
                 ) { digit ->
                     Text(
                         text = digit.toString(),
-                        style = MaterialTheme.typography.headlineLarge,
+                        style = MaterialTheme.typography.displaySmall,
                         softWrap = false,
                     )
                 }
             } else {
                 Text(
                     text = char.toString(),
-                    style = MaterialTheme.typography.headlineLarge,
+                    style = MaterialTheme.typography.displaySmall,
                 )
             }
         }
