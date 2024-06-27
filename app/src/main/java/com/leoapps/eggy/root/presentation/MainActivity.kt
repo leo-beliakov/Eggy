@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.leoapps.eggy.base.presentation.EggyTheme
 import com.leoapps.eggy.progress.presentation.BoilProgressScreen
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
+import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreen
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreenDestination
 import com.leoapps.eggy.welcome.presentation.WelcomeScreen
@@ -43,7 +44,12 @@ class MainActivity : ComponentActivity() {
                     composable<BoilSetupScreenDestination> {
                         BoilSetupScreen(
                             onContinueClicked = {
-                                navController.navigate(BoilProgressScreenDestination)
+                                navController.navigate(
+                                    BoilProgressScreenDestination(
+                                        type = EggBoilingType.HARD.toString(),
+                                        calculatedTime = 1234L,
+                                    )
+                                )
                             }
                         )
                     }

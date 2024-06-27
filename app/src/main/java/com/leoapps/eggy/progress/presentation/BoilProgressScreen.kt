@@ -41,9 +41,12 @@ import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-object BoilProgressScreenDestination
+data class BoilProgressScreenDestination(
+    //todo: pass enum instead (https://medium.com/@edmiro/type-safety-in-navigation-compose-23c03e3d74a5)
+    val type: String,
+    val calculatedTime: Long,
+)
 
 @Composable
 fun BoilProgressScreen(
