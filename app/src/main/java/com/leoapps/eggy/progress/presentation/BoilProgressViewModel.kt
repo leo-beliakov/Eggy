@@ -1,6 +1,5 @@
 package com.leoapps.eggy.progress.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +30,7 @@ class BoilProgressViewModel @Inject constructor(
     val events = _events.asSharedFlow()
 
     init {
-        Log.d("MyTag", "time = ${args.calculatedTime}")
+
     }
 
     fun onButtonClicked() {

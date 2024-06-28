@@ -1,9 +1,17 @@
 package com.leoapps.eggy.progress.presentation.composables
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
@@ -29,9 +37,43 @@ import kotlin.math.sin
 
 private const val SMALL_TO_BIG_RADIUS_RATIO = 0.75f
 
+class ProgressState(initial: Float) {
+
+    var value: Float by mutableFloatStateOf(initial)
+        private set
+
+    suspend fun animateProgressTo(progress: Float) {
+        animate(
+            initialValue = value,
+            targetValue = progress,
+            initialVelocity = 0f,
+            animationSpec = tween(
+                durationMillis = 200,
+                easing = LinearEasing
+            ),
+        ) { animatedValue, velocity ->
+            value = animatedValue
+        }
+    }
+
+    companion object {
+        val Saver: Saver<ProgressState, *> = Saver(
+            save = { it.value },
+            restore = { ProgressState(it) }
+        )
+    }
+}
+
+@Composable
+fun rememberProgressState(initial: Float = 0f): ProgressState {
+    return rememberSaveable(saver = ProgressState.Saver) {
+        ProgressState(initial = initial)
+    }
+}
+
 @Composable
 fun CircleProgress(
-    progress: Float,
+    progressState: ProgressState = rememberProgressState(),
     timerText: String,
     modifier: Modifier = Modifier,
 ) {
@@ -53,7 +95,7 @@ fun CircleProgress(
 
                 val indicatorRadiusBig = strokeWidth * 1.5f
                 val indicatorRadiusSmall = indicatorRadiusBig * 0.75f
-                val angle = 2f * PI * progress
+                val angle = 2f * PI * progressState.value
                 val x = sin(angle) * radius
                 val y = cos(angle) * radius
                 val newCenter = Offset(
@@ -92,13 +134,13 @@ fun CircleProgress(
                         drawArc(
                             brush = Brush.sweepGradient(
                                 0f to PrimaryAlmostWhite,
-                                (progress - 0.2f) to Primary,
+                                (progressState.value - 0.2f) to Primary,
                                 center = size.center
                             ),
                             topLeft = topLeftOffset,
                             size = circleSize,
                             startAngle = 0f,
-                            sweepAngle = 360f * progress,
+                            sweepAngle = 360f * progressState.value,
                             useCenter = false,
                             style = Stroke(
                                 width = strokeWidth

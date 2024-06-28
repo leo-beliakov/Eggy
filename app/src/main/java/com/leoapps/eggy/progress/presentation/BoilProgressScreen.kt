@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -41,9 +42,12 @@ import com.leoapps.eggy.base.presentation.dimens
 import com.leoapps.eggy.base.presentation.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleProgress
+import com.leoapps.eggy.progress.presentation.composables.ProgressState
+import com.leoapps.eggy.progress.presentation.composables.rememberProgressState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -59,9 +63,12 @@ fun BoilProgressScreen(
     onBackClicked: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val progressState = rememberProgressState()
+    val coroutineScope = rememberCoroutineScope()
 
     BoilProgressScreen(
         state = state,
+        progressState = progressState,
         onBackClicked = viewModel::onBackClicked,
         onButtonClicked = viewModel::onButtonClicked,
     )
@@ -76,6 +83,11 @@ fun BoilProgressScreen(
     CollectEventsWithLifecycle(viewModel.events) { event ->
         when (event) {
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
+            is BoilProgressUiEvent.AnimateProgressTo -> {
+                coroutineScope.launch {
+                    progressState.animateProgressTo(event.value)
+                }
+            }
         }
     }
 }
@@ -83,6 +95,7 @@ fun BoilProgressScreen(
 @Composable
 private fun BoilProgressScreen(
     state: BoilProgressUiState,
+    progressState: ProgressState,
     onBackClicked: () -> Unit,
     onButtonClicked: () -> Unit,
 ) {
@@ -101,7 +114,7 @@ private fun BoilProgressScreen(
             onBackClicked = onBackClicked,
         )
         TimerSection(
-            progress = 0.5f
+            progressState = progressState
         )
         BoilingParametersSection(
 
@@ -148,10 +161,10 @@ private fun Toolbar(
 
 @Composable
 private fun TimerSection(
-    progress: Float
+    progressState: ProgressState,
 ) {
     CircleProgress(
-        progress = progress,
+        progressState = progressState,
         timerText = "00:12",
         modifier = Modifier
             .fillMaxWidth(0.8f)
