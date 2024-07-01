@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -43,10 +44,10 @@ import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleTimer
 import com.leoapps.eggy.progress.presentation.composables.TimerState
 import com.leoapps.eggy.progress.presentation.composables.rememberTimerState
+import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
-import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -61,12 +62,9 @@ fun BoilProgressScreen(
     viewModel: BoilProgressViewModel = hiltViewModel(),
     onBackClicked: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val timerState = rememberTimerState()
-
-    val state by viewModel.state.onEach {
-        timerState.setProgress(it.progress)
-        timerState.progressText = it.progressTimeText
-    }.collectAsStateWithLifecycle(BoilProgressUiState())
+    val coroutineScope = rememberCoroutineScope()
 
     BoilProgressScreen(
         state = state,
@@ -85,6 +83,10 @@ fun BoilProgressScreen(
     CollectEventsWithLifecycle(viewModel.events) { event ->
         when (event) {
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
+            is BoilProgressUiEvent.UpdateTimer -> coroutineScope.launch {
+                timerState.progressText = event.progressText
+                timerState.setProgress(event.progress)
+            }
         }
     }
 }
@@ -108,6 +110,7 @@ private fun BoilProgressScreen(
             )
     ) {
         Toolbar(
+            titleResId = state.titleResId,
             onBackClicked = onBackClicked,
         )
         TimerSection(
@@ -129,6 +132,7 @@ private fun BoilProgressScreen(
 
 @Composable
 private fun Toolbar(
+    titleResId: Int,
     onBackClicked: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -142,7 +146,7 @@ private fun Toolbar(
             )
         }
         Text(
-            text = "Boiled eggs",
+            text = stringResource(id = titleResId),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,

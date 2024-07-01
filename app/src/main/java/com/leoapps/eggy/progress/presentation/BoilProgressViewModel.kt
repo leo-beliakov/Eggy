@@ -10,11 +10,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.leoapps.eggy.R
 import com.leoapps.eggy.base.presentation.utils.convertMsToText
+import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.progress.service.BoilProgressService
 import com.leoapps.eggy.progress.service.TimerStatusUpdate
-import com.leoapps.eggy.setup.presentation.model.ActionButtonState
+import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,8 +38,10 @@ class BoilProgressViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val args = savedStateHandle.toRoute<BoilProgressScreenDestination>()
+    private val eggType = EggBoilingType.fromString(args.type) ?: EggBoilingType.MEDIUM
+    private val boilingTime = args.calculatedTime
 
-    private val _state = MutableStateFlow(BoilProgressUiState())
+    private val _state = MutableStateFlow(BoilProgressUiState(titleResId = getTitleForEggType()))
     val state = _state.asStateFlow()
 
     private val _events = MutableSharedFlow<BoilProgressUiEvent>()
@@ -54,22 +58,24 @@ class BoilProgressViewModel @Inject constructor(
                     when (timerState) {
                         TimerStatusUpdate.Canceled,
                         TimerStatusUpdate.Finished -> {
-                            _state.update {
-                                it.copy(
+                            _events.emit(
+                                BoilProgressUiEvent.UpdateTimer(
                                     progress = 0f,
-                                    progressTimeText = convertMsToText(0L),
-                                    buttonState = ActionButtonState.STOP,
+                                    progressText = convertMsToText(0L),
                                 )
+                            )
+                            _state.update {
+                                it.copy(buttonState = ActionButtonState.STOP)
                             }
                         }
 
                         is TimerStatusUpdate.Progress -> {
-                            _state.update {
-                                it.copy(
-                                    progress = timerState.valueMs.toFloat() / args.calculatedTime,
-                                    progressTimeText = convertMsToText(timerState.valueMs),
+                            _events.emit(
+                                BoilProgressUiEvent.UpdateTimer(
+                                    progress = 0f,
+                                    progressText = convertMsToText(0L),
                                 )
-                            }
+                            )
                         }
                     }
                 }?.launchIn(viewModelScope)
@@ -123,12 +129,18 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun onStartClicked() {
-        binder?.startTimer(args.calculatedTime)
+        binder?.startTimer(boilingTime)
         _state.update { it.copy(buttonState = ActionButtonState.STOP) }
     }
 
     private fun onStopClicked() {
         binder?.stopTimer()
         _state.update { it.copy(buttonState = ActionButtonState.START) }
+    }
+
+    private fun getTitleForEggType() = when (eggType) {
+        EggBoilingType.SOFT -> R.string.progress_title_soft_eggs
+        EggBoilingType.MEDIUM -> R.string.progress_title_medium_eggs
+        EggBoilingType.HARD -> R.string.progress_title_hard_eggs
     }
 }

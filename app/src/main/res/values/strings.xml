@@ -37,5 +37,8 @@
     <string name="progress_boiled_temperature">Water temperature</string>
     <string name="progress_cancelation_dialog_title">Cancel Boiling?</string>
     <string name="progress_cancelation_dialog_subtitle">Are you sure you want to stop boiling the eggs?</string>
+    <string name="progress_title_soft_eggs">Soft Boiled Eggs</string>
+    <string name="progress_title_medium_eggs">Medium Boiled Eggs</string>
+    <string name="progress_title_hard_eggs">Hard Boiled Eggs</string>
 
 </resources>
