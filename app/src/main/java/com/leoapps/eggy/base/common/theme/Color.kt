@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.presentation
+package com.leoapps.eggy.base.common.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -25,7 +25,7 @@ val PrimaryLight = Color(0xFFE8A480)
 val PrimaryAlmostWhite = Color(0xFFFFF4EF)
 val AlmostWhite = Color(0xFFF0F0F0)
 
-val confettiYellow = Color(0xFFfce18a)
-val confettiOrange = Color(0xFFff726d)
-val confettiPurple = Color(0xFFb48def)
-val confettiPink = Color(0xFFf4306d)
+val СonfettiYellow = Color(0xFFfce18a)
+val СonfettiOrange = Color(0xFFff726d)
+val СonfettiPurple = Color(0xFFb48def)
+val СonfettiPink = Color(0xFFf4306d)

@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.presentation
+package com.leoapps.eggy.base.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -2,7 +2,7 @@ package com.leoapps.eggy.setup.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoapps.eggy.base.presentation.utils.convertMsToText
+import com.leoapps.eggy.base.common.utils.convertMsToText
 import com.leoapps.eggy.setup.domain.CalculateBoilingTimeUseCase
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilSetupUiEvent

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.leoapps.eggy.base.presentation.EggyTheme
+import com.leoapps.eggy.base.common.theme.EggyTheme
 import com.leoapps.eggy.progress.presentation.BoilProgressScreen
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreen

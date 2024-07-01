@@ -34,12 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.presentation.GrayLight
-import com.leoapps.eggy.base.presentation.GraySuperLight
-import com.leoapps.eggy.base.presentation.Primary
-import com.leoapps.eggy.base.presentation.White
-import com.leoapps.eggy.base.presentation.dimens
-import com.leoapps.eggy.base.presentation.utils.CollectEventsWithLifecycle
+import com.leoapps.eggy.base.common.theme.GrayLight
+import com.leoapps.eggy.base.common.theme.GraySuperLight
+import com.leoapps.eggy.base.common.theme.Primary
+import com.leoapps.eggy.base.common.theme.White
+import com.leoapps.eggy.base.common.theme.dimens
+import com.leoapps.eggy.base.common.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleTimer
 import com.leoapps.eggy.progress.presentation.composables.TimerState
@@ -49,6 +49,9 @@ import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import nl.dionsegijn.konfetti.compose.KonfettiView
+import nl.dionsegijn.konfetti.compose.OnParticleSystemUpdateListener
+import nl.dionsegijn.konfetti.core.PartySystem
 
 @Serializable
 data class BoilProgressScreenDestination(
@@ -66,11 +69,14 @@ fun BoilProgressScreen(
     val timerState = rememberTimerState()
     val coroutineScope = rememberCoroutineScope()
 
+
+
     BoilProgressScreen(
         state = state,
-        progressState = timerState,
+        timerState = timerState,
         onBackClicked = viewModel::onBackClicked,
         onButtonClicked = viewModel::onButtonClicked,
+        onCelebrationFinished = viewModel::onCelebrationFinished,
     )
 
     if (state.showCancelationDialog) {
@@ -94,40 +100,61 @@ fun BoilProgressScreen(
 @Composable
 private fun BoilProgressScreen(
     state: BoilProgressUiState,
-    progressState: TimerState,
+    timerState: TimerState,
     onBackClicked: () -> Unit,
     onButtonClicked: () -> Unit,
+    onCelebrationFinished: () -> Unit,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .safeDrawingPadding()
-            .padding(
-                vertical = MaterialTheme.dimens.screenPaddingXL,
-                horizontal = MaterialTheme.dimens.screenPaddingL
-            )
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Toolbar(
-            titleResId = state.titleResId,
-            onBackClicked = onBackClicked,
-        )
-        TimerSection(
-            progressState = progressState
-        )
-        BoilingParametersSection(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .safeDrawingPadding()
+                .padding(
+                    vertical = MaterialTheme.dimens.screenPaddingXL,
+                    horizontal = MaterialTheme.dimens.screenPaddingL
+                )
+        ) {
+            Toolbar(
+                titleResId = state.titleResId,
+                onBackClicked = onBackClicked,
+            )
+            TimerSection(
+                timerState = timerState
+            )
+            BoilingParametersSection(
 
-        )
-        TipsSection()
-        Spacer(
-            modifier = Modifier.weight(1f, true)
-        )
-        ButtonStartSection(
-            buttonState = state.buttonState,
-            onButtonClicked = onButtonClicked,
-        )
+            )
+            TipsSection()
+            Spacer(
+                modifier = Modifier.weight(1f, true)
+            )
+            ButtonStartSection(
+                buttonState = state.buttonState,
+                onButtonClicked = onButtonClicked,
+            )
+        }
+        state.finishCelebrationConfig?.let { parties ->
+            KonfettiView(
+                modifier = Modifier.fillMaxSize(),
+                parties = parties,
+                updateListener = object : OnParticleSystemUpdateListener {
+                    override fun onParticleSystemEnded(
+                        system: PartySystem,
+                        activeSystems: Int,
+                    ) {
+                        if (activeSystems == 0) onCelebrationFinished()
+                    }
+                }
+            )
+        }
     }
+
+
 }
 
 @Composable
@@ -162,10 +189,10 @@ private fun Toolbar(
 
 @Composable
 private fun TimerSection(
-    progressState: TimerState,
+    timerState: TimerState,
 ) {
     CircleTimer(
-        state = progressState,
+        state = timerState,
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(top = MaterialTheme.dimens.spaceL)

@@ -28,10 +28,10 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.toIntSize
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.presentation.GrayLight
-import com.leoapps.eggy.base.presentation.Primary
-import com.leoapps.eggy.base.presentation.PrimaryAlmostWhite
-import com.leoapps.eggy.base.presentation.White
+import com.leoapps.eggy.base.common.theme.GrayLight
+import com.leoapps.eggy.base.common.theme.Primary
+import com.leoapps.eggy.base.common.theme.PrimaryAlmostWhite
+import com.leoapps.eggy.base.common.theme.White
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -39,6 +39,7 @@ import kotlin.math.sin
 private const val SMALL_TO_BIG_RADIUS_RATIO = 0.75f
 
 class TimerState(initial: Float) {
+
     var progressText: String by mutableStateOf("")
     var progress: Float by mutableFloatStateOf(initial)
         private set

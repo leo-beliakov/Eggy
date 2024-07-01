@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.presentation
+package com.leoapps.eggy.base.common.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

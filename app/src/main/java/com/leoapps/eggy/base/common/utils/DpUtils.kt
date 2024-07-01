@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.presentation.utils
+package com.leoapps.eggy.base.common.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

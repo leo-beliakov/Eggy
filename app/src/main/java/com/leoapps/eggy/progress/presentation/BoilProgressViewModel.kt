@@ -6,18 +6,24 @@ import android.content.Context.BIND_AUTO_CREATE
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.presentation.utils.convertMsToText
+import com.leoapps.eggy.base.common.theme.СonfettiOrange
+import com.leoapps.eggy.base.common.theme.СonfettiPink
+import com.leoapps.eggy.base.common.theme.СonfettiPurple
+import com.leoapps.eggy.base.common.theme.СonfettiYellow
+import com.leoapps.eggy.base.common.utils.convertMsToText
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.progress.service.BoilProgressService
 import com.leoapps.eggy.progress.service.TimerStatusUpdate
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
+import com.leoapps.waterapp.common.vibrator.domain.EggyAppVibrator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -29,11 +35,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.dionsegijn.konfetti.core.Angle
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.Spread
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class BoilProgressViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val vibrator: EggyAppVibrator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -56,7 +69,15 @@ class BoilProgressViewModel @Inject constructor(
             serviceSubscribtionJob = binder?.state
                 ?.onEach { timerState ->
                     when (timerState) {
-                        TimerStatusUpdate.Canceled,
+                        TimerStatusUpdate.Canceled -> {
+                            _events.emit(
+                                BoilProgressUiEvent.UpdateTimer(
+                                    progress = 0f,
+                                    progressText = convertMsToText(0L),
+                                )
+                            )
+                        }
+
                         TimerStatusUpdate.Finished -> {
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
@@ -65,15 +86,21 @@ class BoilProgressViewModel @Inject constructor(
                                 )
                             )
                             _state.update {
-                                it.copy(buttonState = ActionButtonState.STOP)
+                                it.copy(
+                                    buttonState = ActionButtonState.START,
+                                    finishCelebrationConfig = getCelebrationConfig()
+                                )
                             }
+                            vibrator.vibratePattern(
+                                pattern = longArrayOf(0, 200, 100, 300, 400, 500)
+                            )
                         }
 
                         is TimerStatusUpdate.Progress -> {
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
-                                    progress = 0f,
-                                    progressText = convertMsToText(0L),
+                                    progress = timerState.valueMs / boilingTime.toFloat(),
+                                    progressText = convertMsToText(timerState.valueMs),
                                 )
                             )
                         }
@@ -122,6 +149,12 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
+    fun onCelebrationFinished() {
+        _state.update {
+            it.copy(finishCelebrationConfig = null)
+        }
+    }
+
     private fun setCancelationDialogVisible(isVisible: Boolean) {
         _state.update {
             it.copy(showCancelationDialog = isVisible)
@@ -142,5 +175,31 @@ class BoilProgressViewModel @Inject constructor(
         EggBoilingType.SOFT -> R.string.progress_title_soft_eggs
         EggBoilingType.MEDIUM -> R.string.progress_title_medium_eggs
         EggBoilingType.HARD -> R.string.progress_title_hard_eggs
+    }
+
+    private fun getCelebrationConfig(): List<Party> {
+        val party = Party(
+            speed = 10f,
+            maxSpeed = 30f,
+            damping = 0.9f,
+            angle = Angle.RIGHT - 45,
+            spread = Spread.SMALL,
+            colors = listOf(
+                СonfettiYellow.toArgb(),
+                СonfettiOrange.toArgb(),
+                СonfettiPurple.toArgb(),
+                СonfettiPink.toArgb(),
+            ),
+            emitter = Emitter(duration = 3, TimeUnit.SECONDS).perSecond(50),
+            position = Position.Relative(0.0, 0.35)
+        )
+
+        return listOf(
+            party,
+            party.copy(
+                angle = party.angle - 90, // flip angle from right to left
+                position = Position.Relative(1.0, 0.35)
+            ),
+        )
     }
 }
