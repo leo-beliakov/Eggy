@@ -2,14 +2,18 @@ package com.leoapps.eggy.progress.service
 
 import android.app.Service
 import android.content.Intent
+import android.os.Binder
+import android.os.CountDownTimer
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class BoilProgressService : Service() {
 
+    private val binder = MyBinder()
+
     override fun onBind(intent: Intent?): IBinder? {
-        Log.d("MyTag", "onBind")
-        return null
+        return binder
     }
 
     override fun onCreate() {
@@ -42,5 +46,36 @@ class BoilProgressService : Service() {
         super.onRebind(intent)
     }
 
+    //todo find alternative
+    val countDownTimer = object : CountDownTimer(
+        4000L,
+        1000L
+    ) {
+        override fun onTick(millisUntilFinished: Long) {
+            binder.state.value = millisUntilFinished.toInt()
+        }
 
+        override fun onFinish() {
+            binder.state.value = 0
+        }
+    }
+    var timerIsRunning = false
+
+    inner class MyBinder : Binder() {
+
+        val state = MutableStateFlow(0)
+
+        fun startTimer() {
+            countDownTimer.start()
+            timerIsRunning = true
+            Log.d("MyTag", "startTimer $timerIsRunning")
+        }
+
+        fun stopTimer() {
+            countDownTimer.cancel()
+            timerIsRunning = false
+            Log.d("MyTag", "stopTimer $timerIsRunning")
+        }
+    }
 }
+
