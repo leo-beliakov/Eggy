@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -48,7 +47,6 @@ import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -64,7 +62,6 @@ fun BoilProgressScreen(
     onBackClicked: () -> Unit
 ) {
     val timerState = rememberTimerState()
-    val coroutineScope = rememberCoroutineScope()
 
     val state by viewModel.state.onEach {
         timerState.setProgress(it.progress)
@@ -88,11 +85,6 @@ fun BoilProgressScreen(
     CollectEventsWithLifecycle(viewModel.events) { event ->
         when (event) {
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
-            is BoilProgressUiEvent.AnimateProgressTo -> {
-                coroutineScope.launch {
-                    timerState.setProgress(event.value)
-                }
-            }
         }
     }
 }

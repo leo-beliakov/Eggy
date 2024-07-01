@@ -4,7 +4,6 @@ import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.domain.model.EggSize
 import com.leoapps.eggy.setup.domain.model.EggTemperature
 import javax.inject.Inject
-import kotlin.random.Random
 
 class CalculateBoilingTimeUseCase @Inject constructor() {
 
@@ -14,10 +13,11 @@ class CalculateBoilingTimeUseCase @Inject constructor() {
         type: EggBoilingType?,
     ): Long {
         return if (temperature != null && size != null && type != null) {
-            Random.nextLong(
-                from = 60 * 1000L,
-                until = 6 * 60 * 1000L
-            )
+//            Random.nextLong(
+//                from = 60 * 1000L,
+//                until = 6 * 60 * 1000L
+//            )
+            110000
         } else {
             0L
         }

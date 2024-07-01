@@ -8,6 +8,8 @@ import android.os.IBinder
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 
+private const val TIMER_UPDATE_INTERVAL = 100L
+
 class BoilProgressService : Service() {
 
     private val binder = MyBinder()
@@ -46,36 +48,46 @@ class BoilProgressService : Service() {
         super.onRebind(intent)
     }
 
-    //todo find alternative
-    val countDownTimer = object : CountDownTimer(
-        4000L,
-        1000L
-    ) {
-        override fun onTick(millisUntilFinished: Long) {
-            binder.state.value = millisUntilFinished.toInt()
-        }
+    var timer: CountDownTimer? = null
 
-        override fun onFinish() {
-            binder.state.value = 0
+    private fun onStartTimer(calculatedTime: Long) {
+        timer?.cancel()
+        timer = object : CountDownTimer(calculatedTime, TIMER_UPDATE_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                binder.state.value = TimerStatusUpdate.Progress(
+                    calculatedTime - millisUntilFinished
+                )
+            }
+
+            override fun onFinish() {
+                binder.state.value = TimerStatusUpdate.Finished
+            }
         }
+        timer?.start()
     }
-    var timerIsRunning = false
+
+
+    private fun onStopTimer() {
+        timer?.cancel()
+        binder.state.value = TimerStatusUpdate.Canceled
+    }
+
 
     inner class MyBinder : Binder() {
 
-        val state = MutableStateFlow(0)
+        val state = MutableStateFlow<TimerStatusUpdate>(TimerStatusUpdate.Progress(0))
 
-        fun startTimer() {
-            countDownTimer.start()
-            timerIsRunning = true
-            Log.d("MyTag", "startTimer $timerIsRunning")
-        }
+        fun startTimer(calculatedTime: Long) = onStartTimer(calculatedTime)
 
-        fun stopTimer() {
-            countDownTimer.cancel()
-            timerIsRunning = false
-            Log.d("MyTag", "stopTimer $timerIsRunning")
-        }
+        fun stopTimer() = onStopTimer()
     }
+}
+
+sealed interface TimerStatusUpdate {
+    object Finished : TimerStatusUpdate
+    object Canceled : TimerStatusUpdate
+    data class Progress(
+        val valueMs: Long
+    ) : TimerStatusUpdate
 }
 

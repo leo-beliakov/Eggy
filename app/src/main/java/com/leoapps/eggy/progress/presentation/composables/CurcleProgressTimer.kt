@@ -1,8 +1,8 @@
 package com.leoapps.eggy.progress.presentation.composables
 
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material3.MaterialTheme
@@ -33,34 +33,26 @@ import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.PrimaryAlmostWhite
 import com.leoapps.eggy.base.presentation.White
 import kotlin.math.PI
-import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
 private const val SMALL_TO_BIG_RADIUS_RATIO = 0.75f
-private const val PROGRESS_CHANGE_TO_ANIMATE_THR = 0.1f
 
 class TimerState(initial: Float) {
-
     var progressText: String by mutableStateOf("")
     var progress: Float by mutableFloatStateOf(initial)
         private set
 
     suspend fun setProgress(progress: Float) {
-        if (abs(this.progress - progress) >= PROGRESS_CHANGE_TO_ANIMATE_THR) {
-            animate(
-                initialValue = this.progress,
-                targetValue = progress,
-                initialVelocity = 0f,
-                animationSpec = tween(
-                    durationMillis = 200,
-                    easing = LinearEasing
-                ),
-            ) { animatedValue, velocity ->
-                this.progress = animatedValue
-            }
-        } else {
-            this.progress = progress
+        animate(
+            initialValue = this.progress,
+            targetValue = progress,
+            initialVelocity = 0f,
+            animationSpec = spring(
+                stiffness = Spring.StiffnessVeryLow,
+            ),
+        ) { animatedValue, velocity ->
+            this.progress = animatedValue
         }
     }
 

@@ -6,17 +6,19 @@ import android.content.Context.BIND_AUTO_CREATE
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.leoapps.eggy.base.presentation.utils.convertMsToText
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.progress.service.BoilProgressService
+import com.leoapps.eggy.progress.service.TimerStatusUpdate
 import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -42,20 +44,39 @@ class BoilProgressViewModel @Inject constructor(
     val events = _events.asSharedFlow()
 
     private var binder: BoilProgressService.MyBinder? = null
+    private var serviceSubscribtionJob: Job? = null
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             binder = service as? BoilProgressService.MyBinder
-            binder?.state
-                ?.onEach {
-                    Log.d("MyTag", "service binder on Each $it")
-                }
-                ?.launchIn(viewModelScope)
-            Log.d("MyTag", "onServiceConnected = ${service is BoilProgressService.MyBinder}")
+            serviceSubscribtionJob = binder?.state
+                ?.onEach { timerState ->
+                    when (timerState) {
+                        TimerStatusUpdate.Canceled,
+                        TimerStatusUpdate.Finished -> {
+                            _state.update {
+                                it.copy(
+                                    progress = 0f,
+                                    progressTimeText = convertMsToText(0L),
+                                    buttonState = ActionButtonState.STOP,
+                                )
+                            }
+                        }
+
+                        is TimerStatusUpdate.Progress -> {
+                            _state.update {
+                                it.copy(
+                                    progress = timerState.valueMs.toFloat() / args.calculatedTime,
+                                    progressTimeText = convertMsToText(timerState.valueMs),
+                                )
+                            }
+                        }
+                    }
+                }?.launchIn(viewModelScope)
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            Log.d("MyTag", "onServiceDisconnected")
+            serviceSubscribtionJob?.cancel()
         }
     }
 
@@ -90,7 +111,6 @@ class BoilProgressViewModel @Inject constructor(
 
     fun onCancelationDialogConfirmed() {
         setCancelationDialogVisible(false)
-
         viewModelScope.launch {
             _events.emit(BoilProgressUiEvent.NavigateBack)
         }
@@ -103,13 +123,12 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun onStartClicked() {
-        binder?.startTimer()
+        binder?.startTimer(args.calculatedTime)
         _state.update { it.copy(buttonState = ActionButtonState.STOP) }
     }
 
     private fun onStopClicked() {
         binder?.stopTimer()
-//        context.stopService(Intent(context, BoilProgressService::class.java))
         _state.update { it.copy(buttonState = ActionButtonState.START) }
     }
 }
