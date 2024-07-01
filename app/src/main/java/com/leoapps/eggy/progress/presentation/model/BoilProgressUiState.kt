@@ -4,8 +4,8 @@ import androidx.annotation.StringRes
 import com.leoapps.eggy.R
 
 data class BoilProgressUiState(
-    val availableSizes: List<EggSizeUi> = EggSizeUi.entries,
-    val selectedSize: EggSizeUi? = null,
+    val progress: Float = 0f,
+    val progressTimeText: String = "",
     val buttonState: ActionButtonState = ActionButtonState.START,
     val showCancelationDialog: Boolean = false,
 ) {

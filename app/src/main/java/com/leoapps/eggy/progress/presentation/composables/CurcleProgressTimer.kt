@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -32,49 +33,55 @@ import com.leoapps.eggy.base.presentation.Primary
 import com.leoapps.eggy.base.presentation.PrimaryAlmostWhite
 import com.leoapps.eggy.base.presentation.White
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
 private const val SMALL_TO_BIG_RADIUS_RATIO = 0.75f
+private const val PROGRESS_CHANGE_TO_ANIMATE_THR = 0.1f
 
-class ProgressState(initial: Float) {
+class TimerState(initial: Float) {
 
-    var value: Float by mutableFloatStateOf(initial)
+    var progressText: String by mutableStateOf("")
+    var progress: Float by mutableFloatStateOf(initial)
         private set
 
-    suspend fun animateProgressTo(progress: Float) {
-        animate(
-            initialValue = value,
-            targetValue = progress,
-            initialVelocity = 0f,
-            animationSpec = tween(
-                durationMillis = 200,
-                easing = LinearEasing
-            ),
-        ) { animatedValue, velocity ->
-            value = animatedValue
+    suspend fun setProgress(progress: Float) {
+        if (abs(this.progress - progress) >= PROGRESS_CHANGE_TO_ANIMATE_THR) {
+            animate(
+                initialValue = this.progress,
+                targetValue = progress,
+                initialVelocity = 0f,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearEasing
+                ),
+            ) { animatedValue, velocity ->
+                this.progress = animatedValue
+            }
+        } else {
+            this.progress = progress
         }
     }
 
     companion object {
-        val Saver: Saver<ProgressState, *> = Saver(
-            save = { it.value },
-            restore = { ProgressState(it) }
+        val Saver: Saver<TimerState, *> = Saver(
+            save = { it.progress },
+            restore = { TimerState(it) }
         )
     }
 }
 
 @Composable
-fun rememberProgressState(initial: Float = 0f): ProgressState {
-    return rememberSaveable(saver = ProgressState.Saver) {
-        ProgressState(initial = initial)
+fun rememberTimerState(initial: Float = 0f): TimerState {
+    return rememberSaveable(saver = TimerState.Saver) {
+        TimerState(initial = initial)
     }
 }
 
 @Composable
-fun CircleProgress(
-    progressState: ProgressState = rememberProgressState(),
-    timerText: String,
+fun CircleTimer(
+    state: TimerState = rememberTimerState(),
     modifier: Modifier = Modifier,
 ) {
     val bitmapBackground = ImageBitmap.imageResource(id = R.drawable.timer_background)
@@ -95,7 +102,7 @@ fun CircleProgress(
 
                 val indicatorRadiusBig = strokeWidth * 1.5f
                 val indicatorRadiusSmall = indicatorRadiusBig * 0.75f
-                val angle = 2f * PI * progressState.value
+                val angle = 2f * PI * state.progress
                 val x = sin(angle) * radius
                 val y = cos(angle) * radius
                 val newCenter = Offset(
@@ -104,7 +111,7 @@ fun CircleProgress(
                 )
 
                 val textMeasureResult = textMeasurer.measure(
-                    text = timerText,
+                    text = state.progressText,
                     style = textStyle,
                 )
                 val textOffset = topLeftOffset + Offset(
@@ -134,13 +141,13 @@ fun CircleProgress(
                         drawArc(
                             brush = Brush.sweepGradient(
                                 0f to PrimaryAlmostWhite,
-                                (progressState.value - 0.2f) to Primary,
+                                (state.progress - 0.2f) to Primary,
                                 center = size.center
                             ),
                             topLeft = topLeftOffset,
                             size = circleSize,
                             startAngle = 0f,
-                            sweepAngle = 360f * progressState.value,
+                            sweepAngle = 360f * state.progress,
                             useCenter = false,
                             style = Stroke(
                                 width = strokeWidth

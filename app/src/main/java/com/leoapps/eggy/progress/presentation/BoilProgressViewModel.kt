@@ -1,13 +1,17 @@
 package com.leoapps.eggy.progress.presentation
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
+import com.leoapps.eggy.progress.service.BoilProgressService
 import com.leoapps.eggy.setup.presentation.model.ActionButtonState
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoilProgressViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -29,20 +34,11 @@ class BoilProgressViewModel @Inject constructor(
     private val _events = MutableSharedFlow<BoilProgressUiEvent>()
     val events = _events.asSharedFlow()
 
-    init {
-
-    }
-
     fun onButtonClicked() {
-        _state.update {
-            it.copy(
-                buttonState = when (it.buttonState) {
-                    ActionButtonState.START -> ActionButtonState.STOP
-                    ActionButtonState.STOP -> ActionButtonState.START
-                }
-            )
+        when (state.value.buttonState) {
+            ActionButtonState.START -> onStartClicked()
+            ActionButtonState.STOP -> onStopClicked()
         }
-
     }
 
     fun onBackClicked() {
@@ -71,5 +67,15 @@ class BoilProgressViewModel @Inject constructor(
         _state.update {
             it.copy(showCancelationDialog = isVisible)
         }
+    }
+
+    private fun onStartClicked() {
+        context.startService(Intent(context, BoilProgressService::class.java))
+        _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+    }
+
+    private fun onStopClicked() {
+        context.stopService(Intent(context, BoilProgressService::class.java))
+        _state.update { it.copy(buttonState = ActionButtonState.START) }
     }
 }
