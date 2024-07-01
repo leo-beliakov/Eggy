@@ -27,6 +27,7 @@ import com.leoapps.eggy.base.common.theme.GrayLight
 import com.leoapps.eggy.base.common.theme.Primary
 import com.leoapps.eggy.base.common.theme.PrimaryLight
 import com.leoapps.eggy.base.common.theme.dimens
+import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 
 @Composable
 fun SelectionButton(
@@ -36,6 +37,7 @@ fun SelectionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val vibratorManager = LocalVibrationManager.current
     val selectionColor = remember(selected) {
         if (selected) Primary else GrayLight
     }
@@ -52,7 +54,10 @@ fun SelectionButton(
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerS)
             )
             .clickable(
-                onClick = onClick,
+                onClick = {
+                    vibratorManager.vibrateOnClick()
+                    onClick()
+                },
                 indication = rememberRipple(color = PrimaryLight),
                 interactionSource = remember { MutableInteractionSource() },
             )

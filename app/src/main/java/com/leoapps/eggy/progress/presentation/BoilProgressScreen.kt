@@ -40,6 +40,7 @@ import com.leoapps.eggy.base.common.theme.Primary
 import com.leoapps.eggy.base.common.theme.White
 import com.leoapps.eggy.base.common.theme.dimens
 import com.leoapps.eggy.base.common.utils.CollectEventsWithLifecycle
+import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleTimer
 import com.leoapps.eggy.progress.presentation.composables.TimerState
@@ -68,8 +69,6 @@ fun BoilProgressScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val timerState = rememberTimerState()
     val coroutineScope = rememberCoroutineScope()
-
-
 
     BoilProgressScreen(
         state = state,
@@ -292,8 +291,13 @@ private fun ButtonStartSection(
     buttonState: ActionButtonState,
     onButtonClicked: () -> Unit,
 ) {
+    val vibratorManager = LocalVibrationManager.current
+
     ElevatedButton(
-        onClick = onButtonClicked,
+        onClick = {
+            vibratorManager.vibrateOnClick()
+            onButtonClicked()
+        },
         shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = MaterialTheme.dimens.elevationM,

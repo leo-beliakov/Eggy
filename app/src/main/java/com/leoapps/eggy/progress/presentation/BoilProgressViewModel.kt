@@ -23,7 +23,7 @@ import com.leoapps.eggy.progress.service.BoilProgressService
 import com.leoapps.eggy.progress.service.TimerStatusUpdate
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
-import com.leoapps.waterapp.common.vibrator.domain.EggyAppVibrator
+import com.leoapps.waterapp.common.vibrator.domain.VibrationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -46,7 +46,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BoilProgressViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val vibrator: EggyAppVibrator,
+    private val vibrator: VibrationManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

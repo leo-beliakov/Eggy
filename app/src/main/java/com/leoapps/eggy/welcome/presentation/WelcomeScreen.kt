@@ -27,6 +27,7 @@ import com.leoapps.eggy.base.common.theme.EggyTheme
 import com.leoapps.eggy.base.common.theme.Primary
 import com.leoapps.eggy.base.common.theme.White
 import com.leoapps.eggy.base.common.theme.dimens
+import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -36,6 +37,8 @@ object WelcomeScreenDestination
 fun WelcomeScreen(
     onContinueClicked: () -> Unit
 ) {
+    val vibratorManager = LocalVibrationManager.current
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -83,7 +86,10 @@ fun WelcomeScreen(
             }
         )
         ElevatedButton(
-            onClick = onContinueClicked,
+            onClick = {
+                vibratorManager.vibrateOnClick()
+                onContinueClicked()
+            },
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
             elevation = ButtonDefaults.elevatedButtonElevation(
                 defaultElevation = MaterialTheme.dimens.elevationM,

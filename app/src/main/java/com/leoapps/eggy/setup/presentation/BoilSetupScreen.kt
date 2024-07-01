@@ -38,6 +38,7 @@ import com.leoapps.eggy.base.common.theme.dimens
 import com.leoapps.eggy.base.common.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.base.common.utils.annotatedStringResource
 import com.leoapps.eggy.base.common.utils.toPx
+import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
 import com.leoapps.eggy.setup.presentation.BoilSetupViewModel
 import com.leoapps.eggy.setup.presentation.composables.CounterComposable
@@ -250,6 +251,8 @@ private fun TimerSection(
     nextButtonEnabled: Boolean,
     onNextClicked: () -> Unit
 ) {
+    val vibratorManager = LocalVibrationManager.current
+
     Row {
         Column(
             modifier = Modifier.weight(1f, true)
@@ -264,15 +267,18 @@ private fun TimerSection(
             )
         }
         ElevatedButton(
-            onClick = onNextClicked,
             enabled = nextButtonEnabled,
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerM),
+            contentPadding = PaddingValues(),
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            onClick = {
+                vibratorManager.vibrateOnClick()
+                onNextClicked()
+            },
             elevation = ButtonDefaults.elevatedButtonElevation(
                 defaultElevation = MaterialTheme.dimens.elevationM,
                 pressedElevation = MaterialTheme.dimens.elevationL,
             ),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
-            contentPadding = PaddingValues(),
             modifier = Modifier.size(MaterialTheme.dimens.buttonHeight)
         ) {
             Icon(

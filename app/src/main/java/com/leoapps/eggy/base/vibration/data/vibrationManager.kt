@@ -5,14 +5,14 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import com.leoapps.waterapp.common.vibrator.domain.EggyAppVibrator
+import com.leoapps.waterapp.common.vibrator.domain.VibrationManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class VibratorImpl @Inject constructor(
+class vibrationManager @Inject constructor(
     @ApplicationContext val context: Context
-) : EggyAppVibrator {
+) : VibrationManager {
 
     var vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val vibratorManager =

@@ -1,6 +1,6 @@
 package com.leoapps.waterapp.common.vibrator.domain
 
-interface EggyAppVibrator {
+interface VibrationManager {
     fun vibrateOnClick()
     fun vibratePattern(pattern: LongArray)
 }
