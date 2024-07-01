@@ -144,9 +144,8 @@ class BoilProgressViewModel @Inject constructor(
 
     fun onCancelationDialogConfirmed() {
         setCancelationDialogVisible(false)
-        viewModelScope.launch {
-            _events.emit(BoilProgressUiEvent.NavigateBack)
-        }
+        viewModelScope.launch { _events.emit(BoilProgressUiEvent.NavigateBack) }
+        binder?.stopTimer()
     }
 
     fun onCelebrationFinished() {
