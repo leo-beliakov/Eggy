@@ -13,8 +13,8 @@ class CalculateBoilingTimeUseCase @Inject constructor() {
         type: EggBoilingType?,
     ): Long {
         return if (temperature != null && size != null && type != null) {
-//            calculateBoilingTime(temperature, size, type)
-            9000L
+            calculateBoilingTime(temperature, size, type)
+//            9000L
         } else {
             0L
         }

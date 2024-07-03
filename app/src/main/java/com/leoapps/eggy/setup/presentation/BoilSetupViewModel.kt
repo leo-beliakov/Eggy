@@ -2,7 +2,7 @@ package com.leoapps.eggy.setup.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoapps.eggy.base.common.utils.convertMsToText
+import com.leoapps.eggy.base.common.utils.convertMsToTimerText
 import com.leoapps.eggy.setup.domain.CalculateBoilingTimeUseCase
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilSetupUiEvent
@@ -48,7 +48,7 @@ class BoilSetupViewModel @Inject constructor(
 
                 it.copy(
                     calculatedTime = time,
-                    calculatedTimeText = convertMsToText(time),
+                    calculatedTimeText = convertMsToTimerText(time),
                     nextButtonEnabled = it.selectedTemperature != null &&
                             it.selectedSize != null &&
                             it.selectedType != null

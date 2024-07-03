@@ -32,6 +32,7 @@ import com.leoapps.eggy.base.common.theme.GrayLight
 import com.leoapps.eggy.base.common.theme.Primary
 import com.leoapps.eggy.base.common.theme.PrimaryAlmostWhite
 import com.leoapps.eggy.base.common.theme.White
+import com.leoapps.eggy.setup.presentation.model.EMPTY_CALCULATED_TIME
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -40,7 +41,7 @@ private const val SMALL_TO_BIG_RADIUS_RATIO = 0.75f
 
 class TimerState(initial: Float) {
 
-    var progressText: String by mutableStateOf("")
+    var progressText: String by mutableStateOf(EMPTY_CALCULATED_TIME)
     var progress: Float by mutableFloatStateOf(initial)
         private set
 

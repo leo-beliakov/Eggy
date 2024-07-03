@@ -1,5 +1,8 @@
 package com.leoapps.eggy.progress.presentation
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -69,6 +72,10 @@ fun BoilProgressScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val timerState = rememberTimerState()
     val coroutineScope = rememberCoroutineScope()
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = viewModel::onPermissionResult
+    )
 
     BoilProgressScreen(
         state = state,
@@ -88,6 +95,11 @@ fun BoilProgressScreen(
     CollectEventsWithLifecycle(viewModel.events) { event ->
         when (event) {
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
+
+            is BoilProgressUiEvent.RequestPermission -> {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+
             is BoilProgressUiEvent.UpdateTimer -> coroutineScope.launch {
                 timerState.progressText = event.progressText
                 timerState.setProgress(event.progress)

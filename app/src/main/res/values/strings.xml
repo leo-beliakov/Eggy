@@ -4,6 +4,9 @@
     <string name="common_continue">Continue</string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
+    <string name="common_soft_boiled_eggs">Soft Boiled Eggs</string>
+    <string name="common_medium_boiled_eggs">Medium Boiled Eggs</string>
+    <string name="common_hard_boiled_eggs">Hard Boiled Eggs</string>
 
     <string name="welcome_button_continue">Let\'s cook!</string>
     <string name="welcome_title_3">as you like!</string>
@@ -37,8 +40,8 @@
     <string name="progress_boiled_temperature">Water temperature</string>
     <string name="progress_cancelation_dialog_title">Cancel Boiling?</string>
     <string name="progress_cancelation_dialog_subtitle">Are you sure you want to stop boiling the eggs?</string>
-    <string name="progress_title_soft_eggs">Soft Boiled Eggs</string>
-    <string name="progress_title_medium_eggs">Medium Boiled Eggs</string>
-    <string name="progress_title_hard_eggs">Hard Boiled Eggs</string>
+
+    <string name="notification_progress_message">Time left: %1$s</string>
+
 
 </resources>

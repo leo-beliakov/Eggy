@@ -1,8 +1,8 @@
 package com.leoapps.eggy.progress.presentation.model
 
 sealed interface BoilProgressUiEvent {
-
     object NavigateBack : BoilProgressUiEvent
+    object RequestPermission : BoilProgressUiEvent
 
     data class UpdateTimer(
         val progress: Float,

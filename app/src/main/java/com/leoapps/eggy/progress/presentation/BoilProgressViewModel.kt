@@ -16,7 +16,7 @@ import com.leoapps.eggy.base.common.theme.СonfettiOrange
 import com.leoapps.eggy.base.common.theme.СonfettiPink
 import com.leoapps.eggy.base.common.theme.СonfettiPurple
 import com.leoapps.eggy.base.common.theme.СonfettiYellow
-import com.leoapps.eggy.base.common.utils.convertMsToText
+import com.leoapps.eggy.base.common.utils.convertMsToTimerText
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.eggy.progress.service.BoilProgressService
@@ -73,7 +73,7 @@ class BoilProgressViewModel @Inject constructor(
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
                                     progress = 0f,
-                                    progressText = convertMsToText(0L),
+                                    progressText = convertMsToTimerText(0L),
                                 )
                             )
                         }
@@ -82,7 +82,7 @@ class BoilProgressViewModel @Inject constructor(
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
                                     progress = 0f,
-                                    progressText = convertMsToText(0L),
+                                    progressText = convertMsToTimerText(0L),
                                 )
                             )
                             _state.update {
@@ -100,7 +100,7 @@ class BoilProgressViewModel @Inject constructor(
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
                                     progress = timerState.valueMs / boilingTime.toFloat(),
-                                    progressText = convertMsToText(timerState.valueMs),
+                                    progressText = convertMsToTimerText(timerState.valueMs),
                                 )
                             )
                         }
@@ -154,6 +154,13 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
+    fun onPermissionResult(granted: Boolean) {
+        if (granted) {
+            binder?.startTimer(boilingTime, eggType)
+            _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+        }
+    }
+
     private fun setCancelationDialogVisible(isVisible: Boolean) {
         _state.update {
             it.copy(showCancelationDialog = isVisible)
@@ -161,8 +168,9 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun onStartClicked() {
-        binder?.startTimer(boilingTime)
-        _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+        viewModelScope.launch {
+            _events.emit(BoilProgressUiEvent.RequestPermission)
+        }
     }
 
     private fun onStopClicked() {
@@ -171,9 +179,9 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun getTitleForEggType() = when (eggType) {
-        EggBoilingType.SOFT -> R.string.progress_title_soft_eggs
-        EggBoilingType.MEDIUM -> R.string.progress_title_medium_eggs
-        EggBoilingType.HARD -> R.string.progress_title_hard_eggs
+        EggBoilingType.SOFT -> R.string.common_soft_boiled_eggs
+        EggBoilingType.MEDIUM -> R.string.common_medium_boiled_eggs
+        EggBoilingType.HARD -> R.string.common_hard_boiled_eggs
     }
 
     private fun getCelebrationConfig(): List<Party> {
