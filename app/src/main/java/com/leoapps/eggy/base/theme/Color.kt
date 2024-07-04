@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.common.theme
+package com.leoapps.eggy.base.theme
 
 import androidx.compose.ui.graphics.Color
 

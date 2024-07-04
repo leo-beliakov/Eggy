@@ -28,10 +28,10 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.toIntSize
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.theme.GrayLight
-import com.leoapps.eggy.base.common.theme.Primary
-import com.leoapps.eggy.base.common.theme.PrimaryAlmostWhite
-import com.leoapps.eggy.base.common.theme.White
+import com.leoapps.eggy.base.theme.GrayLight
+import com.leoapps.eggy.base.theme.Primary
+import com.leoapps.eggy.base.theme.PrimaryAlmostWhite
+import com.leoapps.eggy.base.theme.White
 import com.leoapps.eggy.setup.presentation.model.EMPTY_CALCULATED_TIME
 import kotlin.math.PI
 import kotlin.math.cos

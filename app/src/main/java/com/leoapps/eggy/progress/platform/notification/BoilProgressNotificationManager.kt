@@ -14,8 +14,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.utils.convertMsToText
 import com.leoapps.eggy.base.notification.platform.NotificationChannelManager
+import com.leoapps.eggy.base.utils.convertMsToText
 import com.leoapps.eggy.progress.platform.service.BoilProgressService
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import dagger.hilt.android.qualifiers.ApplicationContext

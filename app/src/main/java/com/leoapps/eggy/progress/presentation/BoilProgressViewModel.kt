@@ -1,5 +1,6 @@
 package com.leoapps.eggy.progress.presentation
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
@@ -13,11 +14,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.theme.СonfettiOrange
-import com.leoapps.eggy.base.common.theme.СonfettiPink
-import com.leoapps.eggy.base.common.theme.СonfettiPurple
-import com.leoapps.eggy.base.common.theme.СonfettiYellow
-import com.leoapps.eggy.base.common.utils.convertMsToTimerText
+import com.leoapps.eggy.base.permissions.model.PermissionRequestResult
+import com.leoapps.eggy.base.theme.СonfettiOrange
+import com.leoapps.eggy.base.theme.СonfettiPink
+import com.leoapps.eggy.base.theme.СonfettiPurple
+import com.leoapps.eggy.base.theme.СonfettiYellow
+import com.leoapps.eggy.base.utils.convertMsToTimerText
 import com.leoapps.eggy.progress.platform.service.BoilProgressService
 import com.leoapps.eggy.progress.platform.service.TimerStatusUpdate
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
@@ -158,10 +160,19 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
-    fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-            binder?.startTimer(boilingTime, eggType)
-            _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+    fun onPermissionResult(result: PermissionRequestResult) {
+        when (result) {
+            PermissionRequestResult.GRANTED -> {
+                binder?.startTimer(boilingTime, eggType)
+                _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+            }
+
+            PermissionRequestResult.DENIED -> {
+            }
+
+            PermissionRequestResult.DONT_ASK_AGAIN -> {
+
+            }
         }
     }
 
@@ -172,13 +183,14 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun onStartClicked() {
-        //todo check if already granted?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             viewModelScope.launch {
-                _events.emit(BoilProgressUiEvent.RequestPermission)
+                _events.emit(
+                    BoilProgressUiEvent.RequestPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                )
             }
         } else {
-            onPermissionResult(true)
+            onPermissionResult(PermissionRequestResult.GRANTED)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.leoapps.eggy.base.common.utils
+package com.leoapps.eggy.base.utils
 
 private const val MILLIS_IN_SECOND = 1000
 private const val SECONDS_IN_MINUTE = 60

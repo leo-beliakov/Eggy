@@ -1,8 +1,6 @@
 package com.leoapps.eggy.progress.presentation
 
-import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,12 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.theme.GrayLight
-import com.leoapps.eggy.base.common.theme.GraySuperLight
-import com.leoapps.eggy.base.common.theme.Primary
-import com.leoapps.eggy.base.common.theme.White
-import com.leoapps.eggy.base.common.theme.dimens
-import com.leoapps.eggy.base.common.utils.CollectEventsWithLifecycle
+import com.leoapps.eggy.base.permissions.RequestPermissionContract
+import com.leoapps.eggy.base.theme.GrayLight
+import com.leoapps.eggy.base.theme.GraySuperLight
+import com.leoapps.eggy.base.theme.Primary
+import com.leoapps.eggy.base.theme.White
+import com.leoapps.eggy.base.theme.dimens
+import com.leoapps.eggy.base.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleTimer
@@ -50,6 +49,7 @@ import com.leoapps.eggy.progress.presentation.composables.TimerState
 import com.leoapps.eggy.progress.presentation.composables.rememberTimerState
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
+import com.leoapps.eggy.root.presentation.CurrentActivity
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -70,11 +70,12 @@ fun BoilProgressScreen(
     onBackClicked: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     val timerState = rememberTimerState()
     val coroutineScope = rememberCoroutineScope()
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = viewModel::onPermissionResult
+        contract = RequestPermissionContract(CurrentActivity()),
+        onResult = viewModel::onPermissionResult,
     )
 
     BoilProgressScreen(
@@ -97,7 +98,7 @@ fun BoilProgressScreen(
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
 
             is BoilProgressUiEvent.RequestPermission -> {
-                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                permissionLauncher.launch(event.permission)
             }
 
             is BoilProgressUiEvent.UpdateTimer -> coroutineScope.launch {

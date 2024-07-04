@@ -1,5 +1,6 @@
 package com.leoapps.eggy.root.presentation
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,12 +10,14 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.leoapps.eggy.base.common.theme.EggyTheme
+import com.leoapps.eggy.base.theme.EggyTheme
 import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import com.leoapps.eggy.progress.presentation.BoilProgressScreen
 import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
@@ -108,6 +111,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun CurrentActivity(): Activity {
+    return LocalContext.current as Activity
 }
 
 //TODO:

@@ -23,10 +23,10 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.theme.EggyTheme
-import com.leoapps.eggy.base.common.theme.Primary
-import com.leoapps.eggy.base.common.theme.White
-import com.leoapps.eggy.base.common.theme.dimens
+import com.leoapps.eggy.base.theme.EggyTheme
+import com.leoapps.eggy.base.theme.Primary
+import com.leoapps.eggy.base.theme.White
+import com.leoapps.eggy.base.theme.dimens
 import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import kotlinx.serialization.Serializable
 

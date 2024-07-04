@@ -22,11 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.theme.EggyTheme
-import com.leoapps.eggy.base.common.theme.GrayLight
-import com.leoapps.eggy.base.common.theme.Primary
-import com.leoapps.eggy.base.common.theme.PrimaryLight
-import com.leoapps.eggy.base.common.theme.dimens
+import com.leoapps.eggy.base.theme.EggyTheme
+import com.leoapps.eggy.base.theme.GrayLight
+import com.leoapps.eggy.base.theme.Primary
+import com.leoapps.eggy.base.theme.PrimaryLight
+import com.leoapps.eggy.base.theme.dimens
 import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 
 @Composable
