@@ -10,7 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class vibrationManager @Inject constructor(
+class VibrationManagerImpl @Inject constructor(
     @ApplicationContext val context: Context
 ) : VibrationManager {
 
@@ -24,9 +24,12 @@ class vibrationManager @Inject constructor(
     }
 
     override fun vibrateOnClick() {
-        vibrator.vibrate(
+        val effect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK)
-        )
+        } else {
+            VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
+        }
+        vibrator.vibrate(effect)
     }
 
     override fun vibratePattern(pattern: LongArray) {

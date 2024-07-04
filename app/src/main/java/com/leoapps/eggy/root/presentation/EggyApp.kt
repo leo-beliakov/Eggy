@@ -1,7 +1,7 @@
 package com.leoapps.eggy.root.presentation
 
 import android.app.Application
-import com.leoapps.eggy.progress.platform.notification.BoilProgressNotificationManager
+import com.leoapps.eggy.base.notification.platform.NotificationChannelManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -9,10 +9,10 @@ import javax.inject.Inject
 class EggyApp : Application() {
 
     @Inject
-    lateinit var notificationManager: BoilProgressNotificationManager
+    lateinit var notificationChannelManagers: Set<@JvmSuppressWildcards NotificationChannelManager>
 
     override fun onCreate() {
         super.onCreate()
-        notificationManager.createChannels()
+        notificationChannelManagers.forEach { it.createChannels() }
     }
 }

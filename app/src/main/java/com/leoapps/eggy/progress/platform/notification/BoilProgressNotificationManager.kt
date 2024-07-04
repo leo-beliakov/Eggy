@@ -15,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.leoapps.eggy.R
 import com.leoapps.eggy.base.common.utils.convertMsToText
+import com.leoapps.eggy.base.notification.platform.NotificationChannelManager
 import com.leoapps.eggy.progress.platform.service.BoilProgressService
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,10 +23,10 @@ import javax.inject.Inject
 
 class BoilProgressNotificationManager @Inject constructor(
     @ApplicationContext private val context: Context
-) {
+) : NotificationChannelManager {
     private val notificationManagerCompat = NotificationManagerCompat.from(context)
 
-    fun createChannels() {
+    override fun createChannels() {
         val notificationChanel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.notificaton_channel_progress_title),
