@@ -1,36 +1,32 @@
-package com.leoapps.eggy.progress.service
+package com.leoapps.eggy.progress.platform.service
 
-import android.Manifest
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
-import android.graphics.BitmapFactory
 import android.os.Binder
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
-import com.leoapps.eggy.R
-import com.leoapps.eggy.base.common.utils.convertMsToText
+import com.leoapps.eggy.progress.platform.notification.BoilProgressNotificationManager
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TIMER_UPDATE_INTERVAL = 200L
-private const val MAX_PROGRESS = 100
-private const val CHANNEL_ID = "eggy_channel_id"
-private const val PROGRESS_NOTIFICATION_ID = 1
 
+
+@AndroidEntryPoint
 class BoilProgressService : Service() {
+
+    @Inject
+    lateinit var notificationManager: BoilProgressNotificationManager
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val binder = MyBinder()
@@ -44,54 +40,24 @@ class BoilProgressService : Service() {
     override fun onDestroy() {
         coroutineScope.cancel()
         super.onDestroy()
-        Log.d("MyTag", "onDestroy")
-    }
-
-    private fun buildNotification(
-        timeLeft: Long,
-        progress: Int,
-        eggType: EggBoilingType
-    ): Notification {
-        val title = when (eggType) {
-            EggBoilingType.SOFT -> getString(R.string.common_soft_boiled_eggs)
-            EggBoilingType.MEDIUM -> getString(R.string.common_medium_boiled_eggs)
-            EggBoilingType.HARD -> getString(R.string.common_hard_boiled_eggs)
-        }
-        val iconResId = when (eggType) {
-            EggBoilingType.SOFT -> R.drawable.egg_soft
-            EggBoilingType.MEDIUM -> R.drawable.egg_medium
-            EggBoilingType.HARD -> R.drawable.egg_hard
-        }
-        val message = getString(
-            R.string.notification_progress_message,
-            convertMsToText(timeLeft)
-        )
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setCategory(Notification.CATEGORY_PROGRESS)
-            .setProgress(MAX_PROGRESS, progress, false)
-            .setSmallIcon(R.drawable.ic_timer_grey)
-            .setLargeIcon(BitmapFactory.decodeResource(resources, iconResId))
-            .setOngoing(true)
-            .build()
     }
 
     private var ticks = 0
 
+    //todo extract timer logic
     private fun onStartTimer(
         calculatedTime: Long,
         eggType: EggBoilingType
     ) {
         ServiceCompat.startForeground(
             this@BoilProgressService,
-            PROGRESS_NOTIFICATION_ID,
-            buildNotification(
+            BoilProgressNotificationManager.PROGRESS_NOTIFICATION_ID,
+            notificationManager.getProgressNotification(
                 timeLeft = calculatedTime,
-                progress = 0,
+                totalTime = calculatedTime,
                 eggType = eggType
             ),
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
             } else {
                 0
@@ -109,16 +75,12 @@ class BoilProgressService : Service() {
                 }
 
                 if (ticks % 5 == 0) {
-                    if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                        val notification = buildNotification(
-                            timeLeft = millisUntilFinished,
-                            progress = ((timePassed) / calculatedTime.toFloat() * MAX_PROGRESS).toInt(),
-                            eggType = eggType
-                        )
-                        NotificationManagerCompat
-                            .from(this@BoilProgressService)
-                            .notify(PROGRESS_NOTIFICATION_ID, notification)
-                    }
+                    notificationManager.notifyProgress(
+                        timeLeft = millisUntilFinished,
+                        totalTime = calculatedTime,
+                        eggType = eggType
+                    )
+
                     ticks = 0
                 }
 

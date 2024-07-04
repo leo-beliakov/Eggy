@@ -42,6 +42,8 @@
     <string name="progress_cancelation_dialog_subtitle">Are you sure you want to stop boiling the eggs?</string>
 
     <string name="notification_progress_message">Time left: %1$s</string>
+    <string name="notificaton_channel_progress_title">Timer Alerts</string>
+    <string name="notificaton_channel_progress_description">Get timely alerts to perfectly boil your eggs every time.</string>
 
 
 </resources>

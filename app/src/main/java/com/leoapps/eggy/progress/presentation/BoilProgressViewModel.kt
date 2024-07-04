@@ -17,10 +17,10 @@ import com.leoapps.eggy.base.common.theme.СonfettiPink
 import com.leoapps.eggy.base.common.theme.СonfettiPurple
 import com.leoapps.eggy.base.common.theme.СonfettiYellow
 import com.leoapps.eggy.base.common.utils.convertMsToTimerText
+import com.leoapps.eggy.progress.platform.service.BoilProgressService
+import com.leoapps.eggy.progress.platform.service.TimerStatusUpdate
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
 import com.leoapps.eggy.progress.presentation.model.BoilProgressUiEvent
-import com.leoapps.eggy.progress.service.BoilProgressService
-import com.leoapps.eggy.progress.service.TimerStatusUpdate
 import com.leoapps.eggy.setup.domain.model.EggBoilingType
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
 import com.leoapps.waterapp.common.vibrator.domain.VibrationManager

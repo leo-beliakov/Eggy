@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".progress.service.BoilProgressService"
+            android:name=".progress.platform.service.BoilProgressService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property

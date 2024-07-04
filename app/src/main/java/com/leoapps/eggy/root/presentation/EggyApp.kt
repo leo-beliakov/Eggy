@@ -1,27 +1,18 @@
 package com.leoapps.eggy.root.presentation
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import androidx.core.content.getSystemService
+import com.leoapps.eggy.progress.platform.notification.BoilProgressNotificationManager
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class EggyApp : Application() {
 
+    @Inject
+    lateinit var notificationManager: BoilProgressNotificationManager
+
     override fun onCreate() {
         super.onCreate()
-        //todo extract to a different class
-        val notificationChanel = NotificationChannel(
-            "eggy_channel_id",
-            "Timer Alerts",
-            NotificationManager.IMPORTANCE_LOW
-        )
-
-        notificationChanel.description = "Get timely alerts to perfectly boil your eggs every time."
-        notificationChanel.setShowBadge(false)
-
-        val notificationManager = getSystemService<NotificationManager>()
-        notificationManager?.createNotificationChannel(notificationChanel)
+        notificationManager.createChannels()
     }
 }
