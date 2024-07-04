@@ -33,6 +33,13 @@ class BoilProgressService : Service() {
 
     var timer: CountDownTimer? = null
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.extras?.getBoolean(ACTION_CANCEL) == true) {
+            onStopTimer()
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         return binder
     }
@@ -119,6 +126,10 @@ class BoilProgressService : Service() {
         fun stopTimer() {
             onStopTimer()
         }
+    }
+
+    companion object {
+        const val ACTION_CANCEL = "leo_apps_eggy_action_cancel"
     }
 }
 

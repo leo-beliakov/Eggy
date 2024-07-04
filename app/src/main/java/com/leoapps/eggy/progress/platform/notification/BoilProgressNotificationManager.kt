@@ -97,10 +97,10 @@ class BoilProgressNotificationManager @Inject constructor(
 
     private fun getNotificationAction(): NotificationCompat.Action {
         val actionIcon = IconCompat.createWithResource(context, R.drawable.ic_cancel)
-        val actionText = context.getString(R.string.common_no)
+        val actionText = context.getString(R.string.notificaton_progress_action_cancel)
 
         val intent = Intent(context, BoilProgressService::class.java)
-            .putExtra("TimerService.ACTION_CANCEL", true) //todo
+            .putExtra(BoilProgressService.ACTION_CANCEL, true)
 
         val pendingIntent = PendingIntent.getService(
             context,

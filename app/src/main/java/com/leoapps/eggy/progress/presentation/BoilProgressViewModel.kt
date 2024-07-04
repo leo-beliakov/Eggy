@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
@@ -70,6 +71,9 @@ class BoilProgressViewModel @Inject constructor(
                 ?.onEach { timerState ->
                     when (timerState) {
                         TimerStatusUpdate.Canceled -> {
+                            _state.update {
+                                it.copy(buttonState = ActionButtonState.START)
+                            }
                             _events.emit(
                                 BoilProgressUiEvent.UpdateTimer(
                                     progress = 0f,
@@ -168,8 +172,13 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     private fun onStartClicked() {
-        viewModelScope.launch {
-            _events.emit(BoilProgressUiEvent.RequestPermission)
+        //todo check if already granted?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            viewModelScope.launch {
+                _events.emit(BoilProgressUiEvent.RequestPermission)
+            }
+        } else {
+            onPermissionResult(true)
         }
     }
 

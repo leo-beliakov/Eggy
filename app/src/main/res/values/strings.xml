@@ -44,6 +44,7 @@
     <string name="notification_progress_message">Time left: %1$s</string>
     <string name="notificaton_channel_progress_title">Timer Alerts</string>
     <string name="notificaton_channel_progress_description">Get timely alerts to perfectly boil your eggs every time.</string>
+    <string name="notificaton_progress_action_cancel">Cancel</string>
 
 
 </resources>
