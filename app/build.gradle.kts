@@ -55,6 +55,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:base"))
+    implementation(project(":common:base-ui"))
+    implementation(project(":common:shared-res"))
+    implementation(project(":common:vibration"))
+    implementation(project(":features:welcome"))
+    implementation(project(":features:setup"))
+    implementation(project(":features:progress"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

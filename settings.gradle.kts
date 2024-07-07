@@ -21,4 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Eggy"
 include(":app")
- 
+include(":features:welcome")
+include(":features:setup")
+include(":features:progress")
+include(":common:base")
+include(":common:base-ui")
+include(":common:vibration")
+include(":common:shared-res")

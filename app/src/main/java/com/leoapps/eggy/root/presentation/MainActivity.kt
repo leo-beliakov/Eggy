@@ -1,6 +1,5 @@
 package com.leoapps.eggy.root.presentation
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,22 +9,20 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.leoapps.eggy.base.theme.EggyTheme
-import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
-import com.leoapps.eggy.progress.presentation.BoilProgressScreen
-import com.leoapps.eggy.progress.presentation.BoilProgressScreenDestination
+import com.leoapps.base_ui.theme.EggyTheme
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreen
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreenDestination
-import com.leoapps.eggy.welcome.presentation.WelcomeScreen
-import com.leoapps.eggy.welcome.presentation.WelcomeScreenDestination
+import com.leoapps.progress.presentation.BoilProgressScreen
+import com.leoapps.progress.presentation.BoilProgressScreenDestination
+import com.leoapps.vibration.presentation.LocalVibrationManager
 import com.leoapps.waterapp.common.vibrator.domain.VibrationManager
+import com.leoapps.welcome.presentation.WelcomeScreen
+import com.leoapps.welcome.presentation.WelcomeScreenDestination
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -63,7 +60,9 @@ class MainActivity : ComponentActivity() {
                             WelcomeScreen(
                                 onContinueClicked = {
                                     navController.navigate(BoilSetupScreenDestination) {
-                                        popUpTo<WelcomeScreenDestination> { inclusive = true }
+                                        popUpTo<WelcomeScreenDestination> {
+                                            inclusive = true
+                                        }
                                         launchSingleTop = true
                                     }
                                 }
@@ -74,11 +73,11 @@ class MainActivity : ComponentActivity() {
                             exitTransition = { fadeOut(fadeAnimationSpec) }
                         ) {
                             BoilSetupScreen(
-                                onContinueClicked = {
+                                onContinueClicked = { type, time ->
                                     navController.navigate(
                                         BoilProgressScreenDestination(
-                                            type = it.type.toString(),
-                                            calculatedTime = it.calculatedTime,
+                                            type = type.toString(),
+                                            calculatedTime = time,
                                         )
                                     ) {
                                         launchSingleTop = true
@@ -111,9 +110,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun CurrentActivity(): Activity {
-    return LocalContext.current as Activity
 }

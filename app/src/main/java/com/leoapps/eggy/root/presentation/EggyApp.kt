@@ -1,7 +1,7 @@
 package com.leoapps.eggy.root.presentation
 
 import android.app.Application
-import com.leoapps.eggy.base.notification.platform.NotificationChannelManager
+import com.leoapps.base.notification.platform.NotificationChannelManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 

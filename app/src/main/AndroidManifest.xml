@@ -2,14 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:name=".root.presentation.EggyApp"
         android:allowBackup="true"
@@ -32,7 +24,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".progress.platform.service.BoilProgressService"
+            android:name="com.leoapps.progress.platform.service.BoilProgressService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property
