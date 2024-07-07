@@ -29,7 +29,7 @@ import com.leoapps.waterapp.common.vibrator.domain.VibrationManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-private const val NAVIGATION_ANIM_DURATION = 600
+private const val NAVIGATION_ANIM_DURATION = 400
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -117,11 +117,3 @@ class MainActivity : ComponentActivity() {
 fun CurrentActivity(): Activity {
     return LocalContext.current as Activity
 }
-
-//TODO:
-//1. Extract MainActivity composable code to a separate composable function
-//2. When launch decide where to navigate:
-// if first launch - open Welcome
-// elif no egg is in progress - open Settings
-// else open Progress
-//5. Progress Complete Animation (Confetti library?)

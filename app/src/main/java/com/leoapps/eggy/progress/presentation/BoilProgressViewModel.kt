@@ -1,6 +1,6 @@
 package com.leoapps.eggy.progress.presentation
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.permissions.model.PermissionRequestResult
+import com.leoapps.eggy.base.permissions.model.PermissionStatus
 import com.leoapps.eggy.base.theme.СonfettiOrange
 import com.leoapps.eggy.base.theme.СonfettiPink
 import com.leoapps.eggy.base.theme.СonfettiPurple
@@ -66,6 +66,7 @@ class BoilProgressViewModel @Inject constructor(
     private var binder: BoilProgressService.MyBinder? = null
     private var serviceSubscribtionJob: Job? = null
 
+    //todo refactor
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             binder = service as? BoilProgressService.MyBinder
@@ -136,7 +137,7 @@ class BoilProgressViewModel @Inject constructor(
 
     fun onBackClicked() {
         if (state.value.isInProgress) {
-            setCancelationDialogVisible(true)
+            showDoalog(BoilProgressUiState.Dialog.CANCELATION)
         } else {
             viewModelScope.launch {
                 _events.emit(BoilProgressUiEvent.NavigateBack)
@@ -145,11 +146,11 @@ class BoilProgressViewModel @Inject constructor(
     }
 
     fun onCancelationDialogDismissed() {
-        setCancelationDialogVisible(false)
+        showDoalog(null)
     }
 
     fun onCancelationDialogConfirmed() {
-        setCancelationDialogVisible(false)
+        showDoalog(null)
         viewModelScope.launch { _events.emit(BoilProgressUiEvent.NavigateBack) }
         binder?.stopTimer()
     }
@@ -160,37 +161,68 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
-    fun onPermissionResult(result: PermissionRequestResult) {
+    fun onPermissionResult(result: PermissionStatus) {
         when (result) {
-            PermissionRequestResult.GRANTED -> {
+            PermissionStatus.GRANTED -> {
                 binder?.startTimer(boilingTime, eggType)
                 _state.update { it.copy(buttonState = ActionButtonState.STOP) }
             }
 
-            PermissionRequestResult.DENIED -> {
+            PermissionStatus.DENIED -> {
+                showDoalog(BoilProgressUiState.Dialog.RATIONALE)
             }
 
-            PermissionRequestResult.DONT_ASK_AGAIN -> {
-
+            PermissionStatus.DONT_ASK_AGAIN -> {
+                showDoalog(BoilProgressUiState.Dialog.RATIONALE_GO_TO_SETTINGS)
             }
         }
     }
 
-    private fun setCancelationDialogVisible(isVisible: Boolean) {
+    fun onPermissionSettingsResult(result: PermissionStatus) {
+        when (result) {
+            PermissionStatus.GRANTED -> {
+                showDoalog(null)
+                binder?.startTimer(boilingTime, eggType)
+                _state.update { it.copy(buttonState = ActionButtonState.STOP) }
+            }
+
+            PermissionStatus.DENIED,
+            PermissionStatus.DONT_ASK_AGAIN -> {
+                showDoalog(null)
+                // think about this case
+            }
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    fun onRationaleDialogConfirm() {
+        showDoalog(null)
+        viewModelScope.launch {
+            _events.emit(BoilProgressUiEvent.RequestNotificationsPermission)
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    fun onGoToSettingsDialogConfirm() {
+        showDoalog(null)
+        viewModelScope.launch {
+            _events.emit(BoilProgressUiEvent.OpenNotificationsSettings)
+        }
+    }
+
+    private fun showDoalog(dialog: BoilProgressUiState.Dialog?) {
         _state.update {
-            it.copy(showCancelationDialog = isVisible)
+            it.copy(selectedDialog = dialog)
         }
     }
 
     private fun onStartClicked() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             viewModelScope.launch {
-                _events.emit(
-                    BoilProgressUiEvent.RequestPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                )
+                _events.emit(BoilProgressUiEvent.RequestNotificationsPermission)
             }
         } else {
-            onPermissionResult(PermissionRequestResult.GRANTED)
+            onPermissionResult(PermissionStatus.GRANTED)
         }
     }
 

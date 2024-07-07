@@ -6,14 +6,13 @@ import com.leoapps.eggy.R
 import com.leoapps.eggy.base.ui.dialog.Dialog
 
 @Composable
-fun CancelationDialog(
+fun PermissionRationaleDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) = Dialog(
-    title = stringResource(R.string.progress_cancelation_dialog_title),
-    subtitle = stringResource(R.string.progress_cancelation_dialog_subtitle),
-    positiveButtonText = stringResource(R.string.common_yes),
-    dismissButtonText = stringResource(R.string.common_no),
+    title = stringResource(R.string.progress_rationale_dialog_title),
+    subtitle = stringResource(R.string.progress_rationale_dialog_subtitle),
+    positiveButtonText = stringResource(R.string.progress_rationale_dialog_allow),
     onPositiveButtonClicked = onConfirm,
     onDismissButtonClicked = onDismiss,
 )

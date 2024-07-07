@@ -1,6 +1,11 @@
 package com.leoapps.eggy.progress.presentation
 
+import android.Manifest
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.eggy.R
-import com.leoapps.eggy.base.permissions.RequestPermissionContract
+import com.leoapps.eggy.base.permissions.OpenNotificationsSettingsContract
+import com.leoapps.eggy.base.permissions.resolvePermissionStatus
 import com.leoapps.eggy.base.theme.GrayLight
 import com.leoapps.eggy.base.theme.GraySuperLight
 import com.leoapps.eggy.base.theme.Primary
@@ -45,6 +51,8 @@ import com.leoapps.eggy.base.utils.CollectEventsWithLifecycle
 import com.leoapps.eggy.base.vibration.presentation.LocalVibrationManager
 import com.leoapps.eggy.progress.presentation.composables.CancelationDialog
 import com.leoapps.eggy.progress.presentation.composables.CircleTimer
+import com.leoapps.eggy.progress.presentation.composables.PermissionOpenSettingsDialog
+import com.leoapps.eggy.progress.presentation.composables.PermissionRationaleDialog
 import com.leoapps.eggy.progress.presentation.composables.TimerState
 import com.leoapps.eggy.progress.presentation.composables.rememberTimerState
 import com.leoapps.eggy.progress.presentation.model.ActionButtonState
@@ -64,18 +72,39 @@ data class BoilProgressScreenDestination(
     val calculatedTime: Long,
 )
 
+
 @Composable
+
 fun BoilProgressScreen(
     viewModel: BoilProgressViewModel = hiltViewModel(),
     onBackClicked: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val activity = CurrentActivity()
     val timerState = rememberTimerState()
     val coroutineScope = rememberCoroutineScope()
+
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = RequestPermissionContract(CurrentActivity()),
-        onResult = viewModel::onPermissionResult,
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = @RequiresApi(Build.VERSION_CODES.TIRAMISU) { granted ->
+            val result = resolvePermissionStatus(
+                activity = activity,
+                isGranted = granted,
+                permission = Manifest.permission.POST_NOTIFICATIONS
+            )
+            viewModel.onPermissionResult(result)
+        },
+    )
+    val permissionSettingsLauncher = rememberLauncherForActivityResult(
+        contract = OpenNotificationsSettingsContract(),
+        onResult = @RequiresApi(Build.VERSION_CODES.TIRAMISU) {
+            val result = resolvePermissionStatus(
+                activity = activity,
+                permission = Manifest.permission.POST_NOTIFICATIONS
+            )
+            viewModel.onPermissionSettingsResult(result)
+        },
     )
 
     BoilProgressScreen(
@@ -86,10 +115,13 @@ fun BoilProgressScreen(
         onCelebrationFinished = viewModel::onCelebrationFinished,
     )
 
-    if (state.showCancelationDialog) {
-        CancelationDialog(
-            onConfirm = viewModel::onCancelationDialogConfirmed,
-            onDismiss = viewModel::onCancelationDialogDismissed
+    state.selectedDialog?.let { dialog ->
+        ShowDialog(
+            dialog = dialog,
+            onCancelationConfirm = viewModel::onCancelationDialogConfirmed,
+            onRationaleConfirm = viewModel::onRationaleDialogConfirm,
+            onGoToSettingsConfirm = viewModel::onGoToSettingsDialogConfirm,
+            onDismiss = viewModel::onCancelationDialogDismissed,
         )
     }
 
@@ -97,15 +129,45 @@ fun BoilProgressScreen(
         when (event) {
             is BoilProgressUiEvent.NavigateBack -> onBackClicked()
 
-            is BoilProgressUiEvent.RequestPermission -> {
-                permissionLauncher.launch(event.permission)
+            is BoilProgressUiEvent.RequestNotificationsPermission -> {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
 
             is BoilProgressUiEvent.UpdateTimer -> coroutineScope.launch {
                 timerState.progressText = event.progressText
                 timerState.setProgress(event.progress)
             }
+
+            is BoilProgressUiEvent.OpenNotificationsSettings -> {
+                permissionSettingsLauncher.launch()
+            }
         }
+    }
+}
+
+@Composable
+fun ShowDialog(
+    dialog: BoilProgressUiState.Dialog,
+    onCancelationConfirm: () -> Unit,
+    onRationaleConfirm: () -> Unit,
+    onGoToSettingsConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    when (dialog) {
+        BoilProgressUiState.Dialog.CANCELATION -> CancelationDialog(
+            onConfirm = onCancelationConfirm,
+            onDismiss = onDismiss,
+        )
+
+        BoilProgressUiState.Dialog.RATIONALE -> PermissionRationaleDialog(
+            onConfirm = onRationaleConfirm,
+            onDismiss = onDismiss,
+        )
+
+        BoilProgressUiState.Dialog.RATIONALE_GO_TO_SETTINGS -> PermissionOpenSettingsDialog(
+            onConfirm = onGoToSettingsConfirm,
+            onDismiss = onDismiss,
+        )
     }
 }
 

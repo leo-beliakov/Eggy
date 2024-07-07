@@ -40,6 +40,10 @@
     <string name="progress_boiled_temperature">Water temperature</string>
     <string name="progress_cancelation_dialog_title">Cancel Boiling?</string>
     <string name="progress_cancelation_dialog_subtitle">Are you sure you want to stop boiling the eggs?</string>
+    <string name="progress_rationale_dialog_title">Allow Notifications for Perfectly Boiled Eggs</string>
+    <string name="progress_rationale_dialog_subtitle">To ensure perfectly boiled eggs, we need to send you notifications when your eggs are ready. Please enable notifications for the best results.</string>
+    <string name="progress_rationale_dialog_allow">Allow</string>
+    <string name="progress_rationale_dialog_go_to_settings">Open Settings</string>
 
     <string name="notification_progress_message">Time left: %1$s</string>
     <string name="notificaton_channel_progress_title">Timer Alerts</string>
