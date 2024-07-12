@@ -3,6 +3,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -33,6 +34,15 @@ class AndroidLibraryPlugin : Plugin<Project> {
                     jvmTarget = JavaVersion.VERSION_11.toString()
                     freeCompilerArgs = freeCompilerArgs + listOf("-Xopt-in=kotlin.RequiresOptIn")
                 }
+            }
+
+            dependencies {
+                add("testImplementation", libraries.findLibrary("junit").get())
+                add("androidTestImplementation", libraries.findLibrary("androidx.junit").get())
+                add(
+                    "androidTestImplementation",
+                    libraries.findLibrary("androidx.espresso.core").get()
+                )
             }
         }
     }

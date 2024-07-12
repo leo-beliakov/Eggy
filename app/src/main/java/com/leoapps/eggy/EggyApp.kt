@@ -1,4 +1,4 @@
-package com.leoapps.eggy.root.presentation
+package com.leoapps.eggy
 
 import android.app.Application
 import com.leoapps.base.notification.platform.NotificationChannelManager

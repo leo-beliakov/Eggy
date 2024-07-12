@@ -1,20 +1,11 @@
 plugins {
     alias(libs.plugins.eggy.android.application)
     alias(libs.plugins.eggy.compose.application)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
-    kotlin("kapt")
-    alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.eggy.hilt)
 }
 
 android {
     namespace = "com.leoapps.eggy"
-
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
 
     buildTypes {
         debug {
@@ -39,38 +30,4 @@ dependencies {
     implementation(project(":features:welcome"))
     implementation(project(":features:setup"))
     implementation(project(":features:progress"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    //Serialization
-    implementation(libs.jetbrains.kotlin.serialization)
-
-    //Compose
-//    implementation(platform(libs.androidx.compose.bom))
-//    implementation(libs.androidx.ui)
-//    implementation(libs.androidx.ui.graphics)
-//    implementation(libs.androidx.ui.tooling.preview)
-//    implementation(libs.androidx.material3)
-    implementation(libs.androidx.compose.constraintlayout)
-    implementation(libs.konfetti.compose)
-
-    //Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    //Hilt DI
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.compose)
-    kapt(libs.hilt.compiler)
-
-    //Tests
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

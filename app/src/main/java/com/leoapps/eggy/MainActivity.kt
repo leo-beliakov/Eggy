@@ -1,4 +1,4 @@
-package com.leoapps.eggy.root.presentation
+package com.leoapps.eggy
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,6 +25,7 @@ import com.leoapps.welcome.presentation.WelcomeScreen
 import com.leoapps.welcome.presentation.WelcomeScreenDestination
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 private const val NAVIGATION_ANIM_DURATION = 400
 
