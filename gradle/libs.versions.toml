@@ -43,11 +43,17 @@ konfetti-compose = { group = "nl.dionsegijn", name = "konfetti-compose", version
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+#build-logic deps:
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 
+#plugins added by the app:
+eggy-android-application = { id = "leo.apps.android.application", version = "unspecified" }
