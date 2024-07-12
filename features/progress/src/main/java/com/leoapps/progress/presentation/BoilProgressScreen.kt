@@ -72,9 +72,7 @@ data class BoilProgressScreenDestination(
     val calculatedTime: Long,
 )
 
-
 @Composable
-
 fun BoilProgressScreen(
     viewModel: BoilProgressViewModel = hiltViewModel(),
     onBackClicked: () -> Unit
