@@ -17,6 +17,7 @@ tasks.withType<KotlinCompile>().configureEach {
 dependencies {
     implementation(libs.android.gradle)
     implementation(libs.kotlin.gradle)
+    implementation(libs.compose.gradle)
 }
 
 gradlePlugin {
@@ -24,6 +25,18 @@ gradlePlugin {
         register("androidApplication") {
             id = "leo.apps.android.application"
             implementationClass = "AndroidApplicationPlugin"
+        }
+        register("androidLibrary") {
+            id = "leo.apps.android.library"
+            implementationClass = "AndroidLibraryPlugin"
+        }
+        register("composeApplication") {
+            id = "leo.apps.compose.application"
+            implementationClass = "AndroidComposePlugin"
+        }
+        register("composeLibrary") {
+            id = "leo.apps.compose.library"
+            implementationClass = "AndroidLibraryComposePlugin"
         }
     }
 }

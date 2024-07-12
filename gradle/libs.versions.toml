@@ -46,6 +46,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 #build-logic deps:
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-gradle = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -57,3 +58,6 @@ daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 #plugins added by the app:
 eggy-android-application = { id = "leo.apps.android.application", version = "unspecified" }
+eggy-android-library = { id = "leo.apps.android.library", version = "unspecified" }
+eggy-compose-application = { id = "leo.apps.compose.application", version = "unspecified" }
+eggy-compose-library = { id = "leo.apps.compose.library", version = "unspecified" }
