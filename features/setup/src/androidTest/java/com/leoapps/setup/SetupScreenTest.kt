@@ -24,6 +24,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -37,127 +38,10 @@ class SetupScreenTest {
     val composeRule = createAndroidComposeRule<HiltTestActivity>()
 
     val vibrationManager: VibrationManager = mockk(relaxed = true)
+    val onContinueClicked: (EggBoilingType, Long) -> Unit = mockk(relaxed = true)
 
-    @Test
-    fun whenParametersAreNotSelected_continueButtonIsDisabled() {
-        // Arrange
-        composeRule.setContent {
-            EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    BoilSetupScreen(onContinueClicked = { _, _ -> })
-                }
-            }
-        }
-
-        // Assert
-        composeRule.onNode(
-            hasContentDescription(composeRule.getString(R.string.common_continue))
-        ).assertIsNotEnabled()
-    }
-
-    @Test
-    fun whenParametersAreSelected_thButtonIsEnabled() {
-        // Arrange
-        composeRule.setContent {
-            EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    BoilSetupScreen(onContinueClicked = { _, _ -> })
-                }
-            }
-        }
-
-        //Act
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId)).performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
-            .performClick()
-
-        // Assert
-        composeRule.onNode(
-            hasContentDescription(composeRule.getString(R.string.common_continue))
-        ).assertIsEnabled()
-    }
-
-    @Test
-    fun canSelectOnlySingeTemperature() {
-        // Arrange
-        composeRule.setContent {
-            EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    BoilSetupScreen(onContinueClicked = { _, _ -> })
-                }
-            }
-        }
-
-        //Act
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.FRIDGE.titleResId))
-            .performClick()
-
-        // Assert
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
-            .assertIsOff()
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.FRIDGE.titleResId))
-            .assertIsOn()
-    }
-
-    @Test
-    fun canSelectOnlySingeSize() {
-        // Arrange
-        composeRule.setContent {
-            EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    BoilSetupScreen(onContinueClicked = { _, _ -> })
-                }
-            }
-        }
-
-        //Act
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId)).performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.MEDIUM.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.LARGE.titleResId)).performClick()
-
-        // Assert
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId)).assertIsOff()
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.MEDIUM.titleResId)).assertIsOff()
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.LARGE.titleResId)).assertIsOn()
-    }
-
-    @Test
-    fun canSelectOnlySingeType() {
-        // Arrange
-        composeRule.setContent {
-            EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    BoilSetupScreen(onContinueClicked = { _, _ -> })
-                }
-            }
-        }
-
-        //Act
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.MEDIUM.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.HARD.titleResId))
-            .performClick()
-
-        // Assert
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
-            .assertIsOff()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.MEDIUM.titleResId))
-            .assertIsOff()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.HARD.titleResId))
-            .assertIsOn()
-    }
-
-    @Test
-    fun whenContinueClicked_shouldNavigateForward() {
-        // Arrange
-        val onContinueClicked: (EggBoilingType, Long) -> Unit = mockk(relaxed = true)
+    @Before
+    fun setup() {
         composeRule.setContent {
             EggyTheme {
                 CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
@@ -165,15 +49,116 @@ class SetupScreenTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun whenParametersAreNotSelected_continueButtonIsDisabled() {
+        // Arrange
+        val continueButton = composeRule.onNode(
+            hasContentDescription(composeRule.getString(R.string.common_continue))
+        )
+
+        // Assert
+        continueButton.assertIsNotEnabled()
+    }
+
+    @Test
+    fun whenParametersAreSelected_thButtonIsEnabled() {
+        // Arrange
+        val sizeButton =
+            composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId))
+        val typeButton =
+            composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
+        val temperatureButton =
+            composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
+        val continueButton =
+            composeRule.onNode(hasContentDescription(composeRule.getString(R.string.common_continue)))
+
+        //Act
+        sizeButton.performClick()
+        typeButton.performClick()
+        temperatureButton.performClick()
+
+        // Assert
+        continueButton.assertIsEnabled()
+    }
+
+    @Test
+    fun canSelectOnlySingleTemperature() {
+        // Arrange
+        val roomButton =
+            composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
+        val fridgeButton =
+            composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.FRIDGE.titleResId))
+
+        //Act
+        roomButton.performClick()
+        fridgeButton.performClick()
+
+        // Assert
+        roomButton.assertIsOff()
+        fridgeButton.assertIsOn()
+    }
+
+    @Test
+    fun canSelectOnlySingleSize() {
+        // Arrange
+        val smallButton =
+            composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId))
+        val mediumButton =
+            composeRule.onNodeWithText(composeRule.getString(EggSizeUi.MEDIUM.titleResId))
+        val largeButton =
+            composeRule.onNodeWithText(composeRule.getString(EggSizeUi.LARGE.titleResId))
 
         // Act
-        composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId)).performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
-            .performClick()
-        composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
-            .performClick()
-        composeRule.onNode(hasContentDescription(composeRule.getString(R.string.common_continue)))
-            .performClick()
+        smallButton.performClick()
+        mediumButton.performClick()
+        largeButton.performClick()
+
+        // Assert
+        smallButton.assertIsOff()
+        mediumButton.assertIsOff()
+        largeButton.assertIsOn()
+    }
+
+    @Test
+    fun canSelectOnlySingleType() {
+        // Arrange
+        val softButton =
+            composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
+        val mediumButton =
+            composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.MEDIUM.titleResId))
+        val hardButton =
+            composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.HARD.titleResId))
+
+        // Act
+        softButton.performClick()
+        mediumButton.performClick()
+        hardButton.performClick()
+
+        // Assert
+        softButton.assertIsOff()
+        mediumButton.assertIsOff()
+        hardButton.assertIsOn()
+    }
+
+    @Test
+    fun whenContinueClicked_shouldNavigateForward() {
+        // Arrange
+        val smallButton =
+            composeRule.onNodeWithText(composeRule.getString(EggSizeUi.SMALL.titleResId))
+        val softButton =
+            composeRule.onNodeWithText(composeRule.getString(EggBoilingTypeUi.SOFT.titleResId))
+        val roomButton =
+            composeRule.onNodeWithText(composeRule.getString(EggTemperatureUi.ROOM.titleResId))
+        val continueButton =
+            composeRule.onNode(hasContentDescription(composeRule.getString(R.string.common_continue)))
+
+        // Act
+        smallButton.performClick()
+        softButton.performClick()
+        roomButton.performClick()
+        continueButton.performClick()
 
         // Assert
         verify { onContinueClicked.invoke(any(), any()) }
