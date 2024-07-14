@@ -24,10 +24,14 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
-
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_17
                     targetCompatibility = JavaVersion.VERSION_17
+                }
+                packaging {
+                    resources {
+                        excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
+                    }
                 }
             }
             tasks.withType<KotlinCompile>().configureEach {
@@ -38,7 +42,10 @@ class AndroidLibraryPlugin : Plugin<Project> {
             }
 
             dependencies {
+                // Tests
                 add("testImplementation", libraries.findLibrary("junit").get())
+                add("testImplementation", libraries.findLibrary("mockk-android").get())
+                add("androidTestImplementation", libraries.findLibrary("mockk-android").get())
                 add("androidTestImplementation", libraries.findLibrary("androidx.junit").get())
                 add(
                     "androidTestImplementation",

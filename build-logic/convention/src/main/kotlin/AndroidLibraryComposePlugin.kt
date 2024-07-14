@@ -24,6 +24,9 @@ class AndroidLibraryComposePlugin : Plugin<Project> {
                         "implementation",
                         libraries.findLibrary("androidx-ui-tooling-preview").get()
                     )
+
+                    // Tests
+                    add("androidTestImplementation", platform(bom))
                 }
             }
         }

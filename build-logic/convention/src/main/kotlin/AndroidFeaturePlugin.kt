@@ -23,13 +23,17 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 add("implementation", libraries.findLibrary("jetbrains.kotlin.serialization").get())
                 add("implementation", libraries.findLibrary("androidx.navigation.compose").get())
 
-
-
-//                add("implementation", libraries.findLibrary("androidx.hilt.navigation.compose").get())
-//                add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
-//                add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
-//                add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
-//                add("androidTestImplementation", libs.findLibrary("androidx.lifecycle.runtimeTesting").get())
+                // Tests
+                add(
+                    "androidTestImplementation",
+                    libraries.findLibrary("androidx.ui.test.junit4").get()
+                )
+                add(
+                    "androidTestImplementation",
+                    libraries.findLibrary("androidx.navigation.test").get()
+                )
+                add("debugImplementation", libraries.findLibrary("androidx.ui.tooling").get())
+                add("debugImplementation", libraries.findLibrary("androidx.ui.test.manifest").get())
             }
         }
     }

@@ -1,9 +1,8 @@
-package com.leoapps.eggy.setup.domain
+package com.leoapps.setup.domain
 
 import com.leoapps.base.egg.domain.model.EggBoilingType
 import com.leoapps.base.egg.domain.model.EggSize
 import com.leoapps.base.egg.domain.model.EggTemperature
-import com.leoapps.setup.domain.CalculateBoilingTimeUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
