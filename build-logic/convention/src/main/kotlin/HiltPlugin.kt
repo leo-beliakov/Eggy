@@ -24,6 +24,10 @@ class HiltPlugin : Plugin<Project> {
                 dependencies {
                     add("implementation", library("hilt.compose").get())
                     add("implementation", library("hilt.android").get())
+
+                    // Tests
+                    add("androidTestImplementation", library("hilt.android.test").get())
+                    add("kspAndroidTest", library("hilt.compiler.test").get())
                 }
             }
         }

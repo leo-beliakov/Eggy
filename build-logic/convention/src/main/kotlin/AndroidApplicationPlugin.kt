@@ -30,8 +30,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     applicationId = "com.leoapps.eggy"
                     versionCode = 1
                     versionName = "1"
-
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 compileOptions {

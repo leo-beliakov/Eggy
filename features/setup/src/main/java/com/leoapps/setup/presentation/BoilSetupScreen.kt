@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -277,7 +278,9 @@ private fun TimerSection(
                 defaultElevation = MaterialTheme.dimens.elevationM,
                 pressedElevation = MaterialTheme.dimens.elevationL,
             ),
-            modifier = Modifier.size(MaterialTheme.dimens.buttonHeight)
+            modifier = Modifier
+                .testTag("buttonContinue")
+                .size(MaterialTheme.dimens.buttonHeight)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_next),

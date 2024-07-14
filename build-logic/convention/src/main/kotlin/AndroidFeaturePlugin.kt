@@ -1,5 +1,7 @@
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 
@@ -18,10 +20,17 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
+            extensions.configure<LibraryExtension> {
+                defaultConfig {
+                    testInstrumentationRunner = "com.leoapps.ui_test.HiltTestRunner"
+                }
+            }
+
             dependencies {
                 // Base modules
                 add("implementation", project(":common:base"))
                 add("implementation", project(":common:base-ui"))
+                add("implementation", project(":common:ui-test"))
                 add("implementation", project(":common:shared-res"))
                 add("implementation", project(":common:vibration"))
 

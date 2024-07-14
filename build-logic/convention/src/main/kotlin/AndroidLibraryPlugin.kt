@@ -27,8 +27,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
                 defaultConfig.apply {
                     minSdk = 26
-
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_17

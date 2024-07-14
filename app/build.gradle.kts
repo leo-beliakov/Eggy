@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation(project(":common:base"))
     implementation(project(":common:base-ui"))
+    implementation(project(":common:ui-test"))
     implementation(project(":common:shared-res"))
     implementation(project(":common:vibration"))
     implementation(project(":features:welcome"))
