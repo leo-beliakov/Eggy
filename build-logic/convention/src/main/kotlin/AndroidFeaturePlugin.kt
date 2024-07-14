@@ -3,6 +3,12 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 
+/**
+ * Configures an Android feature module.
+ *
+ * This plugin applies necessary plugins
+ * and adds common dependencies for base modules, navigation, and testing.
+ */
 class AndroidFeaturePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
@@ -20,20 +26,14 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 add("implementation", project(":common:vibration"))
 
                 // Navigation
-                add("implementation", libraries.findLibrary("jetbrains.kotlin.serialization").get())
-                add("implementation", libraries.findLibrary("androidx.navigation.compose").get())
+                add("implementation", library("jetbrains.kotlin.serialization").get())
+                add("implementation", library("androidx.navigation.compose").get())
 
                 // Tests
-                add(
-                    "androidTestImplementation",
-                    libraries.findLibrary("androidx.ui.test.junit4").get()
-                )
-                add(
-                    "androidTestImplementation",
-                    libraries.findLibrary("androidx.navigation.test").get()
-                )
-                add("debugImplementation", libraries.findLibrary("androidx.ui.tooling").get())
-                add("debugImplementation", libraries.findLibrary("androidx.ui.test.manifest").get())
+                add("androidTestImplementation", library("androidx.ui.test.junit4").get())
+                add("androidTestImplementation", library("androidx.navigation.test").get())
+                add("debugImplementation", library("androidx.ui.tooling").get())
+                add("debugImplementation", library("androidx.ui.test.manifest").get())
             }
         }
     }

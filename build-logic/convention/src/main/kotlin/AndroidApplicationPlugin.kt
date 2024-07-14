@@ -7,6 +7,12 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+/**
+ * Configures an Android application project.
+ *
+ * This plugin applies the necessary Android application and Kotlin plugins, configures the
+ * Android application extension and sets Kotlin compiler options.
+ */
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {

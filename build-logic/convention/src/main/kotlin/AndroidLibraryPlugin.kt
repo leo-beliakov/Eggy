@@ -8,6 +8,12 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+/**
+ * Configures an Android library project.
+ *
+ * This plugin applies the necessary Android library and Kotlin plugins, configures the
+ * Android library extension, sets compile options, and adds common test dependencies.
+ */
 class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
@@ -43,14 +49,11 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
             dependencies {
                 // Tests
-                add("testImplementation", libraries.findLibrary("junit").get())
-                add("testImplementation", libraries.findLibrary("mockk-android").get())
-                add("androidTestImplementation", libraries.findLibrary("mockk-android").get())
-                add("androidTestImplementation", libraries.findLibrary("androidx.junit").get())
-                add(
-                    "androidTestImplementation",
-                    libraries.findLibrary("androidx.espresso.core").get()
-                )
+                add("testImplementation", library("junit").get())
+                add("testImplementation", library("mockk-android").get())
+                add("androidTestImplementation", library("mockk-android").get())
+                add("androidTestImplementation", library("androidx.junit").get())
+                add("androidTestImplementation", library("androidx.espresso.core").get())
             }
         }
     }

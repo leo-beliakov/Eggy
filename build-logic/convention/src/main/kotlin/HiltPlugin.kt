@@ -3,21 +3,27 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
+/**
+ * Configures Hilt for a given project.
+ *
+ * This plugin applies the Hilt and KSP plugins and adds the required dependencies
+ * for Hilt and Hilt Compose.
+ */
 class HiltPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             pluginManager.apply("com.google.devtools.ksp")
             dependencies {
-                add("ksp", libraries.findLibrary("hilt.compiler").get())
-                add("implementation", libraries.findLibrary("hilt.core").get())
+                add("ksp", library("hilt.compiler").get())
+                add("implementation", library("hilt.core").get())
             }
 
             /** Add support for Android modules, based on [AndroidBasePlugin] */
             pluginManager.withPlugin("com.android.base") {
                 pluginManager.apply("dagger.hilt.android.plugin")
                 dependencies {
-                    add("implementation", libraries.findLibrary("hilt.compose").get())
-                    add("implementation", libraries.findLibrary("hilt.android").get())
+                    add("implementation", library("hilt.compose").get())
+                    add("implementation", library("hilt.android").get())
                 }
             }
         }
