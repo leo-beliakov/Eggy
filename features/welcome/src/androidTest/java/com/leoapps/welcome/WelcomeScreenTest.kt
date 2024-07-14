@@ -21,7 +21,7 @@ class WelcomeScreenTest {
     val vibrationManager: VibrationManager = mockk(relaxed = true)
 
     @Test
-    fun `WHEN button is clicked, SHOULD navigate to the next screen`() {
+    fun whenButtonIsClicked_shouldNavigateToTheNextScreen() {
         // Arrange
         val onContinueClicked: () -> Unit = mockk(relaxed = true)
         composeTestRule.setContent {
