@@ -1,10 +1,13 @@
 package com.leoapps.welcome
 
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.leoapps.base_ui.theme.EggyTheme
+import com.leoapps.shared_res.R
+import com.leoapps.ui_test.getString
 import com.leoapps.vibration.presentation.LocalVibrationManager
 import com.leoapps.waterapp.common.vibrator.domain.VibrationManager
 import com.leoapps.welcome.presentation.WelcomeScreen
@@ -16,7 +19,7 @@ import org.junit.Test
 class WelcomeScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val testRule = createAndroidComposeRule<ComponentActivity>()
 
     val vibrationManager: VibrationManager = mockk(relaxed = true)
 
@@ -24,7 +27,7 @@ class WelcomeScreenTest {
     fun whenButtonIsClicked_shouldNavigateToTheNextScreen() {
         // Arrange
         val onContinueClicked: () -> Unit = mockk(relaxed = true)
-        composeTestRule.setContent {
+        testRule.setContent {
             EggyTheme {
                 CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
                     WelcomeScreen(onContinueClicked = onContinueClicked)
@@ -33,7 +36,7 @@ class WelcomeScreenTest {
         }
 
         // Act
-        composeTestRule.onNode(hasText("Let's cook!")).performClick()
+        testRule.onNodeWithText(testRule.getString(R.string.welcome_button_continue)).performClick()
 
         // Assert
         verify { onContinueClicked.invoke() }

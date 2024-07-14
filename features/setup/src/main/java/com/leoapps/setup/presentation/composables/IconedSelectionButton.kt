@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
@@ -60,13 +60,14 @@ fun IconedSelectionButton(
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerS)
                 )
                 .clip(RoundedCornerShape(MaterialTheme.dimens.cornerS))
-                .clickable(
-                    onClick = {
+                .toggleable(
+                    value = selected,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(color = PrimaryLight),
+                    onValueChange = {
                         vibratorManager.vibrateOnClick()
                         onClick()
-                    },
-                    indication = rememberRipple(color = PrimaryLight),
-                    interactionSource = remember { MutableInteractionSource() },
+                    }
                 )
                 .padding(MaterialTheme.dimens.paddingL)
         ) {
