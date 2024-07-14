@@ -49,7 +49,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BoilProgressViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val vibrator: VibrationManager,
+    private val vibrationManager: VibrationManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -98,7 +98,7 @@ class BoilProgressViewModel @Inject constructor(
                                     finishCelebrationConfig = getCelebrationConfig()
                                 )
                             }
-                            vibrator.vibratePattern(
+                            vibrationManager.vibratePattern(
                                 pattern = longArrayOf(0, 200, 100, 300, 400, 500)
                             )
                         }

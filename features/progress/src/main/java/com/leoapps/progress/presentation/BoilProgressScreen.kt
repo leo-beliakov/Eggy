@@ -241,7 +241,7 @@ private fun Toolbar(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.common_back)
             )
         }
         Text(
