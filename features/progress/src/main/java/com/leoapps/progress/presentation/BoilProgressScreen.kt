@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -59,7 +60,6 @@ import com.leoapps.progress.presentation.model.ActionButtonState
 import com.leoapps.progress.presentation.model.BoilProgressUiEvent
 import com.leoapps.shared_res.R
 import com.leoapps.vibration.presentation.LocalVibrationManager
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.compose.OnParticleSystemUpdateListener
@@ -105,6 +105,11 @@ fun BoilProgressScreen(
         },
     )
 
+    LaunchedEffect(state.progress, state.progressText) {
+        timerState.setProgress(state.progress)
+        timerState.progressText = state.progressText
+    }
+
     BoilProgressScreen(
         state = state,
         timerState = timerState,
@@ -129,11 +134,6 @@ fun BoilProgressScreen(
 
             is BoilProgressUiEvent.RequestNotificationsPermission -> {
                 permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-
-            is BoilProgressUiEvent.UpdateTimer -> coroutineScope.launch {
-                timerState.progressText = event.progressText
-                timerState.setProgress(event.progress)
             }
 
             is BoilProgressUiEvent.OpenNotificationsSettings -> {
@@ -199,7 +199,7 @@ private fun BoilProgressScreen(
                 timerState = timerState
             )
             BoilingParametersSection(
-
+                boilingTime = state.boilingTime
             )
             TipsSection()
             Spacer(
@@ -272,7 +272,9 @@ private fun TimerSection(
 }
 
 @Composable
-private fun BoilingParametersSection() {
+private fun BoilingParametersSection(
+    boilingTime: String
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
         modifier = Modifier
@@ -282,7 +284,7 @@ private fun BoilingParametersSection() {
         BoilingParameterItem(
             painter = painterResource(id = R.drawable.ic_timer),
             title = stringResource(id = R.string.progress_boiled_time),
-            value = "02:00",
+            value = boilingTime,
         )
         BoilingParameterItem(
             painter = painterResource(id = R.drawable.ic_thermometer),

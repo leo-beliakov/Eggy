@@ -1,6 +1,5 @@
 package com.leoapps.progress.presentation
 
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
@@ -43,7 +42,6 @@ import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.Spread
 import nl.dionsegijn.konfetti.core.emitter.Emitter
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +55,7 @@ class BoilProgressViewModel @Inject constructor(
     private val eggType = EggBoilingType.fromString(args.type) ?: EggBoilingType.MEDIUM
     private val boilingTime = args.calculatedTime
 
-    private val _state = MutableStateFlow(BoilProgressUiState(titleResId = getTitleForEggType()))
+    private val _state = MutableStateFlow(getInitialState())
     val state = _state.asStateFlow()
 
     private val _events = MutableSharedFlow<BoilProgressUiEvent>()
@@ -66,56 +64,14 @@ class BoilProgressViewModel @Inject constructor(
     private var binder: BoilProgressService.MyBinder? = null
     private var serviceSubscribtionJob: Job? = null
 
-    //todo refactor
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             binder = service as? BoilProgressService.MyBinder
-            serviceSubscribtionJob = binder?.state
-                ?.onEach { timerState ->
-                    when (timerState) {
-                        TimerStatusUpdate.Canceled -> {
-                            _state.update {
-                                it.copy(buttonState = ActionButtonState.START)
-                            }
-                            _events.emit(
-                                BoilProgressUiEvent.UpdateTimer(
-                                    progress = 0f,
-                                    progressText = convertMsToTimerText(0L),
-                                )
-                            )
-                        }
-
-                        TimerStatusUpdate.Finished -> {
-                            _events.emit(
-                                BoilProgressUiEvent.UpdateTimer(
-                                    progress = 0f,
-                                    progressText = convertMsToTimerText(0L),
-                                )
-                            )
-                            _state.update {
-                                it.copy(
-                                    buttonState = ActionButtonState.START,
-                                    finishCelebrationConfig = getCelebrationConfig()
-                                )
-                            }
-                            vibrationManager.vibratePattern(
-                                pattern = longArrayOf(0, 200, 100, 300, 400, 500)
-                            )
-                        }
-
-                        is TimerStatusUpdate.Progress -> {
-                            _events.emit(
-                                BoilProgressUiEvent.UpdateTimer(
-                                    progress = timerState.valueMs / boilingTime.toFloat(),
-                                    progressText = convertMsToTimerText(timerState.valueMs),
-                                )
-                            )
-                        }
-                    }
-                }?.launchIn(viewModelScope)
+            serviceSubscribtionJob = collectServiceState()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            binder = null
             serviceSubscribtionJob?.cancel()
         }
     }
@@ -194,7 +150,6 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("InlinedApi")
     fun onRationaleDialogConfirm() {
         showDoalog(null)
         viewModelScope.launch {
@@ -202,11 +157,65 @@ class BoilProgressViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("InlinedApi")
     fun onGoToSettingsDialogConfirm() {
         showDoalog(null)
         viewModelScope.launch {
             _events.emit(BoilProgressUiEvent.OpenNotificationsSettings)
+        }
+    }
+
+    private fun getInitialState(): BoilProgressUiState {
+        return BoilProgressUiState(
+            boilingTime = convertMsToTimerText(boilingTime),
+            titleResId = when (eggType) {
+                EggBoilingType.SOFT -> R.string.common_soft_boiled_eggs
+                EggBoilingType.MEDIUM -> R.string.common_medium_boiled_eggs
+                EggBoilingType.HARD -> R.string.common_hard_boiled_eggs
+            }
+        )
+    }
+
+    private fun collectServiceState(): Job? {
+        return binder?.state
+            ?.onEach { timerState ->
+                when (timerState) {
+                    TimerStatusUpdate.Canceled -> onTimerCanceled()
+                    TimerStatusUpdate.Finished -> onTimerFinished()
+                    is TimerStatusUpdate.Progress -> onTimerProgressUpdate(timerState)
+                }
+            }?.launchIn(viewModelScope)
+    }
+
+    private fun onTimerCanceled() {
+        _state.update {
+            it.copy(
+                progress = 0f,
+                progressText = convertMsToTimerText(0L),
+                buttonState = ActionButtonState.START
+            )
+        }
+    }
+
+    private fun onTimerFinished() {
+        _state.update {
+            it.copy(
+                progress = 0f,
+                progressText = convertMsToTimerText(0L),
+                buttonState = ActionButtonState.START,
+                finishCelebrationConfig = getCelebrationConfig()
+            )
+        }
+        vibrationManager.vibratePattern(
+            pattern = TIMER_FINISH_VIBRARTION_PATTERN
+        )
+    }
+
+    private fun onTimerProgressUpdate(timerState: TimerStatusUpdate.Progress) {
+        _state.update {
+            it.copy(
+                progress = timerState.valueMs / boilingTime.toFloat(),
+                progressText = convertMsToTimerText(timerState.valueMs),
+            )
         }
     }
 
@@ -231,12 +240,6 @@ class BoilProgressViewModel @Inject constructor(
         _state.update { it.copy(buttonState = ActionButtonState.START) }
     }
 
-    private fun getTitleForEggType() = when (eggType) {
-        EggBoilingType.SOFT -> R.string.common_soft_boiled_eggs
-        EggBoilingType.MEDIUM -> R.string.common_medium_boiled_eggs
-        EggBoilingType.HARD -> R.string.common_hard_boiled_eggs
-    }
-
     private fun getCelebrationConfig(): List<Party> {
         val party = Party(
             speed = 10f,
@@ -250,7 +253,7 @@ class BoilProgressViewModel @Inject constructor(
                 СonfettiPurple.toArgb(),
                 СonfettiPink.toArgb(),
             ),
-            emitter = Emitter(duration = 3, TimeUnit.SECONDS).perSecond(50),
+            emitter = Emitter(TIMER_FINISH_ANIMATION_DURATION_MS).perSecond(50),
             position = Position.Relative(0.0, 0.35)
         )
 
@@ -261,5 +264,10 @@ class BoilProgressViewModel @Inject constructor(
                 position = Position.Relative(1.0, 0.35)
             ),
         )
+    }
+
+    private companion object {
+        val TIMER_FINISH_VIBRARTION_PATTERN = longArrayOf(0, 200, 100, 300, 400, 500)
+        val TIMER_FINISH_ANIMATION_DURATION_MS = 3000L
     }
 }
