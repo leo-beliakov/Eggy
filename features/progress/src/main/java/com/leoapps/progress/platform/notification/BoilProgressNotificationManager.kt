@@ -27,16 +27,33 @@ class BoilProgressNotificationManager @Inject constructor(
     private val notificationManagerCompat = NotificationManagerCompat.from(context)
 
     override fun createChannels() {
-        val notificationChanel = NotificationChannel(
-            CHANNEL_ID,
-            context.getString(R.string.notificaton_channel_progress_title),
+        val notificationProgressChanel = NotificationChannel(
+            PROGRESS_CHANNEL_ID,
+            context.getString(R.string.notificaton_progress_channel_progress_title),
             NotificationManager.IMPORTANCE_LOW
         ).apply {
-            description = context.getString(R.string.notificaton_channel_progress_description)
+            description =
+                context.getString(R.string.notificaton_progress_channel_progress_description)
+            setShowBadge(false)
+        }
+
+        val notificationFinishChanel = NotificationChannel(
+            FINISH_CHANNEL_ID,
+            context.getString(R.string.notificaton_finish_channel_progress_title),
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description =
+                context.getString(R.string.notificaton_finish_channel_progress_description)
             setShowBadge(true)
         }
 
-        notificationManagerCompat.createNotificationChannel(notificationChanel)
+        notificationManagerCompat.createNotificationChannels(
+            listOf(notificationProgressChanel, notificationFinishChanel)
+        )
+    }
+
+    fun cancelAllNotifications() {
+        notificationManagerCompat.cancelAll()
     }
 
     fun notifyProgress(
@@ -56,6 +73,22 @@ class BoilProgressNotificationManager @Inject constructor(
         }
     }
 
+    fun notifyBoilingFinished(eggType: EggBoilingType) {
+        if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            val notification = NotificationCompat.Builder(context, FINISH_CHANNEL_ID)
+                .setContentTitle(getNotificationTitle(eggType))
+                .setContentText(context.getString(R.string.notificaton_progress_finish_message))
+                .setCategory(Notification.CATEGORY_ALARM)
+                .setSmallIcon(R.drawable.ic_timer_grey)
+                .setLargeIcon(getNotificationIcon(eggType))
+                .build()
+
+            NotificationManagerCompat
+                .from(context)
+                .notify(FINISH_NOTIFICATION_ID, notification)
+        }
+    }
+
     fun getProgressNotification(
         timeLeft: Long,
         totalTime: Long,
@@ -63,7 +96,7 @@ class BoilProgressNotificationManager @Inject constructor(
     ): Notification {
         val progress = ((totalTime - timeLeft) / totalTime.toFloat() * 100).toInt()
 
-        return NotificationCompat.Builder(context, CHANNEL_ID)
+        return NotificationCompat.Builder(context, PROGRESS_CHANNEL_ID)
             .setContentTitle(getNotificationTitle(eggType))
             .setContentText(getNotificationMessage(timeLeft))
             .setCategory(Notification.CATEGORY_PROGRESS)
@@ -114,7 +147,9 @@ class BoilProgressNotificationManager @Inject constructor(
 
     companion object {
         const val PROGRESS_NOTIFICATION_ID = 1
+        private const val FINISH_NOTIFICATION_ID = 2
         private const val MAX_PROGRESS = 100
-        private const val CHANNEL_ID = "eggy_channel_id"
+        private const val PROGRESS_CHANNEL_ID = "eggy_progress_channel_id"
+        private const val FINISH_CHANNEL_ID = "eggy_finish_channel_id"
     }
 }

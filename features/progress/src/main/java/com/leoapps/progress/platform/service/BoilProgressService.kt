@@ -61,6 +61,7 @@ class BoilProgressService : Service() {
         this.boilingTime = boilingTime
         this.eggType = eggType
 
+        notificationManager.cancelAllNotifications()
         ServiceCompat.startForeground(
             this,
             BoilProgressNotificationManager.PROGRESS_NOTIFICATION_ID,
@@ -107,6 +108,7 @@ class BoilProgressService : Service() {
 
     private fun onTimerFinished() {
         stopForeground(STOP_FOREGROUND_REMOVE)
+        notificationManager.notifyBoilingFinished(eggType)
         coroutineScope.launch {
             binder.state.emit(TimerStatusUpdate.Finished)
         }
