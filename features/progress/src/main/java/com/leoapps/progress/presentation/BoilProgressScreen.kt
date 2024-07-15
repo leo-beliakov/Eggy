@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -78,10 +77,7 @@ fun BoilProgressScreen(
     onBackClicked: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     val activity = CurrentActivity()
-    val timerState = rememberTimerState()
-    val coroutineScope = rememberCoroutineScope()
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -105,14 +101,8 @@ fun BoilProgressScreen(
         },
     )
 
-    LaunchedEffect(state.progress, state.progressText) {
-        timerState.setProgress(state.progress)
-        timerState.progressText = state.progressText
-    }
-
     BoilProgressScreen(
         state = state,
-        timerState = timerState,
         onBackClicked = viewModel::onBackClicked,
         onButtonClicked = viewModel::onButtonClicked,
         onCelebrationFinished = viewModel::onCelebrationFinished,
@@ -172,11 +162,17 @@ fun ShowDialog(
 @Composable
 private fun BoilProgressScreen(
     state: BoilProgressUiState,
-    timerState: TimerState,
     onBackClicked: () -> Unit,
     onButtonClicked: () -> Unit,
     onCelebrationFinished: () -> Unit,
 ) {
+    val timerState = rememberTimerState()
+
+    LaunchedEffect(state.progress, state.progressText) {
+        timerState.setProgress(state.progress)
+        timerState.progressText = state.progressText
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

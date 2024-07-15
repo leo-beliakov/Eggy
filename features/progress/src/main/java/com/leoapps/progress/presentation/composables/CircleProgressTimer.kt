@@ -45,7 +45,6 @@ class TimerState(initial: Float) {
     var progress: Float by mutableFloatStateOf(initial)
         private set
 
-    //todo use setter
     suspend fun setProgress(progress: Float) {
         animate(
             initialValue = this.progress,

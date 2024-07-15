@@ -21,6 +21,9 @@ import javax.inject.Inject
 
 private const val TIMER_UPDATE_INTERVAL = 200L
 
+//We cannot update notifications too often. Otherwise the OS will throttle our notifications
+private const val NOTIFICATION_UPDATE_INTERVAL = 1000L
+
 
 @AndroidEntryPoint
 class BoilProgressService : Service() {
@@ -32,6 +35,8 @@ class BoilProgressService : Service() {
     private val binder = MyBinder()
 
     var timer: CountDownTimer? = null
+    var boilingTime = 0L
+    var eggType = EggBoilingType.MEDIUM
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.extras?.getBoolean(ACTION_CANCEL) == true) {
@@ -49,19 +54,19 @@ class BoilProgressService : Service() {
         super.onDestroy()
     }
 
-    private var ticks = 0
-
-    //todo extract timer logic
     private fun onStartTimer(
-        calculatedTime: Long,
+        boilingTime: Long,
         eggType: EggBoilingType
     ) {
+        this.boilingTime = boilingTime
+        this.eggType = eggType
+
         ServiceCompat.startForeground(
-            this@BoilProgressService,
+            this,
             BoilProgressNotificationManager.PROGRESS_NOTIFICATION_ID,
             notificationManager.getProgressNotification(
-                timeLeft = calculatedTime,
-                totalTime = calculatedTime,
+                timeLeft = boilingTime,
+                totalTime = boilingTime,
                 eggType = eggType
             ),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -72,38 +77,40 @@ class BoilProgressService : Service() {
         )
 
         timer?.cancel()
-        timer = object : CountDownTimer(calculatedTime, TIMER_UPDATE_INTERVAL) {
-            override fun onTick(millisUntilFinished: Long) {
-                val timePassed = calculatedTime - millisUntilFinished
-                coroutineScope.launch {
-                    binder.state.emit(
-                        TimerStatusUpdate.Progress(timePassed)
-                    )
-                }
-
-                if (ticks % 5 == 0) {
-                    notificationManager.notifyProgress(
-                        timeLeft = millisUntilFinished,
-                        totalTime = calculatedTime,
-                        eggType = eggType
-                    )
-
-                    ticks = 0
-                }
-
-                ticks++
-            }
-
-            override fun onFinish() {
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                coroutineScope.launch {
-                    binder.state.emit(TimerStatusUpdate.Finished)
-                }
-            }
-        }
+        timer = twoTicksTimer(
+            millisInFuture = boilingTime,
+            shortTickInterval = TIMER_UPDATE_INTERVAL,
+            longTickInterval = NOTIFICATION_UPDATE_INTERVAL,
+            onShortTick = ::updateProgress,
+            onLongTick = ::updateNotification,
+            onTimerFinished = ::onTimerFinished,
+        )
         timer?.start()
     }
 
+    private fun updateProgress(millisUntilFinished: Long) {
+        val timePassed = boilingTime - millisUntilFinished
+        coroutineScope.launch {
+            binder.state.emit(
+                TimerStatusUpdate.Progress(timePassed)
+            )
+        }
+    }
+
+    private fun updateNotification(millisUntilFinished: Long) {
+        notificationManager.notifyProgress(
+            timeLeft = millisUntilFinished,
+            totalTime = boilingTime,
+            eggType = eggType
+        )
+    }
+
+    private fun onTimerFinished() {
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        coroutineScope.launch {
+            binder.state.emit(TimerStatusUpdate.Finished)
+        }
+    }
 
     private fun onStopTimer() {
         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -116,10 +123,7 @@ class BoilProgressService : Service() {
     inner class MyBinder : Binder() {
         val state = MutableSharedFlow<TimerStatusUpdate>()
 
-        fun startTimer(
-            calculatedTime: Long,
-            eggType: EggBoilingType,
-        ) {
+        fun startTimer(calculatedTime: Long, eggType: EggBoilingType) {
             onStartTimer(calculatedTime, eggType)
         }
 
