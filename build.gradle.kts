@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.jetbrains.ksp) apply false
     alias(libs.plugins.daggerHilt) apply false
+    alias(libs.plugins.paparazzi) apply false
 }

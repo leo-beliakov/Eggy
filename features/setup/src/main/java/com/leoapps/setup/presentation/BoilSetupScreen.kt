@@ -81,7 +81,7 @@ fun BoilSetupScreen(
 }
 
 @Composable
-private fun BoilSetupScreen(
+fun BoilSetupScreen(
     state: BoilSetupUiState,
     onNextClicked: () -> Unit,
     onSizeSelected: (EggSizeUi) -> Unit,

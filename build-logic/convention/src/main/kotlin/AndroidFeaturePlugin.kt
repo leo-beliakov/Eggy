@@ -18,6 +18,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 apply("leo.apps.android.library")
                 apply("leo.apps.compose.library")
                 apply("org.jetbrains.kotlin.plugin.serialization")
+                apply("app.cash.paparazzi")
             }
 
             extensions.configure<LibraryExtension> {
@@ -43,6 +44,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 add("androidTestImplementation", library("androidx.navigation.test").get())
                 add("debugImplementation", library("androidx.ui.tooling").get())
                 add("debugImplementation", library("androidx.ui.test.manifest").get())
+                add("testImplementation", library("paparazzi.screenshot.test").get())
             }
         }
     }
