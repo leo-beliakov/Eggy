@@ -1,7 +1,11 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+
 plugins {
     alias(libs.plugins.eggy.android.application)
     alias(libs.plugins.eggy.compose.application)
     alias(libs.plugins.eggy.hilt)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -9,15 +13,34 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+//            applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
         }
+        create("internal") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+//            applicationIdSuffix = ".internal"
+            versionNameSuffix = "-INTERNAL"
+
+            firebaseAppDistribution {
+                artifactType = "APK"
+                serviceCredentialsFile = "${rootDir}/eggyapp-adcc3-eb674b04b39b.json"
+                groups = "QA"
+            }
+        }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            firebaseAppDistribution {
+                artifactType = "APK"
+                serviceCredentialsFile = "${rootDir}/eggyapp-adcc3-eb674b04b39b.json"
+                groups = "QA"
+            }
         }
     }
 }
@@ -31,4 +54,7 @@ dependencies {
     implementation(project(":features:welcome"))
     implementation(project(":features:setup"))
     implementation(project(":features:progress"))
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-analytics")
 }
