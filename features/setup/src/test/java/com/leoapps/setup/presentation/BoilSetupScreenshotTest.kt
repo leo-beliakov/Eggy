@@ -14,7 +14,7 @@ import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 
-class BoilSetupScreenTest {
+class BoilSetupScreenshotTest {
 
     @get:Rule
     val paparazzi = Paparazzi(

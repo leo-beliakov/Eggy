@@ -106,17 +106,11 @@ fun BoilProgressScreen(
         onBackClicked = viewModel::onBackClicked,
         onButtonClicked = viewModel::onButtonClicked,
         onCelebrationFinished = viewModel::onCelebrationFinished,
+        onCancelationDialogConfirmed = viewModel::onCancelationDialogConfirmed,
+        onRationaleDialogConfirm = viewModel::onRationaleDialogConfirm,
+        onGoToSettingsDialogConfirm = viewModel::onGoToSettingsDialogConfirm,
+        onCancelationDialogDismissed = viewModel::onCancelationDialogDismissed,
     )
-
-    state.selectedDialog?.let { dialog ->
-        ShowDialog(
-            dialog = dialog,
-            onCancelationConfirm = viewModel::onCancelationDialogConfirmed,
-            onRationaleConfirm = viewModel::onRationaleDialogConfirm,
-            onGoToSettingsConfirm = viewModel::onGoToSettingsDialogConfirm,
-            onDismiss = viewModel::onCancelationDialogDismissed,
-        )
-    }
 
     CollectEventsWithLifecycle(viewModel.events) { event ->
         when (event) {
@@ -134,7 +128,36 @@ fun BoilProgressScreen(
 }
 
 @Composable
-fun ShowDialog(
+fun BoilProgressScreen(
+    state: BoilProgressUiState,
+    onBackClicked: () -> Unit,
+    onButtonClicked: () -> Unit,
+    onCelebrationFinished: () -> Unit,
+    onCancelationDialogConfirmed: () -> Unit,
+    onRationaleDialogConfirm: () -> Unit,
+    onGoToSettingsDialogConfirm: () -> Unit,
+    onCancelationDialogDismissed: () -> Unit,
+) {
+    BoilProgressContent(
+        state = state,
+        onBackClicked = onBackClicked,
+        onButtonClicked = onButtonClicked,
+        onCelebrationFinished = onCelebrationFinished,
+    )
+
+    state.selectedDialog?.let { dialog ->
+        BoilProgressDialog(
+            dialog = dialog,
+            onCancelationConfirm = onCancelationDialogConfirmed,
+            onRationaleConfirm = onRationaleDialogConfirm,
+            onGoToSettingsConfirm = onGoToSettingsDialogConfirm,
+            onDismiss = onCancelationDialogDismissed,
+        )
+    }
+}
+
+@Composable
+fun BoilProgressDialog(
     dialog: BoilProgressUiState.Dialog,
     onCancelationConfirm: () -> Unit,
     onRationaleConfirm: () -> Unit,
@@ -160,11 +183,11 @@ fun ShowDialog(
 }
 
 @Composable
-private fun BoilProgressScreen(
+private fun BoilProgressContent(
     state: BoilProgressUiState,
     onBackClicked: () -> Unit,
     onButtonClicked: () -> Unit,
-    onCelebrationFinished: () -> Unit,
+    onCelebrationFinished: () -> Unit
 ) {
     val timerState = rememberTimerState()
 
@@ -221,8 +244,6 @@ private fun BoilProgressScreen(
             )
         }
     }
-
-
 }
 
 @Composable
