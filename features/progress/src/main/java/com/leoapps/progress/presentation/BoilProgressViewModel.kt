@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -44,6 +45,7 @@ import nl.dionsegijn.konfetti.core.Spread
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import javax.inject.Inject
 
+@Stable // https://issuetracker.google.com/issues/280284177
 @HiltViewModel
 class BoilProgressViewModel @Inject constructor(
     @ApplicationContext private val context: Context,

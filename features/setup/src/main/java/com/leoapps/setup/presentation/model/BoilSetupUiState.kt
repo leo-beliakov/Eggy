@@ -13,4 +13,3 @@ data class BoilSetupUiState(
     val calculatedTimeText: String = EMPTY_CALCULATED_TIME,
     val nextButtonEnabled: Boolean = false,
 )
-

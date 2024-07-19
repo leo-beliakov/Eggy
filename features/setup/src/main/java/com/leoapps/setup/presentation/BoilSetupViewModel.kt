@@ -1,5 +1,6 @@
 package com.leoapps.setup.presentation
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leoapps.base.egg.domain.model.EggBoilingType
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Stable // https://issuetracker.google.com/issues/280284177
 @HiltViewModel
 class BoilSetupViewModel @Inject constructor(
     private val calculateBoilingTime: CalculateBoilingTimeUseCase,
