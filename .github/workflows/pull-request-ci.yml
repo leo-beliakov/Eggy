@@ -27,8 +27,16 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA | base64 -di > app/google-services.json
 
+      - name: Load Firebase Distribution Key file
+        env:
+          DATA: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
+        run: echo $DATA | base64 -di > app/google-services.json
+
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Run Unit Tests
         run: ./gradlew test
+
+      - name: Upload Internal build to Firebase
+        run: ./gradlew assembleInternal appDistributionUploadInternal
