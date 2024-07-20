@@ -25,5 +25,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Load Google Service file
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA | base64 -di > app/google-services.json
+
       - name: Run Unit Tests
         run: ./gradlew test

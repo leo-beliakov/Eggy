@@ -24,7 +24,7 @@ android {
 
             firebaseAppDistribution {
                 artifactType = "APK"
-                serviceCredentialsFile = "${rootDir}/eggyapp-adcc3-eb674b04b39b.json"
+                serviceCredentialsFile = "${rootDir}/firebase-distribution-key.json"
                 groups = "QA"
             }
         }
@@ -38,7 +38,7 @@ android {
 
             firebaseAppDistribution {
                 artifactType = "APK"
-                serviceCredentialsFile = "${rootDir}/eggyapp-adcc3-eb674b04b39b.json"
+                serviceCredentialsFile = "${rootDir}/firebase-distribution-key.json"
                 groups = "QA"
             }
         }
