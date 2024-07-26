@@ -38,5 +38,8 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
 
+      - name: Run Unit Tests
+        run: ./gradlew androidTest
+
       - name: Upload Internal build to Firebase
         run: ./gradlew assembleInternal appDistributionUploadInternal
