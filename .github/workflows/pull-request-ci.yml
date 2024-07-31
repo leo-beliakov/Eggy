@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action/setup-action
+        uses: ./.github/actions/local-action
 
       - name: Build with Gradle
         run: ./gradlew build
