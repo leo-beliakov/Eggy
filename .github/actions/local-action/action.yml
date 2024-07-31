@@ -1,5 +1,12 @@
 name: Setup Environment
 description: Sets up the environment for Android jobs
+inputs:
+  GOOGLE_SERVICES_JSON:
+    description: 'Google Services Json'
+    required: true
+  FIREBASE_DISTRIBUTION_KEY:
+    description: 'Google Services Json'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -15,13 +22,16 @@ runs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      shell: bash
 
     - name: Load Google Service file
       env:
-        DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        DATA: ${{ inputs.GOOGLE_SERVICES_JSON }}
       run: echo $DATA | base64 -di > app/google-services.json
+      shell: bash
 
     - name: Load Firebase Distribution Key file
       env:
-        DATA: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
+        DATA: ${{ inputs.FIREBASE_DISTRIBUTION_KEY }}
       run: echo $DATA | base64 -di > firebase-distribution-key.json
+      shell: bash
