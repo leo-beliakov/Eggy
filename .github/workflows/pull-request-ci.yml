@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Environment
-        uses: ./.github/actions/setup-action
+        uses: ./.github/actions/local-action/setup-action
 
       - name: Build with Gradle
         run: ./gradlew build
