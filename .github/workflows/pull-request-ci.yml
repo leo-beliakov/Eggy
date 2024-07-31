@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action
+        uses: ./.github/actions/setup-environment
         with:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           FIREBASE_DISTRIBUTION_KEY: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action
+        uses: ./.github/actions/setup-environment
         with:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           FIREBASE_DISTRIBUTION_KEY: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
@@ -43,7 +43,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action
+        uses: ./.github/actions/setup-environment
+        with:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          FIREBASE_DISTRIBUTION_KEY: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
 
       - name: Run Unit Tests
         run: ./gradlew test
@@ -56,7 +59,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action
+        uses: ./.github/actions/setup-environment
+        with:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          FIREBASE_DISTRIBUTION_KEY: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
 
       - name: Enable KVM group perms
         run: |
@@ -78,7 +84,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/actions/local-action
+        uses: ./.github/actions/setup-environment
+        with:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          FIREBASE_DISTRIBUTION_KEY: ${{ secrets.FIREBASE_DISTRIBUTION_KEY }}
 
       - name: Upload Internal build to Firebase
         run: ./gradlew assembleInternal appDistributionUploadInternal
