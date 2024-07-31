@@ -5,9 +5,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout the project
         uses: actions/checkout@v4
@@ -35,11 +33,23 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+unit-tests:
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
       - name: Run Unit Tests
         run: ./gradlew test
 
-      - name: Run Unit Tests
-        run: ./gradlew androidTest
+instrumented-tests:
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+    - name: Run Instrumented Tests
+      run: ./gradlew connectedAndroidTest
 
+distribute:
+  runs-on: ubuntu-latest
+  needs: [ build, unit-tests, lint, instrumented-tests ]
+  steps:
       - name: Upload Internal build to Firebase
         run: ./gradlew assembleInternal appDistributionUploadInternal
