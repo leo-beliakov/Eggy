@@ -33,3 +33,14 @@ subprojects {
         }
     }
 }
+
+// Create an aggregated test report
+tasks.register<TestReport>("aggregateTestReports") {
+    destinationDir = file("${rootDir.absolutePath}/app/build/reports/tests/aggregated")
+    subprojects.forEach { subproject ->
+        subproject.tasks.withType<Test> {
+            ignoreFailures = true
+            reportOn(this)
+        }
+    }
+}

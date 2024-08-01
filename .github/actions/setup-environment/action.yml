@@ -1,5 +1,7 @@
 name: Setup Environment
+
 description: Sets up the environment for Android jobs
+
 inputs:
   GOOGLE_SERVICES_JSON:
     description: 'Google Services Json'
@@ -7,6 +9,7 @@ inputs:
   FIREBASE_DISTRIBUTION_KEY:
     description: 'Google Services Json'
     required: true
+
 runs:
   using: "composite"
   steps:
