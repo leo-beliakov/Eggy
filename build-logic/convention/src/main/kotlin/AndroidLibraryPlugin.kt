@@ -37,6 +37,9 @@ class AndroidLibraryPlugin : Plugin<Project> {
                         excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
                     }
                 }
+                buildTypes {
+                    create("internal")
+                }
             }
             tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {

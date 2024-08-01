@@ -6,8 +6,11 @@ plugins {
     alias(libs.plugins.jetbrains.ksp) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.paparazzi) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.distribution) apply false
 }
 
+//Configure compose reports and stability config:
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
@@ -27,6 +30,17 @@ subprojects {
                 "-P",
                 "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${rootDir.absolutePath}/compose_compiler_config.conf"
             )
+        }
+    }
+}
+
+// Create an aggregated test report
+tasks.register<TestReport>("aggregateTestReports") {
+    destinationDir = file("${rootDir.absolutePath}/app/build/reports/tests/aggregated")
+    subprojects.forEach { subproject ->
+        subproject.tasks.withType<Test> {
+            ignoreFailures = true
+            reportOn(this)
         }
     }
 }
