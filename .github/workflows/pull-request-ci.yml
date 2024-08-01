@@ -82,6 +82,12 @@ jobs:
           api-level: 29
           script: ./gradlew connectedAndroidTest
 
+      - name: Upload Instrumented Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit-test-report
+          path: app/build/reports/androidTests/connected/debug
+
   distribute:
     runs-on: ubuntu-latest
     needs: [ build, unit-tests, lint, instrumented-tests ]
