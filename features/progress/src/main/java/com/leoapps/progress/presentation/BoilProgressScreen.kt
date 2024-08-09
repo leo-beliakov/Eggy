@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -37,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoapps.base.permissions.OpenNotificationsSettingsContract
@@ -280,12 +283,19 @@ private fun Toolbar(
 private fun TimerSection(
     timerState: TimerState,
 ) {
-    CircleTimer(
-        state = timerState,
-        modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .padding(top = MaterialTheme.dimens.spaceL)
-    )
+    BoxWithConstraints {
+        val timerSize = min(
+            maxHeight * 0.5f,
+            maxWidth * 0.8f
+        )
+
+        CircleTimer(
+            state = timerState,
+            modifier = Modifier
+                .size(timerSize)
+                .padding(top = MaterialTheme.dimens.spaceL)
+        )
+    }
 }
 
 @Composable
@@ -293,6 +303,7 @@ private fun BoilingParametersSection(
     boilingTime: String
 ) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
         modifier = Modifier
             .fillMaxWidth()
@@ -327,7 +338,9 @@ private fun BoilingParameterItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .widthIn(max = 400.dp)
+            .fillMaxWidth()
     ) {
         Icon(
             painter = painter,
@@ -397,6 +410,7 @@ private fun ButtonStartSection(
         ),
         colors = ButtonDefaults.buttonColors(containerColor = Primary),
         modifier = Modifier
+            .widthIn(max = MaterialTheme.dimens.buttonMaxWidth)
             .fillMaxWidth()
             .heightIn(min = MaterialTheme.dimens.buttonHeight)
     ) {

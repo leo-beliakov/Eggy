@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -78,9 +79,10 @@ fun WelcomeScreen(
         Image(
             painter = painterResource(SharedRes.drawable.welcome_egg),
             contentDescription = null,
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.constrainAs(image) {
-                width = Dimension.percent(0.7f)
+                height = Dimension.percent(0.6f)
+                width = Dimension.percent(0.6f)
                 linkTo(top = parent.top, bottom = parent.bottom, bias = 0.6f)
                 linkTo(start = parent.start, end = parent.end)
             }
@@ -97,6 +99,7 @@ fun WelcomeScreen(
             ),
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier
+                .widthIn(max = MaterialTheme.dimens.buttonMaxWidth)
                 .fillMaxWidth()
                 .heightIn(min = MaterialTheme.dimens.buttonHeight)
                 .constrainAs(button) {

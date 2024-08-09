@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -84,7 +83,6 @@ fun CircleTimer(
 
     Spacer(
         modifier = modifier
-            .aspectRatio(1f)
             .drawWithCache {
                 val strokeWidth = size.width / 25
                 val radius = (size.width * SMALL_TO_BIG_RADIUS_RATIO - strokeWidth) / 2

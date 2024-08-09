@@ -22,6 +22,7 @@ class Dimensions(
     val spaceXL: Dp = 18.dp,
 
     // Element Sizes
+    val buttonMaxWidth: Dp = 500.dp,
     val buttonHeight: Dp = 64.dp,
     val selectableButtonHeight: Dp = 80.dp,
     val selectableIconedButtonHeight: Dp = 120.dp,
