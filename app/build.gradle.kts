@@ -13,13 +13,12 @@ android {
 
     buildTypes {
         debug {
-//            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
         }
         create("internal") {
             isMinifyEnabled = true
             isShrinkResources = true
-//            applicationIdSuffix = ".internal"
             versionNameSuffix = "-INTERNAL"
 
             firebaseAppDistribution {
