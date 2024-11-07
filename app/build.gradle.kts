@@ -20,6 +20,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             versionNameSuffix = "-INTERNAL"
+            signingConfig = signingConfigs.getByName("debug")
 
             firebaseAppDistribution {
                 artifactType = "APK"
