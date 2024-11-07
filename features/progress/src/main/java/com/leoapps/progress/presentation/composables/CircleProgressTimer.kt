@@ -85,11 +85,13 @@ fun CircleTimer(
         modifier = modifier
             .drawWithCache {
                 val strokeWidth = size.width / 25
-                val radius = (size.width * SMALL_TO_BIG_RADIUS_RATIO - strokeWidth) / 2
+                val radiusUnrounded = (size.width * SMALL_TO_BIG_RADIUS_RATIO - strokeWidth) / 2
+                val radius = radiusUnrounded.toInt().toFloat()
                 val circleSize = Size(radius * 2, radius * 2)
+
                 val topLeftOffset = Offset(
-                    (size.width * (1 - SMALL_TO_BIG_RADIUS_RATIO) + strokeWidth) / 2,
-                    (size.height * (1 - SMALL_TO_BIG_RADIUS_RATIO) + strokeWidth) / 2
+                    x = size.center.x - radius,
+                    y = size.center.y - radius
                 )
 
                 val indicatorRadiusBig = strokeWidth * 1.5f
@@ -166,7 +168,6 @@ fun CircleTimer(
                         textLayoutResult = textMeasureResult,
                         topLeft = textOffset,
                     )
-
                 }
             }
     )
