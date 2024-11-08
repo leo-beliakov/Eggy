@@ -19,6 +19,7 @@ android {
         create("internal") {
             isMinifyEnabled = true
             isShrinkResources = true
+            applicationIdSuffix = ".internal"
             versionNameSuffix = "-INTERNAL"
             signingConfig = signingConfigs.getByName("debug")
 
