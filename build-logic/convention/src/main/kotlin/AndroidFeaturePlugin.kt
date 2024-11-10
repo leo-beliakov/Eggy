@@ -23,7 +23,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 defaultConfig {
-                    testInstrumentationRunner = "com.leoapps.ui_test.HiltTestRunner"
+                    defaultConfig.testInstrumentationRunner = "com.leoapps.ui_test.HiltTestRunner"
                 }
             }
 
