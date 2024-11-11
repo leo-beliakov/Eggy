@@ -28,8 +28,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     targetSdk = 34
                     minSdk = 26
                     applicationId = "com.leoapps.eggy"
-                    versionCode = 6
-                    versionName = "1"
+                    versionCode = 7
+                    versionName = "1.0.7"
                 }
 
                 compileOptions {
