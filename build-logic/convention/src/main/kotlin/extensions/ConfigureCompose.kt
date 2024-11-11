@@ -18,7 +18,6 @@ fun Project.configureCompose(
     dependencies {
         val bom = library("androidx-compose-bom")
         add("implementation", platform(bom))
-        add("androidTestImplementation", platform(bom))
         add("implementation", library("androidx-ui-tooling-preview"))
 
         // Tests

@@ -13,14 +13,15 @@ android {
 
     buildTypes {
         debug {
-//            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
         }
         create("internal") {
             isMinifyEnabled = true
             isShrinkResources = true
-//            applicationIdSuffix = ".internal"
+            applicationIdSuffix = ".internal"
             versionNameSuffix = "-INTERNAL"
+            signingConfig = signingConfigs.getByName("debug")
 
             firebaseAppDistribution {
                 artifactType = "APK"
@@ -54,7 +55,4 @@ dependencies {
     implementation(project(":features:welcome"))
     implementation(project(":features:setup"))
     implementation(project(":features:progress"))
-
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    implementation("com.google.firebase:firebase-analytics")
 }
