@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +32,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +50,7 @@ import com.leoapps.base_ui.theme.dimens
 import com.leoapps.base_ui.utils.CollectEventsWithLifecycle
 import com.leoapps.base_ui.utils.CurrentActivity
 import com.leoapps.eggy.setup.presentation.model.BoilProgressUiState
+import com.leoapps.progress.presentation.composables.BoilingParameterItem
 import com.leoapps.progress.presentation.composables.CancelationDialog
 import com.leoapps.progress.presentation.composables.CircleTimer
 import com.leoapps.progress.presentation.composables.PermissionOpenSettingsDialog
@@ -261,12 +260,14 @@ private fun Toolbar(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
+                tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = stringResource(id = R.string.common_back)
             )
         }
         Text(
             text = stringResource(id = titleResId),
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -330,42 +331,6 @@ private fun BoilingParametersSection(
 }
 
 @Composable
-private fun BoilingParameterItem(
-    painter: Painter,
-    title: String,
-    value: String,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
-        modifier = Modifier
-            .widthIn(max = 400.dp)
-            .fillMaxWidth()
-    ) {
-        Icon(
-            painter = painter,
-            tint = White,
-            contentDescription = null,
-            modifier = Modifier
-                .size(MaterialTheme.dimens.iconSizeXL)
-                .background(Primary, RoundedCornerShape(MaterialTheme.dimens.cornerS))
-                .padding(MaterialTheme.dimens.paddingS)
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            color = GrayLight,
-            modifier = Modifier.weight(1f, true)
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Black,
-        )
-    }
-}
-
-@Composable
 private fun TipsSection() {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceS),
@@ -380,6 +345,7 @@ private fun TipsSection() {
         Text(
             text = stringResource(id = R.string.progress_tips_title),
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
         )
         Text(

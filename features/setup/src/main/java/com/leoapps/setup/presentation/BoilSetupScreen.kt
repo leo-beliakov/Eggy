@@ -35,6 +35,7 @@ import com.leoapps.base.egg.domain.model.EggBoilingType
 import com.leoapps.base_ui.theme.EggyTheme
 import com.leoapps.base_ui.theme.GrayLight
 import com.leoapps.base_ui.theme.Primary
+import com.leoapps.base_ui.theme.White
 import com.leoapps.base_ui.theme.dimens
 import com.leoapps.base_ui.utils.CollectEventsWithLifecycle
 import com.leoapps.base_ui.utils.annotatedStringResource
@@ -142,7 +143,8 @@ private fun HeaderSection(
         ) {
             Text(
                 text = annotatedStringResource(R.string.setup_header_title),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
                 text = stringResource(R.string.setup_header_subtitle),
@@ -170,6 +172,7 @@ private fun TemperatureSection(
         Text(
             text = annotatedStringResource(R.string.settings_temp_title),
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
@@ -197,6 +200,7 @@ private fun SizeSection(
     Column {
         Text(
             text = annotatedStringResource(R.string.settings_size_title),
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge,
         )
         Row(
@@ -225,6 +229,7 @@ private fun BoiledTypeSection(
         Text(
             text = annotatedStringResource(R.string.settings_type_title),
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spaceM),
@@ -284,6 +289,7 @@ private fun TimerSection(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_next),
+                tint = White,
                 contentDescription = stringResource(R.string.common_continue)
             )
         }

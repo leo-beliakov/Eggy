@@ -65,6 +65,7 @@ fun WelcomeScreen(
         Text(
             text = stringResource(SharedRes.string.welcome_title_2),
             style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.constrainAs(title2) {
                 linkTo(start = parent.start, end = parent.end)
             }
@@ -72,6 +73,7 @@ fun WelcomeScreen(
         Text(
             text = stringResource(SharedRes.string.welcome_title_3),
             style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.constrainAs(title3) {
                 linkTo(start = parent.start, end = parent.end)
             }

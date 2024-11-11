@@ -1,6 +1,7 @@
 package com.leoapps.base_ui.components.dialog
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,8 +19,15 @@ fun Dialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismissButtonClicked,
-        title = { Text(title) },
-        text = { Text(subtitle) },
+        title = {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        },
+        text = {
+            Text(subtitle)
+        },
         confirmButton = {
             TextButton(onClick = onPositiveButtonClicked) {
                 Text(positiveButtonText.uppercase())

@@ -41,6 +41,7 @@ fun CounterComposable(
                     Text(
                         text = digit.toString(),
                         style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
                         softWrap = false,
                     )
                 }
@@ -48,6 +49,7 @@ fun CounterComposable(
                 Text(
                     text = char.toString(),
                     style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }
