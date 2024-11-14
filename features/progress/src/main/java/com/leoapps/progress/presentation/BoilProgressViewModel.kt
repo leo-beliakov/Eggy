@@ -54,7 +54,7 @@ class BoilProgressViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val args = savedStateHandle.toRoute<BoilProgressScreenDestination>()
-    private val eggType = EggBoilingType.fromString(args.type) ?: EggBoilingType.MEDIUM
+    private val eggType = args.type
     private val boilingTime = args.calculatedTime
 
     private val _state = MutableStateFlow(getInitialState())

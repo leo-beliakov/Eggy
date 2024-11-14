@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.leoapps.base.egg.domain.model.EggBoilingType
 import com.leoapps.base.permissions.OpenNotificationsSettingsContract
 import com.leoapps.base.permissions.resolvePermissionStatus
 import com.leoapps.base_ui.theme.GrayLight
@@ -70,8 +71,7 @@ import nl.dionsegijn.konfetti.core.PartySystem
 
 @Serializable
 data class BoilProgressScreenDestination(
-    //todo: pass enum instead (https://medium.com/@edmiro/type-safety-in-navigation-compose-23c03e3d74a5)
-    val type: String,
+    val type: EggBoilingType,
     val calculatedTime: Long,
 )
 

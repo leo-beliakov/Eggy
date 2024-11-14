@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                                     onContinueClicked = { type, time ->
                                         navController.navigate(
                                             BoilProgressScreenDestination(
-                                                type = type.toString(),
+                                                type = type,
                                                 calculatedTime = time,
                                             )
                                         ) {

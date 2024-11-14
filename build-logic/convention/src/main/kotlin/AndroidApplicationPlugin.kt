@@ -22,10 +22,10 @@ class AndroidApplicationPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                compileSdk = 34
+                compileSdk = 35
 
                 defaultConfig.apply {
-                    targetSdk = 34
+                    targetSdk = 35
                     minSdk = 26
                     applicationId = "com.leoapps.eggy"
                     versionCode = 7
