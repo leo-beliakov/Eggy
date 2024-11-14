@@ -14,20 +14,20 @@ class HiltPlugin : Plugin<Project> {
         with(project) {
             pluginManager.apply("com.google.devtools.ksp")
             dependencies {
-                add("ksp", library("hilt.compiler").get())
-                add("implementation", library("hilt.core").get())
+                add("ksp", library("hilt.compiler"))
+                add("implementation", library("hilt.core"))
             }
 
             /** Add support for Android modules, based on [AndroidBasePlugin] */
             pluginManager.withPlugin("com.android.base") {
                 pluginManager.apply("dagger.hilt.android.plugin")
                 dependencies {
-                    add("implementation", library("hilt.compose").get())
-                    add("implementation", library("hilt.android").get())
+                    add("implementation", library("hilt.compose"))
+                    add("implementation", library("hilt.android"))
 
                     // Tests
-                    add("androidTestImplementation", library("hilt.android.test").get())
-                    add("kspAndroidTest", library("hilt.compiler.test").get())
+                    add("androidTestImplementation", library("hilt.android.test"))
+                    add("kspAndroidTest", library("hilt.compiler.test"))
                 }
             }
         }

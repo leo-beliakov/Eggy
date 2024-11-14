@@ -36,15 +36,12 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 add("implementation", project(":common:vibration"))
 
                 // Navigation
-                add("implementation", library("jetbrains.kotlin.serialization").get())
-                add("implementation", library("androidx.navigation.compose").get())
+                add("implementation", library("jetbrains.kotlin.serialization"))
+                add("implementation", library("androidx.navigation.compose"))
 
                 // Tests
-                add("androidTestImplementation", library("androidx.ui.test.junit4").get())
-                add("androidTestImplementation", library("androidx.navigation.test").get())
-                add("debugImplementation", library("androidx.ui.tooling").get())
-                add("debugImplementation", library("androidx.ui.test.manifest").get())
-                add("testImplementation", library("paparazzi.screenshot.test").get())
+                add("androidTestImplementation", library("androidx.navigation.test"))
+                add("testImplementation", library("paparazzi.screenshot.test"))
             }
         }
     }

@@ -50,11 +50,11 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
             dependencies {
                 // Tests
-                add("testImplementation", library("junit").get())
-                add("testImplementation", library("mockk-android").get())
-                add("androidTestImplementation", library("mockk-android").get())
-                add("androidTestImplementation", library("androidx.junit").get())
-                add("androidTestImplementation", library("androidx.espresso.core").get())
+                add("testImplementation", library("junit"))
+                add("testImplementation", library("mockk.android"))
+                add("androidTestImplementation", library("mockk.android"))
+                add("androidTestImplementation", library("androidx.junit"))
+                add("androidTestImplementation", library("androidx.espresso.core"))
             }
         }
     }

@@ -17,7 +17,7 @@ serialization = "1.7.1"
 constraintlayout = "1.1.0"
 konfetti = "2.0.4"
 appcompat = "1.7.0"
-material = "1.12.0"
+material3 = "1.3.1"
 composeText = "1.7.0-beta05" #temporary workaround for the [fromHtml] function
 mockk = "1.13.11"
 androidxTestRules = "1.6.1"
@@ -26,29 +26,24 @@ googleServices = "4.4.2"
 firebaseDistribution = "5.0.0"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayout" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-test = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationCompose" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "composeText" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 paparazzi-screenshot-test = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltCompose" }
@@ -57,8 +52,6 @@ hilt-android-test = { group = "com.google.dagger", name = "hilt-android-testing"
 hilt-compiler-test = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 jetbrains-kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 konfetti-compose = { group = "nl.dionsegijn", name = "konfetti-compose", version.ref = "konfetti" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 #build-logic deps:
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

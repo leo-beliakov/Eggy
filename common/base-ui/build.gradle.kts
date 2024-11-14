@@ -8,13 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    //Compose
-    implementation(platform(libs.androidx.compose.bom))
-    api(libs.androidx.ui)
-    api(libs.androidx.ui.graphics)
-    api(libs.androidx.ui.text)
-    api(libs.androidx.ui.tooling.preview)
-    api(libs.androidx.material3)
+    implementation(libs.material3.window.size)
 }
