@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.leoapps.base_ui.theme.EggyTheme
+import com.leoapps.base_ui.theme.WithDimensionsBasedOnScreenSize
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreen
 import com.leoapps.eggy.welcome.presentation.BoilSetupScreenDestination
 import com.leoapps.progress.presentation.BoilProgressScreen
@@ -40,71 +41,73 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EggyTheme {
-                CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
-                    val navController = rememberNavController()
-                    val fadeAnimationSpec = tween<Float>(
-                        durationMillis = NAVIGATION_ANIM_DURATION,
-                        easing = LinearEasing
-                    )
-                    val slideAnimationSpec = tween<IntOffset>(
-                        durationMillis = NAVIGATION_ANIM_DURATION,
-                        easing = LinearEasing
-                    )
+                WithDimensionsBasedOnScreenSize {
+                    CompositionLocalProvider(LocalVibrationManager provides vibrationManager) {
+                        val navController = rememberNavController()
+                        val fadeAnimationSpec = tween<Float>(
+                            durationMillis = NAVIGATION_ANIM_DURATION,
+                            easing = LinearEasing
+                        )
+                        val slideAnimationSpec = tween<IntOffset>(
+                            durationMillis = NAVIGATION_ANIM_DURATION,
+                            easing = LinearEasing
+                        )
 
-                    NavHost(
-                        navController = navController,
-                        startDestination = WelcomeScreenDestination
-                    ) {
-                        composable<WelcomeScreenDestination>(
-                            exitTransition = { fadeOut(fadeAnimationSpec) }
+                        NavHost(
+                            navController = navController,
+                            startDestination = WelcomeScreenDestination
                         ) {
-                            WelcomeScreen(
-                                onContinueClicked = {
-                                    navController.navigate(BoilSetupScreenDestination) {
-                                        popUpTo<WelcomeScreenDestination> {
-                                            inclusive = true
+                            composable<WelcomeScreenDestination>(
+                                exitTransition = { fadeOut(fadeAnimationSpec) }
+                            ) {
+                                WelcomeScreen(
+                                    onContinueClicked = {
+                                        navController.navigate(BoilSetupScreenDestination) {
+                                            popUpTo<WelcomeScreenDestination> {
+                                                inclusive = true
+                                            }
+                                            launchSingleTop = true
                                         }
-                                        launchSingleTop = true
                                     }
-                                }
-                            )
-                        }
-                        composable<BoilSetupScreenDestination>(
-                            enterTransition = { fadeIn(fadeAnimationSpec) },
-                            exitTransition = { fadeOut(fadeAnimationSpec) }
-                        ) {
-                            BoilSetupScreen(
-                                onContinueClicked = { type, time ->
-                                    navController.navigate(
-                                        BoilProgressScreenDestination(
-                                            type = type.toString(),
-                                            calculatedTime = time,
-                                        )
-                                    ) {
-                                        launchSingleTop = true
-                                    }
-                                }
-                            )
-                        }
-                        composable<BoilProgressScreenDestination>(
-                            enterTransition = {
-                                slideIntoContainer(
-                                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                                    animationSpec = slideAnimationSpec
-                                )
-                            },
-                            exitTransition = {
-                                slideOutOfContainer(
-                                    towards = AnimatedContentTransitionScope.SlideDirection.End,
-                                    animationSpec = slideAnimationSpec
                                 )
                             }
-                        ) {
-                            BoilProgressScreen(
-                                onBackClicked = {
-                                    navController.navigateUp()
+                            composable<BoilSetupScreenDestination>(
+                                enterTransition = { fadeIn(fadeAnimationSpec) },
+                                exitTransition = { fadeOut(fadeAnimationSpec) }
+                            ) {
+                                BoilSetupScreen(
+                                    onContinueClicked = { type, time ->
+                                        navController.navigate(
+                                            BoilProgressScreenDestination(
+                                                type = type.toString(),
+                                                calculatedTime = time,
+                                            )
+                                        ) {
+                                            launchSingleTop = true
+                                        }
+                                    }
+                                )
+                            }
+                            composable<BoilProgressScreenDestination>(
+                                enterTransition = {
+                                    slideIntoContainer(
+                                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                                        animationSpec = slideAnimationSpec
+                                    )
+                                },
+                                exitTransition = {
+                                    slideOutOfContainer(
+                                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                                        animationSpec = slideAnimationSpec
+                                    )
                                 }
-                            )
+                            ) {
+                                BoilProgressScreen(
+                                    onBackClicked = {
+                                        navController.navigateUp()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
